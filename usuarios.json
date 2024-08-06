@@ -1,0 +1,7 @@
+[{
+    "nombre": "juan",
+"apellido": "pablo",
+"fecha_de_nacimiento": "01/01/1995",
+"correo": "juan@gmail.com",
+"contrasena": "12345"
+}]

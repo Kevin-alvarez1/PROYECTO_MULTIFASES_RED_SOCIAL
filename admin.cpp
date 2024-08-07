@@ -63,7 +63,7 @@ private:
 };
 int main() {
     // Crear un objeto de la clase Persona
-    Admin adminObj("Admin","Admin","16/06/2003","admin@gmail.com","EDD2S2024");
+    Admin adminObj("Kevin","Alvarez","16/06/2003","admin@gmail.com","EDD2S2024");
     
     // Mostrar información del objeto
     adminObj.mostrarInformacion();

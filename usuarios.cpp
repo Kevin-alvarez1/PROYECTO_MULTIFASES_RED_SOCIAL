@@ -3,26 +3,16 @@
 #include <string>
 #include <algorithm>
 
-// Clase Usuario
 class Usuario {
 public:
     Usuario(std::string nombre, std::string apellido, std::string fecha_de_nacimiento, std::string correo, std::string contrasena)
         : nombre_(nombre), apellido_(apellido), fecha_de_nacimiento_(fecha_de_nacimiento), correo_(correo), contrasena_(contrasena) {}
 
     std::string getNombre() const { return nombre_; }
-    void setNombre(const std::string& nombre) { nombre_ = nombre; }
-
     std::string getApellido() const { return apellido_; }
-    void setApellido(const std::string& apellido) { apellido_ = apellido; }
-
     std::string getFechaDeNacimiento() const { return fecha_de_nacimiento_; }
-    void setFechaDeNacimiento(const std::string& fecha_de_nacimiento) { fecha_de_nacimiento_ = fecha_de_nacimiento; }
-
     std::string getCorreo() const { return correo_; }
-    void setCorreo(const std::string& correo) { correo_ = correo; }
-
     std::string getContrasena() const { return contrasena_; }
-    void setContrasena(const std::string& contrasena) { contrasena_ = contrasena; }
 
 private:
     std::string nombre_;
@@ -41,7 +31,6 @@ struct Nodo {
     Nodo(const Usuario& usuario) : usuario(usuario), siguiente(nullptr) {}
 };
 
-//lista simplemente enlazada
 class ListaUsuarios {
 public:
     ListaUsuarios() : cabeza(nullptr) {}
@@ -56,7 +45,6 @@ public:
     }
 
     void agregarUsuario(const Usuario& usuario) {
-        // se verifca el usuario por mdedio del correo
         if (usuarioDuplicado(usuario.getCorreo())) {
             std::cerr << "Usuario con correo " << usuario.getCorreo() << " ya existe." << std::endl;
             return;
@@ -83,6 +71,17 @@ public:
             actual = actual->siguiente;
         }
         return false;
+    }
+
+    Nodo* buscarUsuarioPorCorreoYContrasena(const std::string& correo, const std::string& contrasena) const {
+        Nodo* actual = cabeza;
+        while (actual != nullptr) {
+            if (actual->usuario.getCorreo() == correo && actual->usuario.getContrasena() == contrasena) {
+                return actual;
+            }
+            actual = actual->siguiente;
+        }
+        return nullptr;
     }
 
     void mostrarUsuarios() const {
@@ -127,13 +126,12 @@ public:
                 Usuario usuario(nombre, apellido, fecha_de_nacimiento, correo, contrasena);
                 listaUsuarios.agregarUsuario(usuario);
             }
-    }
+        }
 
-    archivo.close();
-    return listaUsuarios;
+        archivo.close();
+        return listaUsuarios;
     }
 
 private:
     Nodo* cabeza;
 };
-

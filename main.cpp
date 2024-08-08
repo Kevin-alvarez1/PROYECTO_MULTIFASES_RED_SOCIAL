@@ -1,11 +1,14 @@
 #include <iostream>
 #include <limits>
 #include "usuarios.cpp" // Asegúrate de que usuarios.cpp no tenga una definición de main()
+#include "publicaciones.cpp"
+#include <windows.h>
 
 std::string admin_correo = "admin@gmail.com";
 std::string admin_contrasena = "EDD2S2024";
 
 int main() {
+    SetConsoleOutputCP(CP_UTF8);
     int opcion;
 
     do {
@@ -61,21 +64,30 @@ int main() {
                             } else {
                                 // Mover la declaración de listaUsuarios aquí
                                 ListaUsuarios listaUsuarios;
+                                ListaPublicaciones listaPublicaciones;
 
                                 switch (admin_opcion) {
                                     case 1:
                                         std::cout << "Opción seleccionada: Carga de usuarios.\n";
                                         listaUsuarios = ListaUsuarios::cargarUsuariosDesdeJson("../usuarios.json");
                                         listaUsuarios.mostrarUsuarios();
+                                        
                                         std::cout << "===============================\n" << std::endl;
                                         std::cout << "Usuarios cargados exitosamente.\n" << std::endl;
                                         std::cout << "===============================\n" << std::endl;
                                         break;
                                     case 2:
                                         std::cout << "Opción seleccionada: Carga de relaciones.\n";
+
                                         break;
                                     case 3:
                                         std::cout << "Opción seleccionada: Carga de publicaciones.\n";
+                                        listaPublicaciones  = ListaPublicaciones ::cargarPublicacionesDesdeJson("../publicaciones.json");
+                                        listaPublicaciones.mostrarPublicaciones();
+                                        
+                                        std::cout << "===============================\n" << std::endl;
+                                        std::cout << "Publicaciones cargadas exitosamente.\n" << std::endl;
+                                        std::cout << "===============================\n" << std::endl;
                                         break;
                                     case 4:
                                         std::cout << "Opción seleccionada: Gestionar usuarios.\n";

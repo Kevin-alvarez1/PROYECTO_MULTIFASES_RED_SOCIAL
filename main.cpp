@@ -1,6 +1,6 @@
 #include <iostream>
 #include <limits>
-#include "usuarios.cpp" // Asegúrate de que usuarios.cpp no tenga una definición de main()
+#include "usuarios.cpp"
 #include "publicaciones.cpp"
 #include <windows.h>
 
@@ -10,7 +10,9 @@ std::string admin_contrasena = "EDD2S2024";
 int main() {
     SetConsoleOutputCP(CP_UTF8);
     int opcion;
-
+                                
+    ListaUsuarios listaUsuarios;
+    ListaPublicaciones listaPublicaciones;
     do {
         std::cout << "MENU" << std::endl;
         std::cout << "1. Iniciar sesión" << std::endl;
@@ -62,9 +64,7 @@ int main() {
                                 std::cout << "Opción inválida. Por favor, seleccione una opción válida." << std::endl;
                                 admin_opcion = -1; // Resetea la opción para evitar una selección inválida
                             } else {
-                                // Mover la declaración de listaUsuarios aquí
-                                ListaUsuarios listaUsuarios;
-                                ListaPublicaciones listaPublicaciones;
+
 
                                 switch (admin_opcion) {
                                     case 1:

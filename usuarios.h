@@ -2,7 +2,7 @@
 #define USUARIOS_H
 
 #include <string>
-#include <iostream>
+#include <vector>
 
 class Usuario {
 public:
@@ -20,6 +20,8 @@ private:
     std::string fecha_de_nacimiento_;
     std::string correo_;
     std::string contrasena_;
+
+    friend class ListaUsuarios;
 };
 
 struct Nodo {
@@ -38,6 +40,7 @@ public:
     bool usuarioDuplicado(const std::string& correo) const;
     Nodo* buscarUsuarioPorCorreoYContrasena(const std::string& correo, const std::string& contrasena) const;
     void mostrarUsuarios() const;
+
     static ListaUsuarios cargarUsuariosDesdeJson(const std::string& nombreArchivo);
 
 private:

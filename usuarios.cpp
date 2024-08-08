@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
+#include <vector>
 #include <algorithm>
 
 class Usuario {
@@ -107,24 +109,36 @@ public:
         }
 
         std::string linea;
-        std::string nombre, apellido, fecha_de_nacimiento, correo, contrasena;
+        std::vector<std::string> datos;
 
         while (std::getline(archivo, linea)) {
-            linea.erase(std::remove(linea.begin(), linea.end(), ' '), linea.end());
-            linea.erase(std::remove(linea.begin(), linea.end(), '\"'), linea.end());
+            linea.erase(linea.find_last_not_of(" \n\r\t") + 1);
+            linea.erase(0, linea.find_first_not_of(" \n\r\t"));
 
-            if (linea.find("nombre:") != std::string::npos) {
-                nombre = linea.substr(linea.find(":") + 1);
-            } else if (linea.find("apellido:") != std::string::npos) {
-                apellido = linea.substr(linea.find(":") + 1);
-            } else if (linea.find("fecha_de_nacimiento:") != std::string::npos) {
-                fecha_de_nacimiento = linea.substr(linea.find(":") + 1);
-            } else if (linea.find("correo:") != std::string::npos) {
-                correo = linea.substr(linea.find(":") + 1);
-            } else if (linea.find("contrasena:") != std::string::npos) {
-                contrasena = linea.substr(linea.find(":") + 1);
-                Usuario usuario(nombre, apellido, fecha_de_nacimiento, correo, contrasena);
-                listaUsuarios.agregarUsuario(usuario);
+            if (linea.empty() || linea == "{" || linea == "}") {
+                continue;
+            }
+
+            if (linea.find(":") != std::string::npos) {
+                std::size_t pos = linea.find(":");
+                std::string clave = linea.substr(0, pos);
+                std::string valor = linea.substr(pos + 1);
+                clave.erase(std::remove(clave.begin(), clave.end(), '\"'), clave.end());
+                valor.erase(std::remove(valor.begin(), valor.end(), '\"'), valor.end());
+                clave.erase(std::remove(clave.begin(), clave.end(), ' '), clave.end());
+                valor.erase(std::remove(valor.begin(), valor.end(), ' '), valor.end());
+
+                if (clave == "nombre" || clave == "apellido" || clave == "fecha_de_nacimiento" || clave == "correo" || clave == "contrasena") {
+                    datos.push_back(valor);
+                }
+
+                if (clave == "contrasena") {
+                    if (datos.size() == 5) {
+                        Usuario usuario(datos[0], datos[1], datos[2], datos[3], datos[4]);
+                        listaUsuarios.agregarUsuario(usuario);
+                        datos.clear();
+                    }
+                }
             }
         }
 

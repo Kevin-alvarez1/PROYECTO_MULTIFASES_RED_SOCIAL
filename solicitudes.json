@@ -1,0 +1,17 @@
+[
+    {
+        "emisor": "sam@gmail.com",
+        "receptor": "maria@gmail.com",
+        "estado": "ACEPTADA"
+    },
+    {
+        "emisor": "sam@gmail.com",
+        "receptor": "shadow@gmail.com",
+        "estado": "RECHAZADA"
+    },
+    {
+        "emisor": "sam@gmail.com",
+        "receptor": "mike@gmail.com",
+        "estado": "¨PENDIENTE"
+    }
+]

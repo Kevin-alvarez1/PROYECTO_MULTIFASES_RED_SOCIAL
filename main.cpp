@@ -1,6 +1,5 @@
 #include <iostream>
 #include <limits>
-#include "publicaciones.cpp"
 #include <windows.h>
 #include <fstream>
 #include <string>
@@ -110,6 +109,65 @@ public:
         return false;
     }
 
+    void borrarUsuarioPorCorreo(const std::string& correo)
+    {
+        if (cabeza == nullptr) // Si la lista está vacía, no hay nada que borrar
+        {
+            std::cerr << "La lista está vacía." << std::endl;
+            return;
+        }
+
+        // Si el nodo a eliminar es el primero
+        if (cabeza->usuario.getCorreo() == correo)
+        {
+            Nodo* temp = cabeza;
+            cabeza = cabeza->siguiente; // Actualizar cabeza de la lista
+            delete temp; // Eliminar el nodo
+            std::cout << "Usuario con correo " << correo << " ha sido borrado." << std::endl;
+            return;
+        }
+
+        Nodo* actual = cabeza;
+        Nodo* anterior = nullptr;
+
+        // Buscar el nodo con el correo especificado
+        while (actual != nullptr && actual->usuario.getCorreo() != correo)
+        {
+            std::cout << "Chequeando nodo con correo: " << actual->usuario.getCorreo() << std::endl;
+            anterior = actual;
+            actual = actual->siguiente;
+        }
+
+        // Si no se encontró el nodo
+        if (actual == nullptr)
+        {
+            std::cerr << "No hay usuario con el correo " << correo << " que se pueda borrar." << std::endl;
+            return;
+        }
+
+        // Eliminar el nodo encontrado
+        if (anterior != nullptr) // Verificar que anterior no sea nulo
+        {
+            std::cout << "Eliminando nodo con correo: " << actual->usuario.getCorreo() << std::endl;
+            anterior->siguiente = actual->siguiente;
+            return;
+        }
+
+        delete actual; // Eliminar el nodo
+        std::cout << "Usuario con correo " << correo << " ha sido borrado." << std::endl;
+
+        // Verificar el estado de la lista después de la eliminación
+        Nodo* temp = cabeza;
+        while (temp != nullptr)
+        {
+            std::cout << "Nodo en lista con correo: " << temp->usuario.getCorreo() << std::endl;
+            temp = temp->siguiente;
+        }
+    }
+
+
+
+
 static ListaUsuarios cargarUsuariosDesdeJson(const std::string &nombreArchivo)
 {
     ListaUsuarios listaUsuarios;
@@ -184,6 +242,197 @@ private:
     Nodo *cabeza;
 };
 
+void registrarUsuario(ListaUsuarios& listaUsuarios) {
+    std::string nombre, apellido, fecha_de_nacimiento, correo, contrasena;
+
+    std::cout << "Ingrese su nombre: ";
+    std::cin >> nombre;
+
+
+    if (!nombre.empty()) {
+        std::cout << "Ingrese su apellido: ";
+        std::cin >> apellido;
+
+        if (!apellido.empty()) {
+            std::cout << "Ingrese su fecha de nacimiento (DD/MM/AAAA): ";
+            std::cin >> fecha_de_nacimiento;
+
+            if (!fecha_de_nacimiento.empty()) {
+                std::cout << "Ingrese su correo: ";
+                std::cin >> correo;
+
+                if (!correo.empty()) {
+                    if (!listaUsuarios.usuarioDuplicado(correo)) {
+                        std::cout << "Ingrese su contraseña: ";
+                        std::cin >> contrasena;
+                        // Crear el nuevo usuario
+                        Usuario nuevoUsuario(nombre, apellido, fecha_de_nacimiento, correo, contrasena);
+
+                        // Agregarlo a la lista de usuarios
+                        listaUsuarios.agregarUsuario(nuevoUsuario);
+
+                        std::cout << "Usuario registrado exitosamente." << std::endl;
+                    } else {
+                        std::cerr << "El correo ya está registrado." << std::endl;
+                    }
+                } else {
+                    std::cerr << "El correo no puede estar vacío." << std::endl;
+                }
+            } else {
+                std::cerr << "La fecha de nacimiento no puede estar vacía." << std::endl;
+            }
+        } else {
+            std::cerr << "El apellido no puede estar vacío." << std::endl;
+        }
+    } else {
+        std::cerr << "El nombre no puede estar vacío." << std::endl;
+    }
+}
+
+
+
+class Publicacion {
+public:
+    Publicacion(std::string correo, std::string contenido, std::string fecha, std::string hora)
+        : correo_(correo), contenido_(contenido), fecha_(fecha), hora_(hora) {
+        std::cout << "Depuración: Publicación creada con correo: " << correo_
+                  << ", contenido: " << contenido_
+                  << ", fecha: " << fecha_
+                  << ", hora: " << hora_ << std::endl;
+    }
+
+    std::string getCorreo() const { return correo_; }
+    void setCorreo(const std::string& correo) { 
+        std::cout << "Depuración: Cambiando correo de " << correo_ << " a " << correo << std::endl;
+        correo_ = correo; 
+    }
+
+    std::string getContenido() const { return contenido_; }
+    void setContenido(const std::string& contenido) { 
+        std::cout << "Depuración: Cambiando contenido de \"" << contenido_ << "\" a \"" << contenido << "\"" << std::endl;
+        contenido_ = contenido; 
+    }
+
+    std::string getFecha() const { return fecha_; }
+    void setFecha(const std::string& fecha) { 
+        std::cout << "Depuración: Cambiando fecha de " << fecha_ << " a " << fecha << std::endl;
+        fecha_ = fecha; 
+    }
+
+    std::string getHora() const { return hora_; }
+    void setHora(const std::string& hora) { 
+        std::cout << "Depuración: Cambiando hora de " << hora_ << " a " << hora << std::endl;
+        hora_ = hora; 
+    }
+
+private:
+    std::string correo_;
+    std::string contenido_;
+    std::string fecha_;
+    std::string hora_;
+
+    friend class ListaPublicaciones;
+};
+
+struct NodoPublicacion {
+    Publicacion publicacion;
+    NodoPublicacion* siguiente;
+
+    NodoPublicacion(const Publicacion& publicacion) : publicacion(publicacion), siguiente(nullptr) {
+        std::cout << "Depuración: Nodo de publicación creado para correo: " << publicacion.getCorreo() << std::endl;
+    }
+};
+
+// Lista simplemente enlazada para Publicaciones
+class ListaPublicaciones {
+public:
+    ListaPublicaciones() : cabeza(nullptr) {
+        std::cout << "Depuración: Lista de publicaciones creada." << std::endl;
+    }
+
+    ~ListaPublicaciones() {
+        NodoPublicacion* actual = cabeza;
+        while (actual != nullptr) {
+            NodoPublicacion* temp = actual;
+            actual = actual->siguiente;
+            std::cout << "Depuración: Eliminando nodo de publicación con correo: " << temp->publicacion.getCorreo() << std::endl;
+            delete temp;
+        }
+        std::cout << "Depuración: Lista de publicaciones destruida." << std::endl;
+    }
+
+    void agregarPublicacion(const Publicacion& publicacion) {
+        std::cout << "Depuración: Agregando publicación con correo: " << publicacion.getCorreo() << std::endl;
+        NodoPublicacion* nuevoNodo = new NodoPublicacion(publicacion);
+        if (cabeza == nullptr) {
+            cabeza = nuevoNodo;
+            std::cout << "Depuración: Publicación agregada como cabeza de la lista." << std::endl;
+        } else {
+            NodoPublicacion* actual = cabeza;
+            while (actual->siguiente != nullptr) {
+                actual = actual->siguiente;
+            }
+            actual->siguiente = nuevoNodo;
+            std::cout << "Depuración: Publicación agregada al final de la lista." << std::endl;
+        }
+    }
+
+    static ListaPublicaciones cargarPublicacionesDesdeJson(const std::string& nombreArchivo) {
+        ListaPublicaciones listaPublicaciones;
+        std::ifstream archivo(nombreArchivo);
+
+        if (!archivo.is_open()) {
+            std::cerr << "Error al abrir el archivo JSON." << std::endl;
+            return listaPublicaciones;
+        }
+
+        std::string linea;
+        std::string correo, contenido, fecha, hora;
+
+        std::cout << "Depuración: Comenzando a cargar publicaciones desde " << nombreArchivo << std::endl;
+
+        while (std::getline(archivo, linea)) {
+            linea.erase(std::remove(linea.begin(), linea.end(), ' '), linea.end());
+            linea.erase(std::remove(linea.begin(), linea.end(), '\"'), linea.end());
+
+            if (linea.find("correo:") != std::string::npos) {
+                correo = linea.substr(linea.find(":") + 1);
+                if (!correo.empty() && correo.back() == ',') {
+                    correo.pop_back();  // Elimina la coma final si existe
+                }
+                std::cout << "Depuración: Correo encontrado: " << correo << std::endl;
+            } else if (linea.find("contenido:") != std::string::npos) {
+                contenido = linea.substr(linea.find(":") + 1);
+                if (!contenido.empty() && contenido.back() == ',') {
+                    contenido.pop_back();  // Elimina la coma final si existe
+                }
+                std::cout << "Depuración: Contenido encontrado: " << contenido << std::endl;
+            } else if (linea.find("fecha:") != std::string::npos) {
+                fecha = linea.substr(linea.find(":") + 1);
+                if (!fecha.empty() && fecha.back() == ',') {
+                    fecha.pop_back();  // Elimina la coma final si existe
+                }
+                std::cout << "Depuración: Fecha encontrada: " << fecha << std::endl;
+            } else if (linea.find("hora:") != std::string::npos) {
+                hora = linea.substr(linea.find(":") + 1);
+                if (!hora.empty() && hora.back() == ',') {
+                    hora.pop_back();  // Elimina la coma final si existe
+                }
+                std::cout << "Depuración: Hora encontrada: " << hora << std::endl;
+                Publicacion publicacion(correo, contenido, fecha, hora);
+                listaPublicaciones.agregarPublicacion(publicacion);
+            }
+        }
+
+        archivo.close();
+        std::cout << "Depuración: Finalizada la carga de publicaciones desde " << nombreArchivo << std::endl;
+        return listaPublicaciones;
+    }
+
+private:
+    NodoPublicacion* cabeza;
+};
+
 std::string admin_correo = "admin@gmail.com";
 std::string admin_contrasena = "EDD2S2024";
 
@@ -224,6 +473,8 @@ int main()
                 std::string correo;
                 std::string contrasena;
                 std::string archivo;
+                std::string archivo_P;
+                std::string correo_e;
 
                 std::cout << "Ingrese su correo: ";
                 std::cin >> correo;
@@ -277,8 +528,9 @@ int main()
                                 break;
                             case 3:
                                 std::cout << "Opción seleccionada: Carga de publicaciones.\n";
-                                listaPublicaciones = ListaPublicaciones::cargarPublicacionesDesdeJson("../publicaciones.json");
-                                listaPublicaciones.mostrarPublicaciones();
+                                std::cout << "Ingrese el nombre del archivo: ";
+                                std::cin >> archivo_P;
+                                listaPublicaciones = ListaPublicaciones::cargarPublicacionesDesdeJson("../"+ archivo_P +".json");
 
                                 std::cout << "===============================\n"
                                           << std::endl;
@@ -289,6 +541,14 @@ int main()
                                 break;
                             case 4:
                                 std::cout << "Opción seleccionada: Gestionar usuarios.\n";
+                                std::cout << "Ingrese el correo del usuario a borrar: ";
+                                std::cin >> correo_e;
+
+                                if (correo_e.empty()) {
+                                    std::cerr << "No se ingresó un correo válido." << std::endl;
+                                } else {
+                                    listaUsuarios.borrarUsuarioPorCorreo(correo_e);
+                                }
                                 break;
                             case 5:
                                 std::cout << "Opción seleccionada: Reportes.\n";
@@ -366,10 +626,11 @@ int main()
             }
             case 2:
             {
-                std::cout << "Ha seleccionado la opción 2." << std::endl;
-
+                std::cout << "Ha seleccionado la opción REGISTRARSE." << std::endl;
+                registrarUsuario(listaUsuarios);
                 break;
             }
+
             case 3:
             {
                     std::cout <<"-----------------Informacion del estudiante-----------------" << std::endl;

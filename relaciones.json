@@ -12,6 +12,6 @@
     {
         "emisor": "sam@gmail.com",
         "receptor": "mike@gmail.com",
-        "estado": "¨PENDIENTE"
+        "estado": "PENDIENTE"
     }
 ]

@@ -8,9 +8,6 @@
 #include <algorithm>
 #include <cstdlib>
 
-
-
-
 class Usuario
 {
 public:
@@ -66,12 +63,12 @@ public:
             file << "node [shape=record];" << std::endl;
             file << "rankdir=LR;" << std::endl;
 
-            Nodo *current = cabeza;  // Usa 'Nodo' en lugar de 'Node'
+            Nodo *current = cabeza;
             int id = 0;
             while (current != nullptr)
             {
                 file << "node" << id << " [label=\"{" << "Nombre: " << current->usuario.getNombre() << "\\n"
-                    << "Correo: " << current->usuario.getCorreo() << "}\"];" << std::endl;
+                     << "Correo: " << current->usuario.getCorreo() << "}\"];" << std::endl;
                 if (current->siguiente != nullptr)
                 {
                     file << "node" << id << " -> node" << (id + 1) << ";" << std::endl;
@@ -88,7 +85,6 @@ public:
             std::cerr << "No se pudo abrir el archivo" << std::endl;
         }
     }
-
 
     void renderGraphviz(const std::string &dotFilename, const std::string &imageFilename) const
     {
@@ -110,7 +106,15 @@ public:
             return;
         }
 
-        Nodo *nuevoNodo = new Nodo(usuario);
+        Nodo *nuevoNodo = nullptr;
+
+        try {
+            nuevoNodo = new Nodo(usuario);
+        } catch (const std::bad_alloc& e) {
+            std::cerr << "Error de asignación de memoria al agregar usuario: " << e.what() << std::endl;
+            return;
+        }
+
         if (cabeza == nullptr)
         {
             cabeza = nuevoNodo;
@@ -127,6 +131,7 @@ public:
             std::cout << "Usuario agregado al final de la lista." << std::endl;
         }
     }
+
 
     bool usuarioDuplicado(const std::string &correo) const
     {
@@ -170,7 +175,6 @@ public:
             Nodo *temp = cabeza;
             cabeza = cabeza->siguiente;
 
-            
             if (cabeza == nullptr)
             {
                 std::cout << "Lista está ahora vacía después de eliminar el nodo." << std::endl;
@@ -184,7 +188,6 @@ public:
             delete temp;
             return;
         }
-
 
         Nodo *actual = cabeza;
         Nodo *anterior = nullptr;
@@ -217,58 +220,31 @@ public:
 
         delete actual; // Eliminar el nodo
         std::cout << "Usuario con correo " << correo << " ha sido borrado." << std::endl;
-        
-        return;
 
+        return;
     }
 
-
-    void mostrarDatosPorCorreo(const std::string &correo) const
-    {
-        Nodo *temp = cabeza;
+    void mostrarDatosPorCorreo(const std::string& correo) const {
+        Nodo* temp = cabeza;
         bool encontrado = false;
 
-        std::cout << "Depuración: Comenzando búsqueda del usuario con correo: " << correo << std::endl;
-
-        while (temp != nullptr)
-        {
-            std::cout << "Depuración: Chequeando nodo con correo: " << temp->usuario.getCorreo() << std::endl;
-
-            if (temp->usuario.getCorreo() == correo)
-            {
-                // Mostrar los datos del usuario encontrado
-                std::cout << "Depuración: Usuario con correo " << correo << " encontrado." << std::endl;
-
-                try
-                {
-                    std::cout << "Usuario encontrado:";
-                    std::cout << "Nombre: " << temp->usuario.getNombre() << std::endl;
-                    std::cout << "Apellido: " << temp->usuario.getApellido() <<std::endl;
-                    std::cout << "Fecha de nacimiento: " << temp->usuario.getFechaDeNacimiento() << std::endl;
-                    std::cout << "Correo: " << temp->usuario.getCorreo() << std::endl;
-                    std::cout << "Contraseña: " << temp->usuario.getContrasena() << std::endl;
-                }
-                catch (const std::bad_alloc &e)
-                {
-                    std::cerr << "Error de asignación de memoria: " << e.what() << std::endl;
-                }
+        while (temp != nullptr) {
+            if (temp->usuario.getCorreo() == correo) {
+                std::cout << "Usuario encontrado:" << std::endl;
+                std::cout << "Nombre: " << temp->usuario.getNombre() << std::endl;
+                std::cout << "Apellido: " << temp->usuario.getApellido() << std::endl;
+                std::cout << "Fecha de nacimiento: " << temp->usuario.getFechaDeNacimiento() << std::endl;
+                std::cout << "Correo: " << temp->usuario.getCorreo() << std::endl;
+                std::cout << "Contraseña: " << temp->usuario.getContrasena() << std::endl;
                 encontrado = true;
                 break;
             }
-
             temp = temp->siguiente;
         }
 
-        if (!encontrado)
-        {
-            std::cerr << "Depuración: No se encontró un usuario con el correo " << correo << "." << std::endl;
+        if (!encontrado) {
             std::cerr << "No se encontró un usuario con el correo " << correo << "." << std::endl;
         }
-        else
-        {
-            std::cout << "Depuración: Usuario con correo " << correo << " ha sido mostrado." << std::endl;
-        }
-
     }
 
     static ListaUsuarios cargarUsuariosDesdeJson(const std::string &nombreArchivo)
@@ -283,7 +259,7 @@ public:
         }
 
         std::string linea;
-        std::vector<std::string> datos;
+        std::string nombre, apellido, fecha_de_nacimiento, correo, contrasena;
 
         while (std::getline(archivo, linea))
         {
@@ -314,24 +290,30 @@ public:
                     valor.pop_back();
                 }
 
-                // Verifica y agrega el valor al vector de datos
-                if (clave == "nombre" || clave == "apellido" || clave == "fecha_de_nacimiento" || clave == "correo" || clave == "contrasena")
+                // Asigna el valor a la clave correspondiente
+                if (clave == "nombre")
                 {
-                    datos.push_back(valor);
+                    nombre = valor;
                 }
-
-                // Procesa el usuario completo cuando se haya leído el valor de "contrasena"
-                if (clave == "contrasena" && datos.size() == 5)
+                else if (clave == "apellido")
                 {
-                    std::cout << "Cargando usuario: "
-                              << datos[0] << ", "
-                              << datos[1] << ", "
-                              << datos[2] << ", "
-                              << datos[3] << ", "
-                              << datos[4] << std::endl;
-                    Usuario usuario(datos[0], datos[1], datos[2], datos[3], datos[4]);
+                    apellido = valor;
+                }
+                else if (clave == "fecha_de_nacimiento")
+                {
+                    fecha_de_nacimiento = valor;
+                }
+                else if (clave == "correo")
+                {
+                    correo = valor;
+                }
+                else if (clave == "contrasena")
+                {
+                    contrasena = valor;
+
+                    // Crea el usuario y agrégalo a la lista cuando se haya leído el valor de "contrasena"
+                    Usuario usuario(nombre, apellido, fecha_de_nacimiento, correo, contrasena);
                     listaUsuarios.agregarUsuario(usuario);
-                    datos.clear();
                 }
             }
         }

@@ -6,6 +6,10 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
+#include <cstdlib>
+
+
+
 
 class Usuario
 {
@@ -50,6 +54,49 @@ public:
             Nodo *temp = actual;
             actual = actual->siguiente;
             delete temp;
+        }
+    }
+
+    void generateDot(const std::string &filename) const
+    {
+        std::ofstream file(filename);
+        if (file.is_open())
+        {
+            file << "digraph G {" << std::endl;
+            file << "node [shape=record];" << std::endl;
+            file << "rankdir=LR;" << std::endl;
+
+            Nodo *current = cabeza;  // Usa 'Nodo' en lugar de 'Node'
+            int id = 0;
+            while (current != nullptr)
+            {
+                file << "node" << id << " [label=\"{" << "Nombre: " << current->usuario.getNombre() << "\\n"
+                    << "Correo: " << current->usuario.getCorreo() << "}\"];" << std::endl;
+                if (current->siguiente != nullptr)
+                {
+                    file << "node" << id << " -> node" << (id + 1) << ";" << std::endl;
+                }
+                current = current->siguiente;
+                id++;
+            }
+
+            file << "}" << std::endl;
+            file.close();
+        }
+        else
+        {
+            std::cerr << "No se pudo abrir el archivo" << std::endl;
+        }
+    }
+
+
+    void renderGraphviz(const std::string &dotFilename, const std::string &imageFilename) const
+    {
+        std::string command = "dot -Tpng " + dotFilename + " -o " + imageFilename;
+        int result = system(command.c_str());
+        if (result != 0)
+        {
+            std::cerr << "Error al generar la imagen con Graphviz" << std::endl;
         }
     }
 
@@ -111,21 +158,33 @@ public:
 
     void borrarUsuarioPorCorreo(const std::string &correo)
     {
-        if (cabeza == nullptr) // Si la lista está vacía, no hay nada que borrar
+        if (cabeza == nullptr)
         {
             std::cerr << "La lista está vacía." << std::endl;
             return;
         }
 
-        // Si el nodo a eliminar es el primero
         if (cabeza->usuario.getCorreo() == correo)
         {
+            std::cout << "Eliminando nodo con correo: " << correo << std::endl;
             Nodo *temp = cabeza;
-            cabeza = cabeza->siguiente; // Actualizar cabeza de la lista
-            delete temp;                // Eliminar el nodo
-            std::cout << "Usuario con correo " << correo << " ha sido borrado." << std::endl;
+            cabeza = cabeza->siguiente;
+
+            
+            if (cabeza == nullptr)
+            {
+                std::cout << "Lista está ahora vacía después de eliminar el nodo." << std::endl;
+            }
+            else
+            {
+                std::cout << "Nueva cabeza después de eliminar nodo: " << cabeza->usuario.getCorreo() << std::endl;
+            }
+
+            temp = nullptr;
+            delete temp;
             return;
         }
+
 
         Nodo *actual = cabeza;
         Nodo *anterior = nullptr;
@@ -153,66 +212,64 @@ public:
             return;
         }
 
+        // Desvinculando el nodo eliminado
+        actual->siguiente = nullptr;
+
         delete actual; // Eliminar el nodo
         std::cout << "Usuario con correo " << correo << " ha sido borrado." << std::endl;
+        
+        return;
 
-        // Verificar el estado de la lista después de la eliminación
-        Nodo *temp = cabeza;
-        while (temp != nullptr)
-        {
-            std::cout << "Nodo en lista con correo: " << temp->usuario.getCorreo() << std::endl;
-            temp = temp->siguiente;
-        }
     }
 
-    void mostrarDatosPorCorreo(const std::string& correoBuscado) const
+
+    void mostrarDatosPorCorreo(const std::string &correo) const
     {
-        Nodo* temp = cabeza;
+        Nodo *temp = cabeza;
         bool encontrado = false;
 
-        std::cout << "Depuración: Comenzando búsqueda del usuario con correo: " << correoBuscado << std::endl;
+        std::cout << "Depuración: Comenzando búsqueda del usuario con correo: " << correo << std::endl;
 
         while (temp != nullptr)
         {
             std::cout << "Depuración: Chequeando nodo con correo: " << temp->usuario.getCorreo() << std::endl;
-            
-            if (temp->usuario.getCorreo() == correoBuscado)
+
+            if (temp->usuario.getCorreo() == correo)
             {
                 // Mostrar los datos del usuario encontrado
-                std::cout << "Depuración: Usuario con correo " << correoBuscado << " encontrado." << std::endl;
+                std::cout << "Depuración: Usuario con correo " << correo << " encontrado." << std::endl;
 
                 try
                 {
-                    std::cout << "Usuario encontrado:" << std::endl;
+                    std::cout << "Usuario encontrado:";
                     std::cout << "Nombre: " << temp->usuario.getNombre() << std::endl;
-                    std::cout << "Apellido: " << temp->usuario.getApellido() << std::endl;
+                    std::cout << "Apellido: " << temp->usuario.getApellido() <<std::endl;
                     std::cout << "Fecha de nacimiento: " << temp->usuario.getFechaDeNacimiento() << std::endl;
                     std::cout << "Correo: " << temp->usuario.getCorreo() << std::endl;
                     std::cout << "Contraseña: " << temp->usuario.getContrasena() << std::endl;
                 }
-                catch (const std::bad_alloc& e)
+                catch (const std::bad_alloc &e)
                 {
                     std::cerr << "Error de asignación de memoria: " << e.what() << std::endl;
                 }
                 encontrado = true;
                 break;
             }
-            
+
             temp = temp->siguiente;
         }
 
         if (!encontrado)
         {
-            std::cerr << "Depuración: No se encontró un usuario con el correo " << correoBuscado << "." << std::endl;
-            std::cerr << "No se encontró un usuario con el correo " << correoBuscado << "." << std::endl;
+            std::cerr << "Depuración: No se encontró un usuario con el correo " << correo << "." << std::endl;
+            std::cerr << "No se encontró un usuario con el correo " << correo << "." << std::endl;
         }
         else
         {
-            std::cout << "Depuración: Usuario con correo " << correoBuscado << " ha sido mostrado." << std::endl;
+            std::cout << "Depuración: Usuario con correo " << correo << " ha sido mostrado." << std::endl;
         }
+
     }
-
-
 
     static ListaUsuarios cargarUsuariosDesdeJson(const std::string &nombreArchivo)
     {
@@ -719,8 +776,8 @@ int main()
                 std::string archivo;
                 std::string archivo_P;
                 std::string archivo_R;
-                std::string correo_e;
-
+                std::string dotFilename = "usuarios.dot";
+                std::string imageFilename = "usuarios.png";
                 std::cout << "Ingrese su correo: ";
                 std::cin >> correo;
 
@@ -734,7 +791,7 @@ int main()
                     int admin_opcion;
                     do
                     {
-                        std::cout << "\nMenu Administrador:\n";
+                        std::cout << "\n----------Menu Administrador----------\n";
                         std::cout << "1. Carga de usuarios\n";
                         std::cout << "2. Carga de relaciones\n";
                         std::cout << "3. Carga de publicaciones\n";
@@ -797,16 +854,16 @@ int main()
                             case 4:
                                 std::cout << "Opción seleccionada: Gestionar usuarios.\n";
                                 std::cout << "Ingrese el correo del usuario a borrar: ";
-                                std::cin >> correo_e;
-
-                                if (correo_e.empty())
+                                std::cin >> correo;
+                                if (correo.empty())
                                 {
                                     std::cerr << "No se ingresó un correo válido." << std::endl;
                                 }
                                 else
                                 {
-                                    listaUsuarios.borrarUsuarioPorCorreo(correo_e);
+                                    listaUsuarios.borrarUsuarioPorCorreo(correo);
                                 }
+
                                 break;
                             case 5:
                                 int reportes_opcion;
@@ -826,7 +883,8 @@ int main()
                                     {
                                     case 1:
                                         std::cout << "Opción seleccionada: Reporte de Usuarios.\n";
-
+                                        listaUsuarios.generateDot(dotFilename);
+                                        listaUsuarios.renderGraphviz(dotFilename, imageFilename);
                                         break;
                                     case 2:
                                         std::cout << "Opción seleccionada: Reporte de Relaciones de Amistad.\n";
@@ -871,7 +929,7 @@ int main()
                         int usuario_opcion;
                         do
                         {
-                            std::cout << "\nMenu Usuario:\n";
+                            std::cout << "\n----------Menu Usuario----------\n";
                             std::cout << "1. Perfil\n";
                             std::cout << "2. Solicitudes\n";
                             std::cout << "3. Publicaciones\n";
@@ -892,34 +950,75 @@ int main()
                                 switch (usuario_opcion)
                                 {
                                 case 1:
-                                int perfil_opcion;
-                                std::cout << "1. Ver perfil\n";
-                                std::cout << "2. Eliminar perfil\n";
-                                std::cout << "Seleccione una opción (0 para regresar al menú principal): ";
-                                std::cin >> perfil_opcion;
-                                if (perfil_opcion == 1)
-                                {
-                                    listaUsuarios.mostrarDatosPorCorreo(correo);
-                                    break;
-                                }else if (perfil_opcion == 2)
-                                {
-                                    listaUsuarios.borrarUsuarioPorCorreo(correo);
-                                    usuario_opcion = 0;
-                                    break;
-                                }
-                                else
-                                {
-                                    std::cout << "Opción no válida. Por favor, intente nuevamente.\n";
-                                }
+                                    int perfil_opcion;
+                                    std::cout << "1. Ver perfil\n";
+                                    std::cout << "2. Eliminar perfil\n";
+                                    std::cout << "Seleccione una opción (0 para regresar al menú principal): ";
+                                    std::cin >> perfil_opcion;
+                                    if (perfil_opcion == 1)
+                                    {
+                                        listaUsuarios.mostrarDatosPorCorreo(correo);
+                                        break;
+                                    }
+                                    else if (perfil_opcion == 2)
+                                    {
+                                        listaUsuarios.borrarUsuarioPorCorreo(correo);
+                                        usuario_opcion = 0;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        std::cout << "Opción no válida. Por favor, intente nuevamente.\n";
+                                    }
                                     break;
                                 case 2:
-                                    std::cout << "Opción seleccionada: Solicitudes.\n";
+                                    int solicitudes_opcion;
+                                    std::cout << "-----------------Solicitudes-----------------\n"
+                                              << std::endl;
+                                    std::cout << "1. Ver solicitudes\n";
+                                    std::cout << "2. Enviar solicitud\n";
+                                    std::cout << "Seleccione una opción (0 para regresar al menú principal): ";
+                                    std::cin >> solicitudes_opcion;
+                                    if (solicitudes_opcion == 1)
+                                    {
+                                        std::cout << "Solicitudes enviadas y recibidas\n";
+                                    }
+                                    else if (solicitudes_opcion == 2)
+                                    {
+                                        std::cout << "Enviar solicitud\n";
+                                    }
+                                    else
+                                    {
+                                        std::cout << "Opción no válida. Por favor, intente nuevamente.\n";
+                                    }
                                     break;
                                 case 3:
-                                    std::cout << "Opción seleccionada: Publicaciones.\n";
+                                    int publicaciones_opcion;
+                                    std::cout << "-------Publicaciones-------\n";
+                                    std::cout << "1. Ver Todas\n";
+                                    std::cout << "2. Crear publicación\n";
+                                    std::cout << "3. Eliminar publicación\n";
+                                    std::cout << "Seleccione una opción (0 para regresar al menú principal): ";
+                                    std::cin >> publicaciones_opcion;
+                                    if (publicaciones_opcion == 1)
+                                    {
+                                        std::cout << "Publicaciones\n";
+                                    }
+                                    else if (publicaciones_opcion == 2)
+                                    {
+                                        std::cout << "Crear publicación\n";
+                                    }
+                                    else if (publicaciones_opcion == 3)
+                                    {
+                                        std::cout << "Eliminar publicación\n";
+                                    }
+                                    else
+                                    {
+                                        std::cout << "Opción no válida. Por favor, intente nuevamente.\n";
+                                    }
                                     break;
                                 case 4:
-                                int reportes_opcion_usuario;
+                                    int reportes_opcion_usuario;
                                     std::cout << "Opción seleccionada: Reportes.\n";
                                     do
                                     {

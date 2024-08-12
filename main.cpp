@@ -19,6 +19,7 @@ public:
     std::string getFechaDeNacimiento() const { return fecha_de_nacimiento_; }
     std::string getCorreo() const { return correo_; }
     std::string getContrasena() const { return contrasena_; }
+    friend class ListaUsuarios;
 
 private:
     std::string nombre_;
@@ -35,7 +36,9 @@ struct Nodo
     Usuario usuario;
     Nodo *siguiente;
 
-    Nodo(const Usuario &usuario) : usuario(usuario), siguiente(nullptr) {}
+    Nodo(const Usuario &usuario) : usuario(usuario), siguiente(nullptr) {
+        std::cout << "Depuración: Nodo creado para usuario con correo: " << usuario.getCorreo() << std::endl;
+    }
 };
 
 class ListaUsuarios
@@ -51,6 +54,7 @@ public:
             Nodo *temp = actual;
             actual = actual->siguiente;
             delete temp;
+            temp = nullptr;
         }
     }
 
@@ -79,11 +83,14 @@ public:
 
             file << "}" << std::endl;
             file.close();
+            delete current;
+            current = nullptr;
         }
         else
         {
             std::cerr << "No se pudo abrir el archivo" << std::endl;
         }
+
     }
 
     void renderGraphviz(const std::string &dotFilename, const std::string &imageFilename) const
@@ -128,10 +135,12 @@ public:
                 actual = actual->siguiente;
             }
             actual->siguiente = nuevoNodo;
+            nuevoNodo->siguiente = nullptr;
             std::cout << "Usuario agregado al final de la lista." << std::endl;
         }
-    }
 
+
+    }
 
     bool usuarioDuplicado(const std::string &correo) const
     {
@@ -159,7 +168,7 @@ public:
             temp = temp->siguiente;
         }
         return false;
-    }
+    };
 
     void borrarUsuarioPorCorreo(const std::string &correo)
     {
@@ -192,7 +201,6 @@ public:
         Nodo *actual = cabeza;
         Nodo *anterior = nullptr;
 
-        // Buscar el nodo con el correo especificado
         while (actual != nullptr && actual->usuario.getCorreo() != correo)
         {
             std::cout << "Chequeando nodo con correo: " << actual->usuario.getCorreo() << std::endl;
@@ -200,31 +208,30 @@ public:
             actual = actual->siguiente;
         }
 
-        // Si no se encontró el nodo
         if (actual == nullptr)
         {
             std::cerr << "No hay usuario con el correo " << correo << " que se pueda borrar." << std::endl;
             return;
         }
 
-        // Eliminar el nodo encontrado
-        if (anterior != nullptr) // Verificar que anterior no sea nulo
+        if (anterior != nullptr)
         {
             std::cout << "Eliminando nodo con correo: " << actual->usuario.getCorreo() << std::endl;
             anterior->siguiente = actual->siguiente;
             return;
         }
 
-        // Desvinculando el nodo eliminado
         actual->siguiente = nullptr;
 
-        delete actual; // Eliminar el nodo
+        delete actual;
+        actual = nullptr;
         std::cout << "Usuario con correo " << correo << " ha sido borrado." << std::endl;
 
         return;
     }
 
     void mostrarDatosPorCorreo(const std::string& correo) const {
+        Nodo* cabeza = this->cabeza;
         Nodo* temp = cabeza;
         bool encontrado = false;
 
@@ -311,13 +318,18 @@ public:
                 {
                     contrasena = valor;
 
-                    // Crea el usuario y agrégalo a la lista cuando se haya leído el valor de "contrasena"
                     Usuario usuario(nombre, apellido, fecha_de_nacimiento, correo, contrasena);
                     listaUsuarios.agregarUsuario(usuario);
                 }
             }
         }
 
+        std::cout << "===============================\n"
+                    << std::endl;
+        std::cout << "Usuarios cargados exitosamente.\n"
+                    << std::endl;
+        std::cout << "===============================\n"
+                    << std::endl;
         archivo.close();
         return listaUsuarios;
     }
@@ -457,6 +469,7 @@ public:
             std::cout << "Depuración: Eliminando nodo de relación con emisor: " << temp->relacion.getEmisor()
                       << ", receptor: " << temp->relacion.getReceptor() << std::endl;
             delete temp;
+            temp = nullptr;
         }
     }
 
@@ -621,6 +634,7 @@ public:
             actual = actual->siguiente;
             std::cout << "Depuración: Eliminando nodo de publicación con correo: " << temp->publicacion.getCorreo() << std::endl;
             delete temp;
+            temp = nullptr;
         }
     }
 
@@ -800,12 +814,6 @@ int main()
                                 std::cin >> archivo;
                                 listaUsuarios = ListaUsuarios::cargarUsuariosDesdeJson("../" + archivo + ".json");
 
-                                std::cout << "===============================\n"
-                                          << std::endl;
-                                std::cout << "Usuarios cargados exitosamente.\n"
-                                          << std::endl;
-                                std::cout << "===============================\n"
-                                          << std::endl;
                                 break;
                             case 2:
                                 std::cout << "Opción seleccionada: Carga de relaciones.\n";

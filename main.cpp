@@ -173,6 +173,22 @@ public:
         return false;
     };
 
+    bool buscarCorreo(const std::string &correo) const
+    {
+        Nodo *temp = cabeza;
+        while (temp != nullptr)
+        {
+            if (temp->usuario.getCorreo() == correo)
+            {
+                temp = nullptr;
+                delete temp;
+                return true;
+            }
+            temp = temp->siguiente;
+        }
+        return false;
+    };
+
     void borrarUsuarioPorCorreo(const std::string &correo)
     {
         if (cabeza == nullptr)
@@ -407,8 +423,9 @@ private:
     std::string estado_;
 };
 
-struct NodoRelacion
+class NodoRelacion
 {
+public:
     Relacion relacion;
     NodoRelacion *siguiente;
 
@@ -427,6 +444,7 @@ public:
     {
         std::cout << "Depuración: Lista de relaciones creada." << std::endl;
     }
+    NodoRelacion *obtenerCabeza() const { return cabeza; }
 
     ~ListaRelaciones()
     {
@@ -464,65 +482,413 @@ public:
         }
     }
 
-    static ListaRelaciones cargarRelacionesDesdeJson(const std::string &nombreArchivo)
+    void cargarRelacionesDesdeJson(const std::string &nombreArchivo)
     {
-        ListaRelaciones listaRelaciones;
         std::ifstream archivo(nombreArchivo);
+        if (archivo.is_open())
+        {
+            nlohmann::json jsonData;
+            archivo >> jsonData;
+            archivo.close();
 
-        if (!archivo.is_open())
+            for (const auto &item : jsonData)
+            {
+                std::string emisor = item["emisor"];
+                std::string receptor = item["receptor"];
+                std::string estado = item["estado"];
+
+                Relacion nuevaRelacion(emisor, receptor, estado);
+                agregarRelacion(nuevaRelacion);
+            }
+
+            std::cout << "Depuración: Finalizada la carga de relaciones desde " << nombreArchivo << std::endl;
+        }
+        else
         {
             std::cerr << "Error al abrir el archivo JSON." << std::endl;
-            return listaRelaciones;
         }
-
-        std::string linea;
-        std::string emisor, receptor, estado;
-
-        std::cout << "Depuración: Comenzando a cargar relaciones desde " << nombreArchivo << std::endl;
-
-        while (std::getline(archivo, linea))
-        {
-            linea.erase(std::remove(linea.begin(), linea.end(), ' '), linea.end());
-            linea.erase(std::remove(linea.begin(), linea.end(), '\"'), linea.end());
-
-            if (linea.find("emisor:") != std::string::npos)
-            {
-                emisor = linea.substr(linea.find(":") + 1);
-                if (!emisor.empty() && emisor.back() == ',')
-                {
-                    emisor.pop_back(); // Elimina la coma final si existe
-                }
-                std::cout << "Depuración: Emisor encontrado: " << emisor << std::endl;
-            }
-            else if (linea.find("receptor:") != std::string::npos)
-            {
-                receptor = linea.substr(linea.find(":") + 1);
-                if (!receptor.empty() && receptor.back() == ',')
-                {
-                    receptor.pop_back(); // Elimina la coma final si existe
-                }
-                std::cout << "Depuración: Receptor encontrado: " << receptor << std::endl;
-            }
-            else if (linea.find("estado:") != std::string::npos)
-            {
-                estado = linea.substr(linea.find(":") + 1);
-                if (!estado.empty() && estado.back() == ',')
-                {
-                    estado.pop_back(); // Elimina la coma final si existe
-                }
-                std::cout << "Depuración: Estado encontrado: " << estado << std::endl;
-                Relacion relacion(emisor, receptor, estado);
-                listaRelaciones.agregarRelacion(relacion);
-            }
-        }
-
-        archivo.close();
-        std::cout << "Depuración: Finalizada la carga de relaciones desde " << nombreArchivo << std::endl;
-        return listaRelaciones;
+        std::cout << "===============================\n";
+        std::cout << "Relaciones cargadas exitosamente.\n";
+        std::cout << "===============================\n";
     }
 
 private:
     NodoRelacion *cabeza;
+};
+
+class Emisor
+{
+public:
+    Emisor(std::string correo, std::string receptor, std::string estado)
+        : correo(correo), receptor(receptor), estado(estado)
+    {
+        std::cout << "Depuración: Emisor creado con correo: " << correo
+                  << ", receptor: " << receptor
+                  << ", estado: " << estado << std::endl;
+    }
+    std::string getCorreo() const { return correo; }
+    std::string getReceptor() const { return receptor; }
+    std::string getEstado() const { return estado; }
+    void setCorreo(const std::string &nuevoCorreo)
+    {
+        std::cout << "Depuración: Cambiando correo de " << correo << " a " << nuevoCorreo << std::endl;
+        correo = nuevoCorreo;
+    }
+    void setReceptor(const std::string &nuevoReceptor)
+    {
+        std::cout << "Depuración: Cambiando receptor de " << receptor << " a " << nuevoReceptor << std::endl;
+        receptor = nuevoReceptor;
+    }
+    void setEstado(const std::string &nuevoEstado)
+    {
+        std::cout << "Depuración: Cambiando estado de " << estado << " a " << nuevoEstado << std::endl;
+        estado = nuevoEstado;
+    }
+
+private:
+    std::string correo;
+    std::string receptor;
+    std::string estado;
+};
+
+class Nodo_emisor
+{
+public:
+    Emisor emisor;
+    Nodo_emisor *siguiente;
+
+    Nodo_emisor(const Emisor &emisor) : emisor(emisor), siguiente(nullptr) {}
+};
+
+class ListaEmisor
+{
+public:
+    ListaEmisor() : cabeza(nullptr) {}
+    Nodo_emisor *obtenerCabeza() const { return cabeza; }
+
+    ~ListaEmisor()
+    {
+        while (cabeza)
+        {
+            Nodo_emisor *temp = cabeza;
+            cabeza = cabeza->siguiente;
+            delete temp;
+        }
+    }
+
+    void agregarEmisor(const Emisor &emisor)
+    {
+        Nodo_emisor *nuevoNodo = new Nodo_emisor(emisor);
+        nuevoNodo->siguiente = cabeza;
+        cabeza = nuevoNodo;
+
+        std::cout << "Depuración: Emisor agregado con correo: " << emisor.getCorreo() << std::endl;
+    }
+
+    void mostrarEmisores(const ListaRelaciones &listaRelaciones, const std::string &correo) const
+    {
+        if (cabeza == nullptr)
+        {
+            // Si la lista de emisores está vacía, buscar en la lista de relaciones
+            bool encontrado = false;
+            NodoRelacion *actualRelacion = listaRelaciones.obtenerCabeza();
+            while (actualRelacion)
+            {
+                if (actualRelacion->relacion.getEmisor() == correo)
+                {
+                    encontrado = true;
+                    std::cout << "========================================" << std::endl;
+                    std::cout << "\n----------------Enviadas----------------";
+                    std::cout << "\n========================================" << std::endl;
+                    std::cout << "Correo: " << actualRelacion->relacion.getEmisor()
+                            << ", Receptor: " << actualRelacion->relacion.getReceptor()
+                            << ", Estado: " << actualRelacion->relacion.getEstado()
+                            << "\n========================================"
+                            << std::endl;
+                    std::cout << "La solicitud está en la lista de relaciones." << std::endl;
+                    std::cout << "Estado en la lista de relaciones: " << actualRelacion->relacion.getEstado() << std::endl;
+                }
+                actualRelacion = actualRelacion->siguiente;
+            }
+
+            if (!encontrado)
+            {
+                std::cout << "No hay solicitudes de amistad para el correo proporcionado en la lista de relaciones." << std::endl;
+            }
+        }
+        else
+        {
+            // Si la lista de emisores no está vacía, mostrar y buscar en ambas listas
+            Nodo_emisor *actual = cabeza;
+            bool encontradoEnEmisores = false;
+
+            while (actual)
+            {
+                if (actual->emisor.getCorreo() == correo)
+                {
+                    encontradoEnEmisores = true;
+                    std::cout << "========================================" << std::endl;
+                    std::cout << "\n----------------Enviadas----------------";
+                    std::cout << "\n========================================" << std::endl;
+                    std::cout << "Correo: " << actual->emisor.getCorreo()
+                            << ", Receptor: " << actual->emisor.getReceptor()
+                            << ", Estado: " << actual->emisor.getEstado()
+                            << "\n========================================"
+                            << std::endl;
+                }
+                actual = actual->siguiente;
+            }
+
+            if (encontradoEnEmisores)
+            {
+                // Verificar en la lista de relaciones
+                bool encontradoEnRelaciones = false;
+                NodoRelacion *actualRelacion = listaRelaciones.obtenerCabeza();
+                while (actualRelacion)
+                {
+                    if (actualRelacion->relacion.getEmisor() == correo)
+                    {
+                        encontradoEnRelaciones = true;
+                        std::cout << "========================================" << std::endl;
+                        std::cout << "\n----------------Enviadas----------------";
+                        std::cout << "\n========================================" << std::endl;
+                        std::cout << "Correo: " << actualRelacion->relacion.getEmisor()
+                                << ", Receptor: " << actualRelacion->relacion.getReceptor()
+                                << ", Estado: " << actualRelacion->relacion.getEstado()
+                                << "\n========================================"
+                                << std::endl;
+                        std::cout << "La solicitud está en la lista de relaciones." << std::endl;
+                        std::cout << "Estado en la lista de relaciones: " << actualRelacion->relacion.getEstado() << std::endl;
+                    }
+                    actualRelacion = actualRelacion->siguiente;
+                }
+
+                if (!encontradoEnRelaciones)
+                {
+                    std::cout << "La solicitud no está en la lista de relaciones." << std::endl;
+                }
+            }
+            else
+            {
+                bool encontrado = false;
+                NodoRelacion *actualRelacion = listaRelaciones.obtenerCabeza();
+                while (actualRelacion)
+                {
+                    if (actualRelacion->relacion.getEmisor() == correo)
+                    {
+                        encontrado = true;
+                        std::cout << "========================================" << std::endl;
+                        std::cout << "\n----------------Enviadas----------------";
+                        std::cout << "\n========================================" << std::endl;
+                        std::cout << "Correo: " << actualRelacion->relacion.getEmisor()
+                                << ", Receptor: " << actualRelacion->relacion.getReceptor()
+                                << ", Estado: " << actualRelacion->relacion.getEstado()
+                                << "\n========================================"
+                                << std::endl;
+                        std::cout << "La solicitud está en la lista de relaciones." << std::endl;
+                        std::cout << "Estado en la lista de relaciones: " << actualRelacion->relacion.getEstado() << std::endl;
+                    }
+                    actualRelacion = actualRelacion->siguiente;
+                }
+
+                if (!encontrado)
+                {
+                    std::cout << "No hay solicitudes de amistad para el correo proporcionado en la lista de relaciones." << std::endl;
+                }            
+            }
+        }
+    }
+
+
+    void eliminarPrimero()
+    {
+        if (cabeza)
+        {
+            Nodo_emisor *temp = cabeza;
+            cabeza = cabeza->siguiente;
+            std::cout << "Depuración: Emisor con correo " << temp->emisor.getCorreo() << " eliminado." << std::endl;
+            delete temp;
+        }
+        else
+        {
+            std::cout << "Depuración: La lista está vacía, no se puede eliminar." << std::endl;
+        }
+    }
+
+private:
+    Nodo_emisor *cabeza;
+};
+
+class Receptor
+{
+public:
+    Receptor(std::string correo, std::string emisor, std::string estado)
+        : correo(correo), emisor(emisor), estado(estado)
+    {
+        std::cout << "Depuración: Receptor creado con correo: " << correo
+                  << ", emisor: " << emisor
+                  << ", estado: " << estado << std::endl;
+    }
+    std::string getCorreo() const { return correo; }
+    std::string getEmisor() const { return emisor; }
+    std::string getEstado() const { return estado; }
+    void setCorreo(const std::string &nuevoCorreo)
+    {
+        std::cout << "Depuración: Cambiando correo de " << correo << " a " << nuevoCorreo << std::endl;
+        correo = nuevoCorreo;
+    }
+    void setEmisor(const std::string &nuevoEmisor)
+    {
+        std::cout << "Depuración: Cambiando emisor de " << emisor << " a " << nuevoEmisor << std::endl;
+        emisor = nuevoEmisor;
+    }
+    void setEstado(const std::string &nuevoEstado)
+    {
+        std::cout << "Depuración: Cambiando estado de " << estado << " a " << nuevoEstado << std::endl;
+        estado = nuevoEstado;
+    }
+
+private:
+    std::string correo;
+    std::string emisor;
+    std::string estado;
+};
+
+// Definición del nodo para la pila de receptores
+class Nodo_PilaReceptor
+{
+public:
+    Receptor receptor;            // Contenido del nodo
+    Nodo_PilaReceptor *siguiente; // Puntero al siguiente nodo
+
+    Nodo_PilaReceptor(const Receptor &receptor) : receptor(receptor), siguiente(nullptr) {}
+};
+
+// Definición de la pila de receptores
+class PilaReceptor
+{
+public:
+    PilaReceptor() : cima(nullptr) {}
+
+    ~PilaReceptor()
+    {
+        while (cima)
+        {
+            Nodo_PilaReceptor *temp = cima;
+            cima = cima->siguiente;
+            delete temp;
+            limpiarPila();
+        }
+    }
+    void limpiarPila()
+    {
+        while (!estaVacia())
+        {
+            desapilar(); // Usa el método desapilar para vaciar la pila
+        }
+        std::cout << "Depuración: La pila ha sido limpiada." << std::endl;
+    }
+    void apilar(const Receptor &receptor)
+    {
+        Nodo_PilaReceptor *nuevoNodo = new Nodo_PilaReceptor(receptor);
+        nuevoNodo->siguiente = cima;
+        cima = nuevoNodo;
+
+        std::cout << "Depuración: Receptor apilado con correo: " << receptor.getCorreo() << std::endl;
+    }
+
+    void buscarYApilarPendientes(const std::string &correo, const ListaEmisor &listaEmisor, const ListaRelaciones &listaRelaciones)
+    {
+        // Buscar en ListaEmisor
+        Nodo_emisor *actualEmisor = listaEmisor.obtenerCabeza();
+
+        while (actualEmisor)
+        {
+            if (actualEmisor->emisor.getReceptor() == correo && actualEmisor->emisor.getEstado() == "PENDIENTE")
+            {
+                apilar(Receptor(correo, actualEmisor->emisor.getCorreo(), "PENDIENTE"));
+            }
+            actualEmisor = actualEmisor->siguiente;
+        }
+
+        // Buscar en ListaRelaciones
+        NodoRelacion *actualRelacion = listaRelaciones.obtenerCabeza();
+
+        while (actualRelacion)
+        {
+            if (actualRelacion->relacion.getReceptor() == correo && actualRelacion->relacion.getEstado() == "PENDIENTE")
+            {
+                apilar(Receptor(correo, actualRelacion->relacion.getEmisor(), "PENDIENTE"));
+            }
+            actualRelacion = actualRelacion->siguiente;
+        }
+
+        if (estaVacia())
+        {
+            std::cout << "No se encontraron solicitudes pendientes para el correo: " << correo << std::endl;
+        }
+        else
+        {
+            std::cout << "Solicitudes pendientes apiladas para el correo: " << correo << std::endl;
+        }
+    }
+
+    void desapilar()
+    {
+        if (cima)
+        {
+            Nodo_PilaReceptor *temp = cima;
+            cima = cima->siguiente;
+            std::cout << "Depuración: Receptor con correo " << temp->receptor.getCorreo() << " desapilado." << std::endl;
+            delete temp;
+        }
+        else
+        {
+            std::cout << "Depuración: La pila está vacía, no se puede desapilar." << std::endl;
+        }
+    }
+
+    void mostrarReceptores() const
+    {
+        Nodo_PilaReceptor *actual = cima;
+        while (actual)
+        {
+            std::cout << "========================================" << std::endl;
+            std::cout << "---------------Recibidas---------------";
+            std::cout << "\n========================================" << std::endl;
+            ;
+
+            std::cout << "Correo: " << actual->receptor.getCorreo()
+                      << ", Emisor: " << actual->receptor.getEmisor()
+                      << ", Estado: " << actual->receptor.getEstado()
+                      << "\n========================================"
+                      << std::endl;
+
+            actual = actual->siguiente;
+        }
+    }
+
+    bool estaVacia() const
+    {
+        return cima == nullptr;
+    }
+
+private:
+    Nodo_PilaReceptor *cima;
+
+    bool esDuplicado(const Receptor &receptor) const
+    {
+        Nodo_PilaReceptor *actual = cima;
+        while (actual)
+        {
+            if (actual->receptor.getCorreo() == receptor.getCorreo())
+            {
+                return true;
+            }
+            actual = actual->siguiente;
+        }
+        return false;
+    }
 };
 
 class Publicacion
@@ -806,7 +1172,6 @@ public:
         }
     }
 
-
     void cargarPublicacionesDesdeJson(const std::string &filename)
     {
         std::ifstream file(filename);
@@ -846,7 +1211,8 @@ int main()
 {
     SetConsoleOutputCP(CP_UTF8);
     int opcion;
-
+    ListaEmisor listaEmisor;
+    PilaReceptor pilaReceptor;
     ListaUsuarios listaUsuarios;
     ListaPublicaciones listaPublicaciones;
     ListaRelaciones listaRelaciones;
@@ -886,6 +1252,9 @@ int main()
                 std::string imageFilename = "usuarios.png";
                 std::string dotFilenameP = "publicaciones.dot";
                 std::string imageFilenameP = "publicaciones.png";
+                std::string receptor;
+                std::string emisor;
+                std::string estado = "PENDIENTE";
                 std::cout << "Ingrese su correo: ";
                 std::cin >> correo;
 
@@ -931,14 +1300,8 @@ int main()
                                 std::cout << "Opción seleccionada: Carga de relaciones.\n";
                                 std::cout << "Ingrese el nombre del archivo: ";
                                 std::cin >> archivo_R;
-                                listaRelaciones = ListaRelaciones::cargarRelacionesDesdeJson("../" + archivo_R + ".json");
+                                listaRelaciones.cargarRelacionesDesdeJson("../" + archivo_R + ".json");
 
-                                std::cout << "===============================\n"
-                                          << std::endl;
-                                std::cout << "Relaciones cargadas exitosamente.\n"
-                                          << std::endl;
-                                std::cout << "===============================\n"
-                                          << std::endl;
                                 break;
                             case 3:
                                 std::cout << "Opción seleccionada: Carga de publicaciones.\n";
@@ -1079,10 +1442,18 @@ int main()
                                     if (solicitudes_opcion == 1)
                                     {
                                         std::cout << "Solicitudes enviadas y recibidas\n";
+                                        pilaReceptor.limpiarPila();
+                                        pilaReceptor.buscarYApilarPendientes(correo, listaEmisor, listaRelaciones);
+                                        listaEmisor.mostrarEmisores(listaRelaciones, correo);
+                                        pilaReceptor.mostrarReceptores();
                                     }
                                     else if (solicitudes_opcion == 2)
                                     {
                                         std::cout << "Enviar solicitud\n";
+                                        std::cout << "Ingrese el correo del receptor: ";
+                                        std::cin >> receptor;
+                                        listaEmisor.agregarEmisor(Emisor(correo, receptor, estado));
+                                        break;
                                     }
                                     else
                                     {

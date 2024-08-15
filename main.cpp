@@ -4,10 +4,9 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <vector>
 #include <algorithm>
 #include <cstdlib>
-
+#include "json.hpp"
 class Usuario
 {
 public:
@@ -31,12 +30,14 @@ public:
     friend class ListaUsuarios;
 };
 
-struct Nodo
+class Nodo
 {
+public:
     Usuario usuario;
     Nodo *siguiente;
 
-    Nodo(const Usuario &usuario) : usuario(usuario), siguiente(nullptr) {
+    Nodo(const Usuario &usuario) : usuario(usuario), siguiente(nullptr)
+    {
         std::cout << "Depuración: Nodo creado para usuario con correo: " << usuario.getCorreo() << std::endl;
     }
 };
@@ -90,7 +91,6 @@ public:
         {
             std::cerr << "No se pudo abrir el archivo" << std::endl;
         }
-
     }
 
     void renderGraphviz(const std::string &dotFilename, const std::string &imageFilename) const
@@ -103,36 +103,43 @@ public:
         }
     }
 
-    void agregarUsuario(const Usuario &usuario) {
+    void agregarUsuario(const Usuario &usuario)
+    {
         std::cout << "Agregando usuario: " << usuario.getNombre() << std::endl;
 
-        if (usuarioDuplicado(usuario.getCorreo())) {
+        if (usuarioDuplicado(usuario.getCorreo()))
+        {
             std::cerr << "Usuario con correo " << usuario.getCorreo() << " ya existe." << std::endl;
             return;
         }
 
         Nodo *nuevoNodo = nullptr;
 
-        try {
+        try
+        {
             nuevoNodo = new Nodo(usuario);
-        } catch (const std::bad_alloc& e) {
+        }
+        catch (const std::bad_alloc &e)
+        {
             std::cerr << "Error de asignación de memoria al agregar usuario: " << e.what() << std::endl;
             return;
         }
 
-        if (cabeza == nullptr) {
+        if (cabeza == nullptr)
+        {
             // Si la lista está vacía, el nuevo nodo es tanto la cabeza como la cola
             cabeza = nuevoNodo;
             cola = nuevoNodo;
             std::cout << "Usuario agregado como cabeza de la lista." << std::endl;
-        } else {
+        }
+        else
+        {
             // Agregar el nuevo nodo después de la cola actual
             cola->siguiente = nuevoNodo;
-            cola = nuevoNodo;  // Actualizar la cola para que apunte al nuevo nodo
+            cola = nuevoNodo; // Actualizar la cola para que apunte al nuevo nodo
             std::cout << "Usuario agregado al final de la lista." << std::endl;
         }
     }
-
 
     bool usuarioDuplicado(const std::string &correo) const
     {
@@ -226,13 +233,16 @@ public:
         return;
     }
 
-    void mostrarDatosPorCorreo(const std::string& correo) const {
-        Nodo* cabeza = this->cabeza;
-        Nodo* temp = cabeza;
+    void mostrarDatosPorCorreo(const std::string &correo) const
+    {
+        Nodo *cabeza = this->cabeza;
+        Nodo *temp = cabeza;
         bool encontrado = false;
 
-        while (temp != nullptr) {
-            if (temp->usuario.getCorreo() == correo) {
+        while (temp != nullptr)
+        {
+            if (temp->usuario.getCorreo() == correo)
+            {
                 std::cout << "Usuario encontrado:" << std::endl;
                 std::cout << "Nombre: " << temp->usuario.getNombre() << std::endl;
                 std::cout << "Apellido: " << temp->usuario.getApellido() << std::endl;
@@ -245,79 +255,51 @@ public:
             temp = temp->siguiente;
         }
 
-        if (!encontrado) {
+        if (!encontrado)
+        {
             std::cerr << "No se encontró un usuario con el correo " << correo << "." << std::endl;
         }
     }
 
-    static ListaUsuarios cargarUsuariosDesdeJson(const std::string &nombreArchivo) {
-        ListaUsuarios listaUsuarios;
+    std::string limpiarCadena(const std::string &str)
+    {
+        std::string resultado = str;
+        resultado.erase(0, resultado.find_first_not_of(" \n\r\t\""));
+        resultado.erase(resultado.find_last_not_of(" \n\r\t\"") + 1);
+        return resultado;
+    }
+
+    void cargarUsuariosDesdeJson(const std::string &nombreArchivo)
+    {
         std::ifstream archivo(nombreArchivo);
 
-        if (!archivo.is_open()) {
+        if (!archivo.is_open())
+        {
             std::cerr << "Error al abrir el archivo JSON." << std::endl;
-            return listaUsuarios;
+            return;
         }
 
-        try {
-            std::string linea;
-            std::string nombre, apellido, fecha_de_nacimiento, correo, contrasena;
+        try
+        {
+            nlohmann::json jsonData;
+            archivo >> jsonData;
 
-            while (std::getline(archivo, linea)) {
-                // Eliminar espacios y saltos de línea al inicio y al final de la línea
-                linea.erase(linea.find_last_not_of(" \n\r\t") + 1);
-                linea.erase(0, linea.find_first_not_of(" \n\r\t"));
+            for (const auto &item : jsonData)
+            {
+                std::string nombre = limpiarCadena(item.at("nombre").get<std::string>());
+                std::string apellido = limpiarCadena(item.at("apellido").get<std::string>());
+                std::string fecha_de_nacimiento = limpiarCadena(item.at("fecha_de_nacimiento").get<std::string>());
+                std::string correo = limpiarCadena(item.at("correo").get<std::string>());
+                std::string contrasena = limpiarCadena(item.at("contrasena").get<std::string>());
 
-                if (linea.empty() || linea == "{" || linea == "}") {
-                    continue;
-                }
-
-                // Verifica si la línea contiene un par clave:valor
-                if (linea.find(":") != std::string::npos) {
-                    std::size_t pos = linea.find(":");
-                    std::string clave = linea.substr(0, pos);
-                    std::string valor = linea.substr(pos + 1);
-
-                    // Elimina las comillas y los espacios adicionales de la clave y el valor
-                    clave.erase(std::remove(clave.begin(), clave.end(), '\"'), clave.end());
-                    valor.erase(std::remove(valor.begin(), valor.end(), '\"'), valor.end());
-                    clave.erase(std::remove(clave.begin(), clave.end(), ' '), clave.end());
-                    valor.erase(std::remove(valor.begin(), valor.end(), ' '), valor.end());
-
-                    // Elimina la coma final si está presente en el valor
-                    if (!valor.empty() && valor.back() == ',') {
-                        valor.pop_back();
-                    }
-
-                    // Asigna el valor a la clave correspondiente
-                    if (clave == "nombre") {
-                        nombre = valor;
-                    } else if (clave == "apellido") {
-                        apellido = valor;
-                    } else if (clave == "fecha_de_nacimiento") {
-                        fecha_de_nacimiento = valor;
-                    } else if (clave == "correo") {
-                        correo = valor;
-                    } else if (clave == "contrasena") {
-                        contrasena = valor;
-                        Usuario usuario(nombre, apellido, fecha_de_nacimiento, correo, contrasena);
-                        listaUsuarios.agregarUsuario(usuario);
-                    }
-                }
+                Usuario usuario(nombre, apellido, fecha_de_nacimiento, correo, contrasena);
+                agregarUsuario(usuario);
             }
-
-            std::cout << "===============================\n"
-                      << "Usuarios cargados exitosamente.\n"
-                      << "===============================\n";
-
-        } catch (const std::bad_alloc &e) {
-            std::cerr << "Error de asignación de memoria: " << e.what() << std::endl;
-        } catch (const std::exception &e) {
-            std::cerr << "Error: " << e.what() << std::endl;
         }
-
-        archivo.close();
-        return listaUsuarios;
+        catch (const nlohmann::json::exception &e)
+        {
+            std::cerr << "Error al procesar el archivo JSON: " << e.what() << std::endl;
+        }
     }
 
     void registrarUsuario(ListaUsuarios &listaUsuarios)
@@ -381,12 +363,11 @@ public:
             std::cerr << "El nombre no puede estar vacío." << std::endl;
         }
     }
-    private:
-        Nodo *cabeza;
-        Nodo *cola;
+
+private:
+    Nodo *cabeza;
+    Nodo *cola;
 };
-
-
 
 class Relacion
 {
@@ -593,8 +574,9 @@ private:
     friend class ListaPublicaciones;
 };
 
-struct NodoPublicacion
+class NodoPublicacion
 {
+public:
     Publicacion publicacion;
     NodoPublicacion *siguiente;
     NodoPublicacion *anterior;
@@ -605,7 +587,6 @@ struct NodoPublicacion
         std::cout << "Depuración: Nodo de publicación creado para correo: " << publicacion.getCorreo() << std::endl;
     }
 };
-
 
 class ListaPublicaciones
 {
@@ -760,82 +741,48 @@ public:
         std::cout << "Hora: " << actual->publicacion.getHora() << std::endl;
     }
 
-    static ListaPublicaciones cargarPublicacionesDesdeJson(const std::string &nombreArchivo)
-    {
-        ListaPublicaciones listaPublicaciones;
+    std::string limpiarCadena(const std::string &str) {
+        std::string resultado = str;
+        resultado.erase(0, resultado.find_first_not_of(" \n\r\t\""));
+        resultado.erase(resultado.find_last_not_of(" \n\r\t\"") + 1);
+        return resultado;
+    }
+
+    void cargarPublicacionesDesdeJson(const std::string &nombreArchivo) {
         std::ifstream archivo(nombreArchivo);
 
-        if (!archivo.is_open())
-        {
+        if (!archivo.is_open()) {
             std::cerr << "Error al abrir el archivo JSON." << std::endl;
-            return listaPublicaciones;
+            return;
         }
 
-        std::string linea;
-        std::string correo, contenido, fecha, hora;
+        try {
+            nlohmann::json jsonData;
+            archivo >> jsonData;
 
-        std::cout << "Depuración: Comenzando a cargar publicaciones desde " << nombreArchivo << std::endl;
+            for (const auto &item : jsonData) {
+                std::string correo = limpiarCadena(item.at("correo").get<std::string>());
+                std::string contenido = limpiarCadena(item.at("contenido").get<std::string>());
+                std::string fecha = limpiarCadena(item.at("fecha").get<std::string>());
+                std::string hora = limpiarCadena(item.at("hora").get<std::string>());
 
-        while (std::getline(archivo, linea))
-        {
-            linea.erase(std::remove(linea.begin(), linea.end(), ' '), linea.end());
-            linea.erase(std::remove(linea.begin(), linea.end(), '\"'), linea.end());
-
-            if (linea.find("correo:") != std::string::npos)
-            {
-                correo = linea.substr(linea.find(":") + 1);
-                if (!correo.empty() && correo.back() == ',')
-                {
-                    correo.pop_back();
-                }
-                std::cout << "Depuración: Correo encontrado: " << correo << std::endl;
-            }
-            else if (linea.find("contenido:") != std::string::npos)
-            {
-                contenido = linea.substr(linea.find(":") + 1);
-                if (!contenido.empty() && contenido.back() == ',')
-                {
-                    contenido.pop_back();
-                }
-                std::cout << "Depuración: Contenido encontrado: " << contenido << std::endl;
-            }
-            else if (linea.find("fecha:") != std::string::npos)
-            {
-                fecha = linea.substr(linea.find(":") + 1);
-                if (!fecha.empty() && fecha.back() == ',')
-                {
-                    fecha.pop_back();
-                }
-                std::cout << "Depuración: Fecha encontrada: " << fecha << std::endl;
-            }
-            else if (linea.find("hora:") != std::string::npos)
-            {
-                hora = linea.substr(linea.find(":") + 1);
-                if (!hora.empty() && hora.back() == ',')
-                {
-                    hora.pop_back();
-                }
-                std::cout << "Depuración: Hora encontrada: " << hora << std::endl;
                 Publicacion publicacion(correo, contenido, fecha, hora);
-                listaPublicaciones.agregarPublicacion(publicacion);
+                agregarPublicacion(publicacion);
             }
+        } catch (const nlohmann::json::exception &e) {
+            std::cerr << "Error al procesar el archivo JSON: " << e.what() << std::endl;
+        } catch (const std::exception &e) {
+            std::cerr << "Error inesperado: " << e.what() << std::endl;
         }
-        std::cout << "===============================\n"
-                    << std::endl;
-        std::cout << "Publicaciones cargadas exitosamente.\n"
-                    << std::endl;
-        std::cout << "===============================\n"
-                    << std::endl;
+
         archivo.close();
-        std::cout << "Depuración: Finalizada la carga de publicaciones desde " << nombreArchivo << std::endl;
-        return listaPublicaciones;
+        std::cout << "Publicaciones cargadas exitosamente desde " << nombreArchivo << std::endl;
     }
 
 private:
     NodoPublicacion *cabeza;
     NodoPublicacion *cola;
 };
-
 
 std::string admin_correo = "admin@gmail.com";
 std::string admin_contrasena = "EDD2S2024";
@@ -920,7 +867,7 @@ int main()
                                 std::cout << "Opción seleccionada: Carga de usuarios.\n";
                                 std::cout << "Ingrese el nombre del archivo: ";
                                 std::cin >> archivo;
-                                listaUsuarios = ListaUsuarios::cargarUsuariosDesdeJson("../" + archivo + ".json");
+                                listaUsuarios.cargarUsuariosDesdeJson("../" + archivo + ".json");
 
                                 break;
                             case 2:
@@ -940,8 +887,7 @@ int main()
                                 std::cout << "Opción seleccionada: Carga de publicaciones.\n";
                                 std::cout << "Ingrese el nombre del archivo: ";
                                 std::cin >> archivo_P;
-                                listaPublicaciones = ListaPublicaciones::cargarPublicacionesDesdeJson("../" + archivo_P + ".json");
-
+                                listaPublicaciones.cargarPublicacionesDesdeJson("../" + archivo_P + ".json");
 
                                 break;
                             case 4:

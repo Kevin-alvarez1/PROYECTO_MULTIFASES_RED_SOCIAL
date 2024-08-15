@@ -528,13 +528,21 @@ private:
 class Publicacion
 {
 public:
-    Publicacion(std::string correo, std::string contenido, std::string fecha, std::string hora)
-        : correo_(correo), contenido_(contenido), fecha_(fecha), hora_(hora)
+    Publicacion(int id, std::string correo, std::string contenido, std::string fecha, std::string hora)
+        : id_(id), correo_(correo), contenido_(contenido), fecha_(fecha), hora_(hora)
     {
-        std::cout << "Depuración: Publicación creada con correo: " << correo_
+        std::cout << "Depuración: Publicación creada con ID: " << id_
+                  << ", correo: " << correo_
                   << ", contenido: " << contenido_
                   << ", fecha: " << fecha_
                   << ", hora: " << hora_ << std::endl;
+    }
+
+    int getId() const { return id_; }
+    void setID(int id)
+    {
+        std::cout << "Depuración: Cambiando ID de " << id_ << " a " << id << std::endl;
+        id_ = id;
     }
 
     std::string getCorreo() const { return correo_; }
@@ -566,6 +574,7 @@ public:
     }
 
 private:
+    int id_;
     std::string correo_;
     std::string contenido_;
     std::string fecha_;
@@ -591,7 +600,7 @@ public:
 class ListaPublicaciones
 {
 public:
-    ListaPublicaciones() : cabeza(nullptr), cola(nullptr)
+    ListaPublicaciones() : cabeza(nullptr), cola(nullptr), siguienteId(1)
     {
         std::cout << "Depuración: Lista de publicaciones creada." << std::endl;
     }
@@ -608,9 +617,75 @@ public:
         }
     }
 
+    void generateDot(const std::string &filename) const
+    {
+        std::ofstream file(filename);
+        if (file.is_open())
+        {
+            file << "digraph G {" << std::endl;
+            file << "node [shape=record];" << std::endl;
+            file << "rankdir=LR;" << std::endl;
+
+            NodoPublicacion *current = cabeza;
+            int id = 0;
+            while (current != nullptr)
+            {
+                // Nodo actual
+                file << "node" << id << " [label=\"{" << "Correo: " << current->publicacion.getCorreo() << "\\n"
+                     << "Contenido: " << current->publicacion.getContenido() << "\\n"
+                     << "Fecha: " << current->publicacion.getFecha() << "\\n"
+                     << "Hora: " << current->publicacion.getHora() << "}\"];" << std::endl;
+
+                // Conexión con el siguiente nodo
+                if (current->siguiente != nullptr)
+                {
+                    file << "node" << id << " -> node" << (id + 1) << ";" << std::endl;
+                }
+
+                if (current->anterior != nullptr)
+                {
+                    int anteriorId = id - 1;
+                    file << "node" << id << " -> node" << anteriorId << " [style=dashed];" << std::endl;
+                }
+
+                current = current->siguiente;
+                id++;
+            }
+
+            file << "}" << std::endl;
+            file.close();
+        }
+        else
+        {
+            std::cerr << "No se pudo abrir el archivo para escribir." << std::endl;
+        }
+    }
+
+    void renderGraphviz(const std::string &dotFilename, const std::string &imageFilename) const
+    {
+        std::string command = "dot -Tpng " + dotFilename + " -o " + imageFilename;
+        int result = system(command.c_str());
+        if (result != 0)
+        {
+            std::cerr << "Error al generar la imagen con Graphviz" << std::endl;
+        }
+    }
+
+    void crearPublicacion(const std::string &correo, const std::string &contenido, const std::string &fecha, const std::string &hora)
+    {
+        if (correo.empty())
+        {
+            std::cerr << "Error: No se ha establecido un correo para la publicación." << std::endl;
+            return;
+        }
+
+        Publicacion nuevaPublicacion(siguienteId++, correo, contenido, fecha, hora);
+        agregarPublicacion(nuevaPublicacion);
+    }
+
     void agregarPublicacion(const Publicacion &publicacion)
     {
-        std::cout << "Agregando publicación del usuario: " << publicacion.getCorreo() << std::endl;
+        std::cout << "Agregando publicación del usuario con correo: " << publicacion.getCorreo() << std::endl;
 
         NodoPublicacion *nuevoNodo = new NodoPublicacion(publicacion);
 
@@ -629,26 +704,7 @@ public:
         }
     }
 
-    bool buscarPublicacionPorCorreo(const std::string &correo) const
-    {
-        NodoPublicacion *temp = cabeza;
-        while (temp != nullptr)
-        {
-            if (temp->publicacion.getCorreo() == correo)
-            {
-                std::cout << "Publicación encontrada del usuario: " << temp->publicacion.getCorreo() << std::endl;
-                std::cout << "Contenido: " << temp->publicacion.getContenido() << std::endl;
-                std::cout << "Fecha: " << temp->publicacion.getFecha() << std::endl;
-                std::cout << "Hora: " << temp->publicacion.getHora() << std::endl;
-                return true;
-            }
-            temp = temp->siguiente;
-        }
-        std::cerr << "No se encontró publicación del usuario con correo: " << correo << "." << std::endl;
-        return false;
-    };
-
-    void borrarPublicacionPorCorreo(const std::string &correo)
+    void borrarPublicacionPorId(int id)
     {
         if (cabeza == nullptr)
         {
@@ -658,14 +714,14 @@ public:
 
         NodoPublicacion *actual = cabeza;
 
-        while (actual != nullptr && actual->publicacion.getCorreo() != correo)
+        while (actual != nullptr && actual->publicacion.getId() != id)
         {
             actual = actual->siguiente;
         }
 
         if (actual == nullptr)
         {
-            std::cerr << "No se encontró publicación del usuario con correo: " << correo << "." << std::endl;
+            std::cerr << "No se encontró publicación con ID: " << id << "." << std::endl;
             return;
         }
 
@@ -694,7 +750,7 @@ public:
             }
         }
 
-        std::cout << "Eliminando publicación del usuario con correo: " << actual->publicacion.getCorreo() << std::endl;
+        std::cout << "Eliminando publicación con ID: " << actual->publicacion.getId() << std::endl;
         delete actual;
     }
 
@@ -709,79 +765,78 @@ public:
 
         while (actual != nullptr)
         {
-            std::cout << "Usuario: " << actual->publicacion.getCorreo() << std::endl;
-            std::cout << "Contenido: " << actual->publicacion.getContenido() << std::endl;
-            std::cout << "Fecha: " << actual->publicacion.getFecha() << std::endl;
-            std::cout << "Hora: " << actual->publicacion.getHora() << std::endl;
-            std::cout << "--------------------------" << std::endl;
+            std::cout << "ID: " << actual->publicacion.getId()
+                      << ", Correo: " << actual->publicacion.getCorreo()
+                      << ", Contenido: " << actual->publicacion.getContenido()
+                      << ", Fecha: " << actual->publicacion.getFecha()
+                      << ", Hora: " << actual->publicacion.getHora() << std::endl;
             actual = actual->siguiente;
         }
-        delete actual;
     }
 
-    void mostrarPublicacionAnterior() const
+    void mostrarPublicacionesPorCorreo(const std::string &correo)
     {
-        NodoPublicacion *actual = cola;
-        if (cabeza == nullptr)
+        NodoPublicacion *actual = cabeza;
+        bool encontrado = false;
+
+        while (actual != nullptr)
         {
-            std::cerr << "No hay publicaciones en la lista." << std::endl;
-            return;
-        }
-
-        if (cola == nullptr)
-        {
-            std::cerr << "No hay una publicación anterior a mostrar." << std::endl;
-            return;
-        }
-
-        std::cout << "Publicación anterior:" << std::endl;
-        std::cout << "Usuario: " << actual->publicacion.getCorreo() << std::endl;
-        std::cout << "Contenido: " << actual->publicacion.getContenido() << std::endl;
-        std::cout << "Fecha: " << actual->publicacion.getFecha() << std::endl;
-        std::cout << "Hora: " << actual->publicacion.getHora() << std::endl;
-    }
-
-    std::string limpiarCadena(const std::string &str) {
-        std::string resultado = str;
-        resultado.erase(0, resultado.find_first_not_of(" \n\r\t\""));
-        resultado.erase(resultado.find_last_not_of(" \n\r\t\"") + 1);
-        return resultado;
-    }
-
-    void cargarPublicacionesDesdeJson(const std::string &nombreArchivo) {
-        std::ifstream archivo(nombreArchivo);
-
-        if (!archivo.is_open()) {
-            std::cerr << "Error al abrir el archivo JSON." << std::endl;
-            return;
-        }
-
-        try {
-            nlohmann::json jsonData;
-            archivo >> jsonData;
-
-            for (const auto &item : jsonData) {
-                std::string correo = limpiarCadena(item.at("correo").get<std::string>());
-                std::string contenido = limpiarCadena(item.at("contenido").get<std::string>());
-                std::string fecha = limpiarCadena(item.at("fecha").get<std::string>());
-                std::string hora = limpiarCadena(item.at("hora").get<std::string>());
-
-                Publicacion publicacion(correo, contenido, fecha, hora);
-                agregarPublicacion(publicacion);
+            if (actual->publicacion.getCorreo() == correo)
+            {
+                std::cout << "ID: " << actual->publicacion.getId() << std::endl;
+                std::cout << "Contenido: " << actual->publicacion.getContenido() << std::endl;
+                std::cout << "Fecha: " << actual->publicacion.getFecha() << std::endl;
+                std::cout << "Hora: " << actual->publicacion.getHora() << std::endl;
+                std::cout << "--------------------------" << std::endl;
+                encontrado = true;
             }
-        } catch (const nlohmann::json::exception &e) {
-            std::cerr << "Error al procesar el archivo JSON: " << e.what() << std::endl;
-        } catch (const std::exception &e) {
-            std::cerr << "Error inesperado: " << e.what() << std::endl;
+            actual = actual->siguiente;
         }
 
-        archivo.close();
-        std::cout << "Publicaciones cargadas exitosamente desde " << nombreArchivo << std::endl;
+        if (!encontrado)
+        {
+            std::cout << "No se encontraron publicaciones para el usuario con correo: " << correo << std::endl;
+        }
+        else
+        {
+            std::cout << "Ingrese el ID de la publicación que desea borrar: ";
+            int id_a_borrar;
+            std::cin >> id_a_borrar;
+            borrarPublicacionPorId(id_a_borrar);
+        }
+    }
+
+
+    void cargarPublicacionesDesdeJson(const std::string &filename)
+    {
+        std::ifstream file(filename);
+        if (file.is_open())
+        {
+            nlohmann::json jsonData;
+            file >> jsonData;
+            file.close();
+
+            for (const auto &item : jsonData)
+            {
+                std::string correo = item["correo"];
+                std::string contenido = item["contenido"];
+                std::string fecha = item["fecha"];
+                std::string hora = item["hora"];
+
+                Publicacion nuevaPublicacion(siguienteId++, correo, contenido, fecha, hora);
+                agregarPublicacion(nuevaPublicacion);
+            }
+        }
+        else
+        {
+            std::cerr << "No se pudo abrir el archivo JSON." << std::endl;
+        }
     }
 
 private:
     NodoPublicacion *cabeza;
     NodoPublicacion *cola;
+    int siguienteId;
 };
 
 std::string admin_correo = "admin@gmail.com";
@@ -829,6 +884,8 @@ int main()
                 std::string archivo_R;
                 std::string dotFilename = "usuarios.dot";
                 std::string imageFilename = "usuarios.png";
+                std::string dotFilenameP = "publicaciones.dot";
+                std::string imageFilenameP = "publicaciones.png";
                 std::cout << "Ingrese su correo: ";
                 std::cin >> correo;
 
@@ -931,7 +988,8 @@ int main()
                                         break;
                                     case 3:
                                         std::cout << "Opción seleccionada: Reporte de Publicaciones.\n";
-
+                                        listaPublicaciones.generateDot(dotFilenameP);
+                                        listaPublicaciones.renderGraphviz(dotFilenameP, imageFilenameP);
                                         break;
                                     case 4:
                                         std::cout << "Opción seleccionada: Reporte de Top.\n";
@@ -1048,10 +1106,31 @@ int main()
                                     else if (publicaciones_opcion == 2)
                                     {
                                         std::cout << "Crear publicación\n";
+                                        std::string contenido;
+                                        std::string fecha;
+                                        std::string hora;
+
+                                        std::cout << "Introduce el contenido de la publicación: ";
+                                        std::cin >> contenido;
+
+                                        std::cout << "Introduce la fecha (YYYY-MM-DD): ";
+                                        std::cin >> fecha;
+
+                                        std::cout << "Introduce la hora (HH:MM): ";
+                                        std::cin >> hora;
+
+                                        // Crear la publicación
+                                        listaPublicaciones.crearPublicacion(correo, contenido, fecha, hora);
+
+                                        std::cout << "Publicación creada exitosamente.\n";
+                                        break;
                                     }
                                     else if (publicaciones_opcion == 3)
                                     {
                                         std::cout << "Eliminar publicación\n";
+                                        listaPublicaciones.mostrarPublicacionesPorCorreo(correo);
+
+                                        break;
                                     }
                                     else
                                     {

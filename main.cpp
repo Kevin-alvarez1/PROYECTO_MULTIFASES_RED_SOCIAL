@@ -459,6 +459,24 @@ public:
             temp = nullptr;
         }
     }
+    void borrarRelacionesPorCorreo(const std::string &correo) {
+        while (cabeza && (cabeza->relacion.getEmisor() == correo || cabeza->relacion.getReceptor() == correo)) {
+            NodoRelacion *temp = cabeza;
+            cabeza = cabeza->siguiente;
+            delete temp;
+        }
+
+        NodoRelacion *actual = cabeza;
+        while (actual && actual->siguiente) {
+            if (actual->siguiente->relacion.getEmisor() == correo || actual->siguiente->relacion.getReceptor() == correo) {
+                NodoRelacion *temp = actual->siguiente;
+                actual->siguiente = actual->siguiente->siguiente;
+                delete temp;
+            } else {
+                actual = actual->siguiente;
+            }
+        }
+    }
 
     void agregarRelacion(const Relacion &relacion)
     {
@@ -576,13 +594,97 @@ public:
         }
     }
 
-    void agregarEmisor(const Emisor &emisor)
-    {
+    void agregarEmisor(const Emisor &emisor, const ListaUsuarios &listaUsuarios, const ListaRelaciones &listaRelaciones){
+        // Verificar si el receptor es el mismo que el emisor
+        if (emisor.getCorreo() == emisor.getReceptor()) {
+            std::cout << "Error: No puedes enviarte una solicitud a ti mismo." << std::endl;
+            return;
+        }
+
+        // Verificar si el receptor existe en la lista de usuarios
+        if (!listaUsuarios.buscarCorreo(emisor.getReceptor())) {
+            std::cout << "Error: El usuario con correo " << emisor.getReceptor() << " no existe en la lista de usuarios." << std::endl;
+            return;
+        }
+
+        // Verificar si el emisor ya a recibido una solicitud del receptor
+        NodoRelacion *actualRelacion2 = listaRelaciones.obtenerCabeza();
+        while (actualRelacion2) {
+            if (actualRelacion2->relacion.getEmisor() == emisor.getReceptor() &&
+                actualRelacion2->relacion.getReceptor() == emisor.getCorreo() &&
+                (actualRelacion2->relacion.getEstado() == "PENDIENTE" || actualRelacion2->relacion.getEstado() == "ACEPTADA")) {
+                std::cout << "Error: Ya existe una solicitud en estado " << actualRelacion2->relacion.getEstado()
+                        << " para el emisor con correo " << emisor.getCorreo() << " en la lista de relaciones." << std::endl;
+                std::cout << "No se puede enviar una solicitud a un usuario que ya te ha enviado una solicitud." << std::endl;
+                return;
+            }
+            actualRelacion2 = actualRelacion2->siguiente;
+        }
+        // Verificar si el emisor ya a recibido una solicitud del receptor en la lista de emisores
+        Nodo_emisor *actual2 = cabeza;
+        while (actual2) {
+            if (actual2->emisor.getCorreo() == emisor.getReceptor() &&
+                actual2->emisor.getReceptor() == emisor.getCorreo() &&
+                (actual2->emisor.getEstado() == "PENDIENTE" || actual2->emisor.getEstado() == "ACEPTADA")) {
+                std::cout << "Error: Ya existe una solicitud en estado " << actual2->emisor.getEstado()
+                        << " para el emisor con correo " << emisor.getCorreo() << " en la lista de emisores." << std::endl;
+                std::cout << "No se puede enviar una solicitud a un usuario que ya te ha enviado una solicitud." << std::endl;
+                return;
+            }
+            actual2 = actual2->siguiente;
+        }
+
+        // Verificar si ya existe una solicitud pendiente o aceptada para este receptor en la lista de emisores
+        Nodo_emisor *actual = cabeza;
+        while (actual) {
+            if (actual->emisor.getReceptor() == emisor.getReceptor() &&
+                (actual->emisor.getEstado() == "PENDIENTE" || actual->emisor.getEstado() == "ACEPTADA")) {
+                std::cout << "Error: Ya existe una solicitud en estado " << actual->emisor.getEstado()
+                        << " para el receptor con correo " << emisor.getReceptor() << " en la lista de emisores." << std::endl;
+                return;
+            }
+            actual = actual->siguiente;
+        }
+
+        // Verificar si ya existe una solicitud pendiente o aceptada para este receptor en la lista de relaciones
+        NodoRelacion *actualRelacion = listaRelaciones.obtenerCabeza();
+        while (actualRelacion) {
+            if (actualRelacion->relacion.getEmisor() == emisor.getCorreo() &&
+                actualRelacion->relacion.getReceptor() == emisor.getReceptor() &&
+                (actualRelacion->relacion.getEstado() == "PENDIENTE" || actualRelacion->relacion.getEstado() == "ACEPTADA")) {
+                std::cout << "Error: Ya existe una solicitud en estado " << actualRelacion->relacion.getEstado()
+                        << " para el receptor con correo " << emisor.getReceptor() << " en la lista de relaciones." << std::endl;
+                return;
+            }
+            actualRelacion = actualRelacion->siguiente;
+        }
+
+        // Si no se encuentra ninguna solicitud pendiente o aceptada, agregar el nuevo emisor
         Nodo_emisor *nuevoNodo = new Nodo_emisor(emisor);
         nuevoNodo->siguiente = cabeza;
         cabeza = nuevoNodo;
 
         std::cout << "Depuración: Emisor agregado con correo: " << emisor.getCorreo() << std::endl;
+    }
+
+
+    void borrarEmisoresPorCorreo(const std::string &correo) {
+        while (cabeza && cabeza->emisor.getCorreo() == correo) {
+            Nodo_emisor *temp = cabeza;
+            cabeza = cabeza->siguiente;
+            delete temp;
+        }
+
+        Nodo_emisor *actual = cabeza;
+        while (actual && actual->siguiente) {
+            if (actual->siguiente->emisor.getCorreo() == correo) {
+                Nodo_emisor *temp = actual->siguiente;
+                actual->siguiente = actual->siguiente->siguiente;
+                delete temp;
+            } else {
+                actual = actual->siguiente;
+            }
+        }
     }
 
     void mostrarEmisores(const ListaRelaciones &listaRelaciones, const std::string &correo) const
@@ -754,17 +856,15 @@ private:
     std::string estado;
 };
 
-// Definición del nodo para la pila de receptores
 class Nodo_PilaReceptor
 {
 public:
-    Receptor receptor;            // Contenido del nodo
-    Nodo_PilaReceptor *siguiente; // Puntero al siguiente nodo
+    Receptor receptor;           
+    Nodo_PilaReceptor *siguiente; 
 
     Nodo_PilaReceptor(const Receptor &receptor) : receptor(receptor), siguiente(nullptr) {}
 };
 
-// Definición de la pila de receptores
 class PilaReceptor
 {
 public:
@@ -795,6 +895,25 @@ public:
         cima = nuevoNodo;
 
         std::cout << "Depuración: Receptor apilado con correo: " << receptor.getCorreo() << std::endl;
+    }
+
+    void borrarReceptoresPorCorreo(const std::string &correo) {
+        Nodo_PilaReceptor *nuevoCima = nullptr;
+
+        while (cima) {
+            if (cima->receptor.getCorreo() == correo) {
+                Nodo_PilaReceptor *temp = cima;
+                cima = cima->siguiente;
+                delete temp;
+            } else {
+                Nodo_PilaReceptor *nodoTemporal = cima;
+                cima = cima->siguiente;
+                nodoTemporal->siguiente = nuevoCima;
+                nuevoCima = nodoTemporal;
+            }
+        }
+
+        cima = nuevoCima;
     }
 
     void buscarYApilarPendientes(const std::string &correo, const ListaEmisor &listaEmisor, const ListaRelaciones &listaRelaciones)
@@ -1070,6 +1189,26 @@ public:
         }
     }
 
+    void borrarPublicacionesPorCorreo(const std::string &correo) {
+        while (cabeza && cabeza->publicacion.getCorreo() == correo) {
+            NodoPublicacion *temp = cabeza;
+            cabeza = cabeza->siguiente;
+            delete temp;
+        }
+
+        NodoPublicacion *actual = cabeza;
+        while (actual && actual->siguiente) {
+            if (actual->siguiente->publicacion.getCorreo() == correo) {
+                NodoPublicacion *temp = actual->siguiente;
+                actual->siguiente = actual->siguiente->siguiente;
+                delete temp;
+            } else {
+                actual = actual->siguiente;
+            }
+        }
+    }
+
+
     void borrarPublicacionPorId(int id)
     {
         if (cabeza == nullptr)
@@ -1207,6 +1346,29 @@ private:
 std::string admin_correo = "admin@gmail.com";
 std::string admin_contrasena = "EDD2S2024";
 
+void borrarUsuario(const std::string &correo,
+                   ListaEmisor &listaEmisor,
+                   PilaReceptor &pilaReceptor,
+                   ListaUsuarios &listaUsuarios,
+                   ListaPublicaciones &listaPublicaciones,
+                   ListaRelaciones &listaRelaciones) {
+    
+    // Borrar usuario de ListaUsuarios
+    listaUsuarios.borrarUsuarioPorCorreo(correo);
+
+    // Borrar publicaciones del usuario en ListaPublicaciones
+    listaPublicaciones.borrarPublicacionesPorCorreo(correo);
+
+    // Borrar todas las relaciones donde el usuario sea emisor o receptor en ListaRelaciones
+    listaRelaciones.borrarRelacionesPorCorreo(correo);
+
+    // Borrar todas las solicitudes enviadas por el usuario en ListaEmisor
+    listaEmisor.borrarEmisoresPorCorreo(correo);
+
+    // Borrar todas las solicitudes recibidas por el usuario en PilaReceptor
+    pilaReceptor.borrarReceptoresPorCorreo(correo);
+}
+
 int main()
 {
     SetConsoleOutputCP(CP_UTF8);
@@ -1320,7 +1482,7 @@ int main()
                                 }
                                 else
                                 {
-                                    listaUsuarios.borrarUsuarioPorCorreo(correo);
+                                    borrarUsuario(correo, listaEmisor, pilaReceptor, listaUsuarios, listaPublicaciones, listaRelaciones);
                                 }
 
                                 break;
@@ -1452,7 +1614,7 @@ int main()
                                         std::cout << "Enviar solicitud\n";
                                         std::cout << "Ingrese el correo del receptor: ";
                                         std::cin >> receptor;
-                                        listaEmisor.agregarEmisor(Emisor(correo, receptor, estado));
+                                        listaEmisor.agregarEmisor(Emisor(correo, receptor, estado), listaUsuarios, listaRelaciones);
                                         break;
                                     }
                                     else

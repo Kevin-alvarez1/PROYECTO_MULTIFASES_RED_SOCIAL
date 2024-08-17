@@ -1,0 +1,23 @@
+[
+    {
+        "nombre": "Juan",
+        "apellido": "Perez Gomez",
+        "fecha_de_nacimiento": "1990/05/14",
+        "correo": "juan.perez@example.com",
+        "contrasena": "password123"
+    },
+    {
+        "nombre": "Maria",
+        "apellido": "Lopez Martinez",
+        "fecha_de_nacimiento": "1985/08/22",
+        "correo": "maria.lopez@example.com",
+        "contrasena": "securepass456"
+    },
+    {
+        "nombre": "Carlos",
+        "apellido": "Rodriguez Fernandez",
+        "fecha_de_nacimiento": "1992/11/30",
+        "correo": "carlos.rodriguez@example.com",
+        "contrasena": "mypassword789"
+    }
+]

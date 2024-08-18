@@ -1,23 +1,23 @@
 [
     {
-        "nombre": "Juan",
-        "apellido": "Perez Gomez",
+        "nombres": "Juan",
+        "apellidos": "Perez Gomez",
         "fecha_de_nacimiento": "1990/05/14",
         "correo": "juan.perez@example.com",
-        "contrasena": "password123"
+        "contraseña": "password123"
     },
     {
-        "nombre": "Maria",
-        "apellido": "Lopez Martinez",
+        "nombres": "Maria",
+        "apellidos": "Lopez Martinez",
         "fecha_de_nacimiento": "1985/08/22",
         "correo": "maria.lopez@example.com",
-        "contrasena": "securepass456"
+        "contraseña": "securepass456"
     },
     {
-        "nombre": "Carlos",
-        "apellido": "Rodriguez Fernandez",
+        "nombres": "Carlos",
+        "apellidos": "Rodriguez Fernandez",
         "fecha_de_nacimiento": "1992/11/30",
         "correo": "carlos.rodriguez@example.com",
-        "contrasena": "mypassword789"
+        "contraseña": "mypassword789"
     }
 ]

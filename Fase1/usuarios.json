@@ -1,37 +1,37 @@
 [
     {
-        "nombre": "Miguel",
-        "apellido": "Leonel",
+        "nombres": "Miguel",
+        "apellidos": "Leonel",
         "fecha_de_nacimiento": "01/01/1995",
         "correo": "mike@gmail.com",
-        "contrasena": "12345"
+        "contraseña": "12345"
     },
     {
-        "nombre": "Maria",
-        "apellido": "Juana",
+        "nombres": "Maria",
+        "apellidos": "Juana",
         "fecha_de_nacimiento": "02/04/2000",
         "correo": "maria@gmail.com",
-        "contrasena": "666"
+        "contraseña": "666"
     },
     {
-        "nombre": "Maria",
-        "apellido": "Juana",
+        "nombres": "Maria",
+        "apellidos": "Juana",
         "fecha_de_nacimiento": "02/04/2000",
         "correo": "samira@gmail.com",
-        "contrasena": "666"
+        "contraseña": "666"
     },
     {
-        "nombre": "Samuel",
-        "apellido": "Ronaldo",
+        "nombres": "Samuel",
+        "apellidos": "Ronaldo",
         "fecha_de_nacimiento": "01/12/2012",
         "correo": "sam@gmail.com",
-        "contrasena": "777"
+        "contraseña": "777"
     },
     {
-        "nombre": "Erick",
-        "apellido": "Bartolomeo",
+        "nombres": "Erick",
+        "apellidos": "Bartolomeo",
         "fecha_de_nacimiento": "01/12/2012",
         "correo": "shadow@gmail.com",
-        "contrasena": "777"
+        "contraseña": "777"
     }
 ]

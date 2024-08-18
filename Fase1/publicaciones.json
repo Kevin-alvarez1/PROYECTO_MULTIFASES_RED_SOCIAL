@@ -1,0 +1,22 @@
+[
+    {
+    "correo": "mike@gmail.com",
+    "contenido": "Hola, soy Miguel",
+    "fecha": "01/01/2023",
+    "hora": "12:00"
+    },
+
+    {
+    "correo": "maria@gmail.com",
+    "contenido": "Hola, soy Maria",
+    "fecha": "02/04/2023",
+    "hora": "24:00"
+    },
+
+    {
+    "correo": "shadow@gmail.com",
+    "contenido": "Hola, soy Erick",
+    "fecha": "01/12/2023",
+    "hora": "07:00"
+    }
+]

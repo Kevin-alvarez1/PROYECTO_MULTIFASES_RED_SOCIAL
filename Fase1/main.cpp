@@ -323,30 +323,32 @@ public:
     {
         std::string nombre, apellido, fecha_de_nacimiento, correo, contrasena;
 
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
         std::cout << "Ingrese su nombre: ";
-        std::cin >> nombre;
+        std::getline(std::cin, nombre);
 
         if (!nombre.empty())
         {
             std::cout << "Ingrese su apellido: ";
-            std::cin >> apellido;
+            std::getline(std::cin, apellido);
 
             if (!apellido.empty())
             {
                 std::cout << "Ingrese su fecha de nacimiento (DD/MM/AAAA): ";
-                std::cin >> fecha_de_nacimiento;
+                std::getline(std::cin, fecha_de_nacimiento);
 
                 if (!fecha_de_nacimiento.empty())
                 {
                     std::cout << "Ingrese su correo: ";
-                    std::cin >> correo;
+                    std::getline(std::cin, correo);
 
                     if (!correo.empty())
                     {
                         if (!listaUsuarios.usuarioDuplicado(correo))
                         {
                             std::cout << "Ingrese su contraseña: ";
-                            std::cin >> contrasena;
+                            std::getline(std::cin, contrasena);
                             // Crear el nuevo usuario
                             Usuario nuevoUsuario(nombre, apellido, fecha_de_nacimiento, correo, contrasena);
 
@@ -381,12 +383,14 @@ public:
         }
     }
 
+
 private:
     Nodo *cabeza;
     Nodo *cola;
 };
 
-class NodoMatriz {
+class NodoMatriz
+{
 public:
     std::string nombreFila;
     std::string nombreColumna;
@@ -397,63 +401,79 @@ public:
         : nombreFila(fila), nombreColumna(columna), derecha(nullptr), abajo(nullptr) {}
 };
 
-class MatrizDispersa {
+class MatrizDispersa
+{
 private:
     std::vector<std::string> nombres;
     NodoMatriz *cabeza;
 
     // Marcar estos métodos como const
-    NodoMatriz* buscarFila(const std::string &fila) const {
+    NodoMatriz *buscarFila(const std::string &fila) const
+    {
         NodoMatriz *temp = cabeza;
-        while (temp && temp->nombreFila != fila) {
+        while (temp && temp->nombreFila != fila)
+        {
             temp = temp->abajo;
         }
         return temp;
     }
 
-    NodoMatriz* buscarColumna(NodoMatriz *filaNodo, const std::string &columna) const {
+    NodoMatriz *buscarColumna(NodoMatriz *filaNodo, const std::string &columna) const
+    {
         NodoMatriz *temp = filaNodo;
-        while (temp && temp->nombreColumna != columna) {
+        while (temp && temp->nombreColumna != columna)
+        {
             temp = temp->derecha;
         }
         return temp;
     }
-    std::string escapeXml(const std::string &input) const {
+    std::string escapeXml(const std::string &input) const
+    {
         std::string escaped = input;
         std::string toReplace[][2] = {{"<", "&lt;"}, {">", "&gt;"}, {"&", "&amp;"}};
-        for (const auto& pair : toReplace) {
+        for (const auto &pair : toReplace)
+        {
             size_t pos = 0;
-            while ((pos = escaped.find(pair[0], pos)) != std::string::npos) {
+            while ((pos = escaped.find(pair[0], pos)) != std::string::npos)
+            {
                 escaped.replace(pos, pair[0].length(), pair[1]);
                 pos += pair[1].length();
             }
         }
         return escaped;
     }
+
 public:
     MatrizDispersa() : cabeza(nullptr) {}
 
-    bool existeNombre(const std::string &nombre) const {
+    bool existeNombre(const std::string &nombre) const
+    {
         return std::find(nombres.begin(), nombres.end(), nombre) != nombres.end();
     }
 
-    void insertarNombre(const std::string &nombre) {
-        if (!existeNombre(nombre)) {
+    void insertarNombre(const std::string &nombre)
+    {
+        if (!existeNombre(nombre))
+        {
             nombres.push_back(nombre);
         }
     }
 
-    void generateDotMatrizDispersa(const std::string &filename) const {
+    void generateDotMatrizDispersa(const std::string &filename) const
+    {
         std::ofstream file(filename);
-        if (file.is_open()) {
+        if (file.is_open())
+        {
             // Recolectar todos los nombres únicos
             std::unordered_set<std::string> filas;
             std::unordered_set<std::string> columnas;
             NodoMatriz *tempFila = cabeza;
 
-            while (tempFila) {
+            while (tempFila)
+            {
                 NodoMatriz *tempColumna = tempFila->derecha;
-                while (tempColumna) {
+                while (tempColumna)
+                {
                     filas.insert(tempColumna->nombreFila);
                     columnas.insert(tempColumna->nombreColumna);
                     tempColumna = tempColumna->derecha;
@@ -469,25 +489,34 @@ public:
 
             // Imprimir la primera fila con los nombres de columnas
             file << "<tr><td></td>";
-            for (const auto& col : columnas) {
+            for (const auto &col : columnas)
+            {
                 file << "<td><b>" << escapeXml(col) << "</b></td>";
             }
             file << "</tr>" << std::endl;
 
             // Imprimir las filas con relaciones
-            for (const auto& fila : filas) {
+            for (const auto &fila : filas)
+            {
                 file << "<tr><td>" << escapeXml(fila) << "</td>";
 
-                for (const auto& col : columnas) {
+                for (const auto &col : columnas)
+                {
                     NodoMatriz *filaNodo = buscarFila(fila);
-                    if (filaNodo) {
+                    if (filaNodo)
+                    {
                         NodoMatriz *columnaNodo = buscarColumna(filaNodo, col);
-                        if (columnaNodo) {
+                        if (columnaNodo)
+                        {
                             file << "<td>x</td>";
-                        } else {
+                        }
+                        else
+                        {
                             file << "<td></td>";
                         }
-                    } else {
+                    }
+                    else
+                    {
                         file << "<td></td>";
                     }
                 }
@@ -497,34 +526,133 @@ public:
             file << "</table>>];" << std::endl;
             file << "}" << std::endl;
             file.close();
-        } else {
+        }
+        else
+        {
             std::cerr << "No se pudo abrir el archivo para escribir." << std::endl;
         }
     }
 
-    void renderGraphvizMatrizDispersa(const std::string &dotFilename, const std::string &imageFilename) const {
+    void renderGraphvizMatrizDispersa(const std::string &dotFilename, const std::string &imageFilename) const
+    {
         std::string command = "dot -Tpng " + dotFilename + " -o " + imageFilename;
         int result = system(command.c_str());
-        if (result != 0) {
+        if (result != 0)
+        {
             std::cerr << "Error al generar la imagen con Graphviz" << std::endl;
         }
-    }   
+    }
 
-    void insertarRelacion(const std::string &nombreFila, const std::string &nombreColumna) {
+    void generateDotMatrizDispersa_usuario(const std::string &filename, const std::string &correo) const
+    {
+        std::ofstream file(filename);
+        if (file.is_open())
+        {
+            // Recolectar todos los nombres únicos
+            std::unordered_set<std::string> filas;
+            std::unordered_set<std::string> columnas;
+
+            NodoMatriz *tempFila = cabeza;
+
+            while (tempFila)
+            {
+                NodoMatriz *tempColumna = tempFila->derecha;
+                while (tempColumna)
+                {
+                    // Solo agregar nombres si la relación involucra al usuario dado
+                    if (tempFila->nombreFila == correo || tempColumna->nombreColumna == correo)
+                    {
+                        filas.insert(tempFila->nombreFila);
+                        columnas.insert(tempColumna->nombreColumna);
+                    }
+                    tempColumna = tempColumna->derecha;
+                }
+                tempFila = tempFila->abajo;
+            }
+
+            // Escribir el encabezado DOT
+            file << "digraph G {" << std::endl;
+            file << "node [shape=plaintext];" << std::endl;
+            file << "RELACIONES_DE_AMISTAD [label=<" << std::endl;
+            file << "<table border='2' cellborder='1' cellspacing='0'>" << std::endl;
+
+            // Imprimir la primera fila con los nombres de columnas
+            file << "<tr><td></td>";
+            for (const auto &col : columnas)
+            {
+                file << "<td><b>" << escapeXml(col) << "</b></td>";
+            }
+            file << "</tr>" << std::endl;
+
+            // Imprimir las filas con relaciones
+            for (const auto &fila : filas)
+            {
+                file << "<tr><td>" << escapeXml(fila) << "</td>";
+
+                for (const auto &col : columnas)
+                {
+                    NodoMatriz *filaNodo = buscarFila(fila);
+                    if (filaNodo)
+                    {
+                        NodoMatriz *columnaNodo = buscarColumna(filaNodo, col);
+                        if (columnaNodo && (fila == correo || col == correo))
+                        {
+                            file << "<td>x</td>";
+                        }
+                        else
+                        {
+                            file << "<td></td>";
+                        }
+                    }
+                    else
+                    {
+                        file << "<td></td>";
+                    }
+                }
+                file << "</tr>" << std::endl;
+            }
+
+            file << "</table>>];" << std::endl;
+            file << "}" << std::endl;
+            file.close();
+        }
+        else
+        {
+            std::cerr << "No se pudo abrir el archivo para escribir." << std::endl;
+        }
+    }
+
+    void renderGraphvizMatrizDispersa_usuarios(const std::string &dotFilename, const std::string &imageFilename) const
+    {
+        std::string command = "dot -Tpng " + dotFilename + " -o " + imageFilename;
+        int result = system(command.c_str());
+        if (result != 0)
+        {
+            std::cerr << "Error al generar la imagen con Graphviz" << std::endl;
+        }
+    }
+
+    void insertarRelacion(const std::string &nombreFila, const std::string &nombreColumna)
+    {
         insertarNombre(nombreFila);
         insertarNombre(nombreColumna);
 
         // Verificar si la fila ya existe en la matriz
         NodoMatriz *filaNodo = buscarFila(nombreFila);
 
-        if (!filaNodo) {
+        if (!filaNodo)
+        {
             // Si la fila no existe, crearla
             NodoMatriz *nuevoNodoFila = new NodoMatriz(nombreFila, "");
-            if (!cabeza) {
+            if (!cabeza)
+            {
                 cabeza = nuevoNodoFila;
-            } else {
+            }
+            else
+            {
                 NodoMatriz *temp = cabeza;
-                while (temp->abajo) {
+                while (temp->abajo)
+                {
                     temp = temp->abajo;
                 }
                 temp->abajo = nuevoNodoFila;
@@ -535,23 +663,61 @@ public:
         // Verificar si ya existe la relación en la fila
         NodoMatriz *columnaNodo = buscarColumna(filaNodo, nombreColumna);
 
-        if (!columnaNodo) {
+        if (!columnaNodo)
+        {
             // Si no existe la relación, crearla y agregarla al final de la fila
             NodoMatriz *nuevoNodoColumna = new NodoMatriz(nombreFila, nombreColumna);
             NodoMatriz *temp = filaNodo;
-            while (temp->derecha) {
+            while (temp->derecha)
+            {
                 temp = temp->derecha;
             }
             temp->derecha = nuevoNodoColumna;
         }
     }
 
-    void mostrarMatriz() const {
+    std::vector<std::string> obtenerAmigos(const std::string &correo) const {
+        std::vector<std::string> amigos;
+
+        // Buscar en filas
+        NodoMatriz *filaNodo = buscarFila(correo);
+        if (filaNodo) {
+            NodoMatriz *columnaNodo = filaNodo->derecha;
+            while (columnaNodo) {
+                amigos.push_back(columnaNodo->nombreColumna);
+                columnaNodo = columnaNodo->derecha;
+            }
+        }
+
+        // Buscar en columnas
         NodoMatriz *tempFila = cabeza;
-        std::cout   << "Matriz de relaciones:" << std::endl;
         while (tempFila) {
             NodoMatriz *tempColumna = tempFila->derecha;
             while (tempColumna) {
+                if (tempColumna->nombreColumna == correo) {
+                    amigos.push_back(tempFila->nombreFila);
+                }
+                tempColumna = tempColumna->derecha;
+            }
+            tempFila = tempFila->abajo;
+        }
+
+        // Eliminar duplicados
+        std::sort(amigos.begin(), amigos.end());
+        amigos.erase(std::unique(amigos.begin(), amigos.end()), amigos.end());
+
+        return amigos;
+    }
+
+    void mostrarMatriz() const
+    {
+        NodoMatriz *tempFila = cabeza;
+        std::cout << "Matriz de relaciones:" << std::endl;
+        while (tempFila)
+        {
+            NodoMatriz *tempColumna = tempFila->derecha;
+            while (tempColumna)
+            {
                 std::cout << "Relacion: " << tempColumna->nombreFila << " - " << tempColumna->nombreColumna << std::endl;
                 tempColumna = tempColumna->derecha;
             }
@@ -559,13 +725,16 @@ public:
         }
     }
 
-    void top5ConMenosRelaciones() const {
+    void top5ConMenosRelaciones() const
+    {
         std::vector<std::pair<std::string, int>> conteoRelaciones;
         NodoMatriz *tempFila = cabeza;
-        while (tempFila) {
+        while (tempFila)
+        {
             NodoMatriz *tempColumna = tempFila->derecha;
             int conteo = 0;
-            while (tempColumna) {
+            while (tempColumna)
+            {
                 conteo++;
                 tempColumna = tempColumna->derecha;
             }
@@ -573,25 +742,28 @@ public:
             tempFila = tempFila->abajo;
         }
 
-        std::sort(conteoRelaciones.begin(), conteoRelaciones.end(), [](const std::pair<std::string, int> &a, const std::pair<std::string, int> &b) {
-            return a.second < b.second;
-        });
+        std::sort(conteoRelaciones.begin(), conteoRelaciones.end(), [](const std::pair<std::string, int> &a, const std::pair<std::string, int> &b)
+                  { return a.second < b.second; });
 
         std::cout << "Top 5 de usuarios con menos relaciones:" << std::endl;
-        for (size_t i = 0; i < 5 && i < conteoRelaciones.size(); i++) {
+        for (size_t i = 0; i < 5 && i < conteoRelaciones.size(); i++)
+        {
             std::cout << conteoRelaciones[i].first << " - " << conteoRelaciones[i].second << " relaciones" << std::endl;
         }
     }
 
-    void generateDotTop5ConMenosRelaciones(const std::string &filename) const {
+    void generateDotTop5ConMenosRelaciones(const std::string &filename) const
+    {
         // Contar las relaciones para cada usuario en filas y columnas
         std::unordered_map<std::string, int> conteoRelaciones;
         NodoMatriz *tempFila = cabeza;
 
         // Contar las relaciones desde las filas
-        while (tempFila) {
+        while (tempFila)
+        {
             NodoMatriz *tempColumna = tempFila->derecha;
-            while (tempColumna) {
+            while (tempColumna)
+            {
                 conteoRelaciones[tempFila->nombreFila]++;
                 conteoRelaciones[tempColumna->nombreColumna]++;
                 tempColumna = tempColumna->derecha;
@@ -601,73 +773,83 @@ public:
 
         // Convertir el conteo a un vector y ordenar por la cantidad de relaciones (ascendente)
         std::vector<std::pair<std::string, int>> conteoRelacionesVector(conteoRelaciones.begin(), conteoRelaciones.end());
-        std::sort(conteoRelacionesVector.begin(), conteoRelacionesVector.end(), [](const std::pair<std::string, int> &a, const std::pair<std::string, int> &b) {
-            return a.second < b.second;
-        });
+        std::sort(conteoRelacionesVector.begin(), conteoRelacionesVector.end(), [](const std::pair<std::string, int> &a, const std::pair<std::string, int> &b)
+                  { return a.second < b.second; });
 
         // Seleccionar los top 5
-        if (conteoRelacionesVector.size() > 5) {
+        if (conteoRelacionesVector.size() > 5)
+        {
             conteoRelacionesVector.resize(5);
         }
 
         // Generar el archivo DOT
         std::ofstream file(filename);
-        if (file.is_open()) {
+        if (file.is_open())
+        {
             file << "digraph G {" << std::endl;
             file << "node [shape=plaintext];" << std::endl;
             file << "TOP5_USUARIOS [label=<" << std::endl;
             file << "<table border='2' cellborder='1' cellspacing='0'>" << std::endl;
             file << "<tr><td><b>Usuario</b></td><td><b>Relaciones</b></td></tr>" << std::endl;
 
-            for (const auto &usuario : conteoRelacionesVector) {
+            for (const auto &usuario : conteoRelacionesVector)
+            {
                 file << "<tr><td>" << escapeXml(usuario.first) << "</td><td>" << usuario.second << "</td></tr>" << std::endl;
             }
 
             file << "</table>>];" << std::endl;
             file << "}" << std::endl;
             file.close();
-        } else {
+        }
+        else
+        {
             std::cerr << "No se pudo abrir el archivo para escribir." << std::endl;
         }
     }
 
-
-    void renderGraphvizTop5(const std::string &dotFilename, const std::string &imageFilename) const {
+    void renderGraphvizTop5(const std::string &dotFilename, const std::string &imageFilename) const
+    {
         std::string command = "dot -Tpng " + dotFilename + " -o " + imageFilename;
         int result = system(command.c_str());
-        if (result != 0) {
+        if (result != 0)
+        {
             std::cerr << "Error al generar la imagen con Graphviz" << std::endl;
         }
     }
 
-
-
-    void eliminarRelacionesUsuario(const std::string &usuario) {
+    void eliminarRelacionesUsuario(const std::string &usuario)
+    {
         NodoMatriz *tempFila = cabeza;
-        while (tempFila) {
+        while (tempFila)
+        {
             NodoMatriz *tempColumna = tempFila->derecha;
             NodoMatriz *anterior = nullptr;
-            while (tempColumna) {
-                if (tempColumna->nombreFila == usuario || tempColumna->nombreColumna == usuario) {
-                    if (anterior) {
+            while (tempColumna)
+            {
+                if (tempColumna->nombreFila == usuario || tempColumna->nombreColumna == usuario)
+                {
+                    if (anterior)
+                    {
                         anterior->derecha = tempColumna->derecha;
                         delete tempColumna;
                         tempColumna = anterior->derecha;
-                    } else {
+                    }
+                    else
+                    {
                         tempFila->derecha = tempColumna->derecha;
                         delete tempColumna;
                         tempColumna = tempFila->derecha;
                     }
-                } else {
+                }
+                else
+                {
                     anterior = tempColumna;
                     tempColumna = tempColumna->derecha;
                 }
             }
             tempFila = tempFila->abajo;
         }
-
     }
-
 };
 
 class Relacion
@@ -822,10 +1004,12 @@ public:
         }
     }
 
-    void borrarRelacionEspecifica(const std::string &correoEmisor, const std::string &correoReceptor) {
+    void borrarRelacionEspecifica(const std::string &correoEmisor, const std::string &correoReceptor)
+    {
         // Eliminar la relación específica en la cabeza de la lista
         while (cabeza && ((cabeza->relacion.getEmisor() == correoEmisor && cabeza->relacion.getReceptor() == correoReceptor) ||
-                          (cabeza->relacion.getEmisor() == correoReceptor && cabeza->relacion.getReceptor() == correoEmisor))) {
+                          (cabeza->relacion.getEmisor() == correoReceptor && cabeza->relacion.getReceptor() == correoEmisor)))
+        {
             NodoRelacion *temp = cabeza;
             cabeza = cabeza->siguiente;
             delete temp;
@@ -833,13 +1017,17 @@ public:
 
         // Eliminar la relación específica en el resto de la lista
         NodoRelacion *actual = cabeza;
-        while (actual && actual->siguiente) {
+        while (actual && actual->siguiente)
+        {
             if ((actual->siguiente->relacion.getEmisor() == correoEmisor && actual->siguiente->relacion.getReceptor() == correoReceptor) ||
-                (actual->siguiente->relacion.getEmisor() == correoReceptor && actual->siguiente->relacion.getReceptor() == correoEmisor)) {
+                (actual->siguiente->relacion.getEmisor() == correoReceptor && actual->siguiente->relacion.getReceptor() == correoEmisor))
+            {
                 NodoRelacion *temp = actual->siguiente;
                 actual->siguiente = actual->siguiente->siguiente;
                 delete temp;
-            } else {
+            }
+            else
+            {
                 actual = actual->siguiente;
             }
         }
@@ -884,12 +1072,14 @@ public:
         }
     }
 
-
-    void agregarRelacionesAceptadasAMatriz(MatrizDispersa &matriz) {
+    void agregarRelacionesAceptadasAMatriz(MatrizDispersa &matriz)
+    {
         NodoRelacion *actual = cabeza;
 
-        while (actual) {
-            if (actual->relacion.getEstado() == "ACEPTADA") {
+        while (actual)
+        {
+            if (actual->relacion.getEstado() == "ACEPTADA")
+            {
                 matriz.insertarRelacion(actual->relacion.getEmisor(), actual->relacion.getReceptor());
             }
             actual = actual->siguiente;
@@ -916,16 +1106,15 @@ public:
             }
 
             std::cout << "Depuración: Finalizada la carga de relaciones desde " << nombreArchivo << std::endl;
-                std::cout << "===============================\n";
-                std::cout << "Relaciones cargadas exitosamente.\n";
-                std::cout << "===============================\n";
+            std::cout << "===============================\n";
+            std::cout << "Relaciones cargadas exitosamente.\n";
+            std::cout << "===============================\n";
         }
 
         else
         {
             std::cerr << "Error al abrir el archivo JSON." << std::endl;
         }
-
     }
 
 private:
@@ -975,10 +1164,6 @@ public:
 
     Nodo_emisor(const Emisor &emisor) : emisor(emisor), siguiente(nullptr) {}
 };
-
-
-
-
 
 class ListaEmisor
 {
@@ -1132,14 +1317,17 @@ public:
         std::cout << "Depuración: Emisor agregado con correo: " << emisor.getCorreo() << std::endl;
     }
 
-    void cambiarEstadoSolicitud(const std::string &correoEmisor, const std::string &correoReceptor, const std::string &nuevoEstado) {
+    void cambiarEstadoSolicitud(const std::string &correoEmisor, const std::string &correoReceptor, const std::string &nuevoEstado)
+    {
         Nodo_emisor *actual = cabeza;
-        while (actual) {
+        while (actual)
+        {
             // Verifica que el emisor, el receptor y el estado coincidan
             if (actual->emisor.getCorreo() == correoEmisor &&
                 actual->emisor.getReceptor() == correoReceptor &&
-                actual->emisor.getEstado() == "PENDIENTE") {
-                    
+                actual->emisor.getEstado() == "PENDIENTE")
+            {
+
                 // Cambia el estado de la solicitud a nuevoEstado
                 actual->emisor.setEstado(nuevoEstado);
                 return;
@@ -1147,7 +1335,6 @@ public:
             actual = actual->siguiente;
         }
     }
-
 
     void borrarEmisoresPorCorreo(const std::string &correo)
     {
@@ -1173,9 +1360,11 @@ public:
             }
         }
     }
-    void borrarSolicitudEspecifica(const std::string &correoEmisor, const std::string &correoReceptor) {
+    void borrarSolicitudEspecifica(const std::string &correoEmisor, const std::string &correoReceptor)
+    {
         // Eliminar la solicitud específica en la cabeza de la lista
-        while (cabeza && cabeza->emisor.getCorreo() == correoEmisor && cabeza->emisor.getReceptor() == correoReceptor) {
+        while (cabeza && cabeza->emisor.getCorreo() == correoEmisor && cabeza->emisor.getReceptor() == correoReceptor)
+        {
             Nodo_emisor *temp = cabeza;
             cabeza = cabeza->siguiente;
             delete temp;
@@ -1183,17 +1372,22 @@ public:
 
         // Eliminar la solicitud específica en el resto de la lista
         Nodo_emisor *actual = cabeza;
-        while (actual && actual->siguiente) {
+        while (actual && actual->siguiente)
+        {
             if (actual->siguiente->emisor.getCorreo() == correoEmisor &&
-                actual->siguiente->emisor.getReceptor() == correoReceptor) {
+                actual->siguiente->emisor.getReceptor() == correoReceptor)
+            {
                 Nodo_emisor *temp = actual->siguiente;
                 actual->siguiente = actual->siguiente->siguiente;
                 delete temp;
-            } else {
+            }
+            else
+            {
                 actual = actual->siguiente;
             }
         }
     }
+
     void mostrarEmisores(const ListaRelaciones &listaRelaciones, const std::string &correo) const
     {
         if (cabeza == nullptr)
@@ -1203,7 +1397,9 @@ public:
             NodoRelacion *actualRelacion = listaRelaciones.obtenerCabeza();
             while (actualRelacion)
             {
-                if (actualRelacion->relacion.getEmisor() == correo)
+                auto estado = actualRelacion->relacion.getEstado();
+                if (actualRelacion->relacion.getEmisor() == correo &&
+                    (estado != "ACEPTADA" && estado != "RECHAZADA"))
                 {
                     encontrado = true;
                     std::cout << "========================================" << std::endl;
@@ -1211,11 +1407,9 @@ public:
                     std::cout << "\n========================================" << std::endl;
                     std::cout << "Correo: " << actualRelacion->relacion.getEmisor()
                               << ", Receptor: " << actualRelacion->relacion.getReceptor()
-                              << ", Estado: " << actualRelacion->relacion.getEstado()
+                              << ", Estado: " << estado
                               << "\n========================================"
                               << std::endl;
-                    std::cout << "La solicitud está en la lista de relaciones." << std::endl;
-                    std::cout << "Estado en la lista de relaciones: " << actualRelacion->relacion.getEstado() << std::endl;
                 }
                 actualRelacion = actualRelacion->siguiente;
             }
@@ -1233,7 +1427,9 @@ public:
 
             while (actual)
             {
-                if (actual->emisor.getCorreo() == correo)
+                auto estado = actual->emisor.getEstado();
+                if (actual->emisor.getCorreo() == correo &&
+                    (estado != "ACEPTADA" && estado != "RECHAZADA"))
                 {
                     encontradoEnEmisores = true;
                     std::cout << "========================================" << std::endl;
@@ -1241,7 +1437,7 @@ public:
                     std::cout << "\n========================================" << std::endl;
                     std::cout << "Correo: " << actual->emisor.getCorreo()
                               << ", Receptor: " << actual->emisor.getReceptor()
-                              << ", Estado: " << actual->emisor.getEstado()
+                              << ", Estado: " << estado
                               << "\n========================================"
                               << std::endl;
                 }
@@ -1255,7 +1451,9 @@ public:
                 NodoRelacion *actualRelacion = listaRelaciones.obtenerCabeza();
                 while (actualRelacion)
                 {
-                    if (actualRelacion->relacion.getEmisor() == correo)
+                    auto estado = actualRelacion->relacion.getEstado();
+                    if (actualRelacion->relacion.getEmisor() == correo &&
+                        (estado != "ACEPTADA" && estado != "RECHAZADA"))
                     {
                         encontradoEnRelaciones = true;
                         std::cout << "========================================" << std::endl;
@@ -1263,11 +1461,9 @@ public:
                         std::cout << "\n========================================" << std::endl;
                         std::cout << "Correo: " << actualRelacion->relacion.getEmisor()
                                   << ", Receptor: " << actualRelacion->relacion.getReceptor()
-                                  << ", Estado: " << actualRelacion->relacion.getEstado()
+                                  << ", Estado: " << estado
                                   << "\n========================================"
                                   << std::endl;
-                        std::cout << "La solicitud está en la lista de relaciones." << std::endl;
-                        std::cout << "Estado en la lista de relaciones: " << actualRelacion->relacion.getEstado() << std::endl;
                     }
                     actualRelacion = actualRelacion->siguiente;
                 }
@@ -1283,7 +1479,9 @@ public:
                 NodoRelacion *actualRelacion = listaRelaciones.obtenerCabeza();
                 while (actualRelacion)
                 {
-                    if (actualRelacion->relacion.getEmisor() == correo)
+                    auto estado = actualRelacion->relacion.getEstado();
+                    if (actualRelacion->relacion.getEmisor() == correo &&
+                        (estado != "ACEPTADA" && estado != "RECHAZADA"))
                     {
                         encontrado = true;
                         std::cout << "========================================" << std::endl;
@@ -1291,11 +1489,9 @@ public:
                         std::cout << "\n========================================" << std::endl;
                         std::cout << "Correo: " << actualRelacion->relacion.getEmisor()
                                   << ", Receptor: " << actualRelacion->relacion.getReceptor()
-                                  << ", Estado: " << actualRelacion->relacion.getEstado()
+                                  << ", Estado: " << estado
                                   << "\n========================================"
                                   << std::endl;
-                        std::cout << "La solicitud está en la lista de relaciones." << std::endl;
-                        std::cout << "Estado en la lista de relaciones: " << actualRelacion->relacion.getEstado() << std::endl;
                     }
                     actualRelacion = actualRelacion->siguiente;
                 }
@@ -1556,16 +1752,22 @@ public:
         std::cout << "No se encontró una solicitud de amistad del emisor " << correoEmisor << " para rechazar." << std::endl;
     }
 
-    void aceptarSolicitud(const std::string &correoEmisor, ListaEmisor &listaEmisor, ListaRelaciones &listaRelaciones, MatrizDispersa &matriz) {
+    void aceptarSolicitud(const std::string &correoEmisor, ListaEmisor &listaEmisor, ListaRelaciones &listaRelaciones, MatrizDispersa &matriz)
+    {
         Nodo_PilaReceptor *actual = cima;
         Nodo_PilaReceptor *anterior = nullptr;
 
-        while (actual) {
-            if (actual->receptor.getEmisor() == correoEmisor) {
+        while (actual)
+        {
+            if (actual->receptor.getEmisor() == correoEmisor)
+            {
                 // Eliminar de la pila
-                if (anterior) {
+                if (anterior)
+                {
                     anterior->siguiente = actual->siguiente;
-                } else {
+                }
+                else
+                {
                     cima = actual->siguiente;
                 }
 
@@ -1573,7 +1775,7 @@ public:
                 std::cout << "Solicitud de amistad del emisor " << correoEmisor << " ACEPTADA." << std::endl;
 
                 // Obtener el nombre del receptor desde la clase relacionada
-                std::string nombreReceptor = actual->receptor.getCorreo();  
+                std::string nombreReceptor = actual->receptor.getCorreo();
 
                 // Actualizar el estado de la solicitud a ACEPTADA en la lista de emisores y relaciones
                 listaEmisor.cambiarEstadoSolicitud(correoEmisor, nombreReceptor, "ACEPTADA");
@@ -1581,8 +1783,7 @@ public:
 
                 // Insertar en la matriz dispersa la nueva relación de amistad
                 matriz.insertarRelacion(correoEmisor, nombreReceptor);
-                listaEmisor.borrarSolicitudEspecifica(correoEmisor, nombreReceptor);
-                listaRelaciones.borrarRelacionEspecifica(correoEmisor, nombreReceptor);
+
                 delete actual;
                 return;
             }
@@ -1650,7 +1851,6 @@ private:
         return false;
     }
 };
-
 
 class Publicacion
 {
@@ -1859,6 +2059,113 @@ public:
         }
     }
 
+void generateDotForUsuario_amigos(const std::string &usuarioCorreo, const MatrizDispersa &matriz, const std::string &filename) const
+{
+    std::ofstream file(filename);
+    if (!file.is_open())
+    {
+        std::cerr << "No se pudo abrir el archivo para escribir." << std::endl;
+        return;
+    }
+
+    file << "digraph G {" << std::endl;
+    file << "node [shape=record];" << std::endl;
+    file << "rankdir=LR;" << std::endl;
+
+    std::vector<std::string> amigos = matriz.obtenerAmigos(usuarioCorreo);
+
+    std::map<std::string, bool> correosAmigos;
+    correosAmigos[usuarioCorreo] = true;
+    for (const auto &amigo : amigos)
+    {
+        correosAmigos[amigo] = true;
+    }
+
+    NodoPublicacion *current = cabeza;
+    int id = 0;
+    std::map<NodoPublicacion *, int> nodeIds;
+    NodoPublicacion *firstNode = nullptr;
+    NodoPublicacion *lastNode = nullptr;
+
+    while (current != nullptr)
+    {
+        if (correosAmigos.find(current->publicacion.getCorreo()) != correosAmigos.end())
+        {
+            nodeIds[current] = id;
+
+            if (firstNode == nullptr) {
+                firstNode = current;
+            }
+
+            lastNode = current;
+
+            file << "node" << id << " [label=\"{" << "Correo: " << current->publicacion.getCorreo() << "\\n"
+                << "Contenido: " << current->publicacion.getContenido() << "\\n"
+                << "Fecha: " << current->publicacion.getFecha() << "\\n"
+                << "Hora: " << current->publicacion.getHora() << "}\"];" << std::endl;
+
+            id++;
+        }
+        current = current->siguiente;
+    }
+
+    for (auto it = nodeIds.begin(); it != nodeIds.end(); ++it)
+    {
+        NodoPublicacion *currentNode = it->first;
+        int currentId = it->second;
+
+        if (currentNode->siguiente != nullptr && nodeIds.find(currentNode->siguiente) != nodeIds.end())
+        {
+            int siguienteId = nodeIds[currentNode->siguiente];
+            file << "node" << currentId << " -> node" << siguienteId << ";" << std::endl;
+
+        }
+
+        if (currentNode->anterior != nullptr && nodeIds.find(currentNode->anterior) != nodeIds.end())
+        {
+            int anteriorId = nodeIds[currentNode->anterior];
+            if (anteriorId != currentId) 
+            {
+                file << "node" << currentId << " -> node" << anteriorId << " [style=dashed];" << std::endl;
+
+            }
+        }
+    }
+
+    if (firstNode != nullptr && lastNode != nullptr && nodeIds.find(firstNode) != nodeIds.end() && nodeIds.find(lastNode) != nodeIds.end())
+    {
+        int firstId = nodeIds[firstNode];
+        int lastId = nodeIds[lastNode];
+        
+        file << "node" << firstId << " -> node" << lastId << ";" << std::endl;
+        file << "node" << lastId << " -> node" << firstId << " [style=dashed];" << std::endl;
+
+    }
+    if (nodeIds.size() > 1)
+    {
+        file << "node0 -> node1;" << std::endl;
+    }
+    if (nodeIds.size() > 1)
+    {
+        file << "node1 -> node0;" << std::endl;
+    }
+
+    file << "}" << std::endl;
+    file.close();
+}
+
+
+        
+    void renderGraphviz_publis_amigos(const std::string &dotFilename, const std::string &imageFilename) const
+    {
+        std::string command = "dot -Tpng " + dotFilename + " -o " + imageFilename;
+        int result = system(command.c_str());
+        if (result != 0)
+        {
+            std::cerr << "Error al generar la imagen con Graphviz" << std::endl;
+        }
+    }
+
     void renderGraphviz(const std::string &dotFilename, const std::string &imageFilename) const
     {
         std::string command = "dot -Tpng " + dotFilename + " -o " + imageFilename;
@@ -2020,12 +2327,21 @@ public:
         {
             std::cout << "No se encontraron publicaciones para el usuario con correo: " << correo << std::endl;
         }
-        else
+    }
+
+    void mostrarPublicacionesYAmigos(const std::string &correo, const MatrizDispersa &matriz)
+    {
+        // Muestra las publicaciones del usuario dado
+        mostrarPublicacionesPorCorreo(correo);
+
+        // Obtiene la lista de amigos del usuario
+        std::vector<std::string> amigos = matriz.obtenerAmigos(correo);
+
+        // Muestra las publicaciones de cada amigo
+        for (const auto &amigo : amigos)
         {
-            std::cout << "Ingrese el ID de la publicación que desea borrar: ";
-            int id_a_borrar;
-            std::cin >> id_a_borrar;
-            borrarPublicacionPorId(id_a_borrar);
+            std::cout << "Publicaciones de " << amigo << ":" << std::endl;
+            mostrarPublicacionesPorCorreo(amigo);
         }
     }
 
@@ -2150,6 +2466,10 @@ int main()
                 std::string imageFilename_Relaciones = "relaciones.png";
                 std::string dotFilename_top5MenosAmigos = "top5MenosAmigos.dot";
                 std::string imageFilename_top5MenosAmigos = "top5MenosAmigos.png";
+                std::string dotFilename_Mis_amigos = "Mis_amigos.dot";
+                std::string imageFilename_Mis_amigos = "Mis_amigos.png";
+                std::string dotFilename_Mis_amigos_publicaciones = "Mis_amigos_publicaciones.dot";
+                std::string imageFilename_Mis_amigos_publicaciones = "Mis_amigos_publicaciones.png";
                 std::string receptor;
                 std::string emisor;
                 std::string estado = "PENDIENTE";
@@ -2181,7 +2501,7 @@ int main()
                             std::cin.clear();
                             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                             std::cout << "Opción inválida. Por favor, seleccione una opción válida." << std::endl;
-                            admin_opcion = -1; // Resetea la opción para evitar una selección inválida
+                            admin_opcion = -1;
                         }
                         else
                         {
@@ -2326,7 +2646,7 @@ int main()
                                     }
                                     else if (perfil_opcion == 2)
                                     {
-                                        borrarUsuario(correo, listaEmisor, pilaReceptor, listaUsuarios, listaPublicaciones, listaRelaciones, matriz);
+                                    borrarUsuario(correo, listaEmisor, pilaReceptor, listaUsuarios, listaPublicaciones, listaRelaciones, matriz);
                                         usuario_opcion = 0;
                                         break;
                                     }
@@ -2402,7 +2722,7 @@ int main()
                                     if (publicaciones_opcion == 1)
                                     {
                                         std::cout << "Publicaciones\n";
-                                        listaPublicaciones.mostrarTodasLasPublicaciones();
+                                        listaPublicaciones.mostrarPublicacionesYAmigos(correo, matriz);
                                         break;
                                     }
                                     else if (publicaciones_opcion == 2)
@@ -2411,26 +2731,28 @@ int main()
                                         std::string contenido;
                                         std::string fecha;
                                         std::string hora;
+                                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-                                        std::cout << "Introduce el contenido de la publicación: ";
-                                        std::cin >> contenido;
+                                        std::cout << "Introduce el contenido de la publicación: "<< std::endl;
+                                        std::getline(std::cin, contenido); 
 
-                                        std::cout << "Introduce la fecha (YYYY-MM-DD): ";
-                                        std::cin >> fecha;
+                                        std::cout << "Introduce la fecha (YYYY-MM-DD): "<< std::endl;
+                                        std::getline(std::cin, fecha);
 
-                                        std::cout << "Introduce la hora (HH:MM): ";
-                                        std::cin >> hora;
+                                        std::cout << "Introduce la hora (HH:MM): "<< std::endl;
+                                        std::getline(std::cin, hora);
 
                                         // Crear la publicación
                                         listaPublicaciones.crearPublicacion(correo, contenido, fecha, hora);
 
                                         std::cout << "Publicación creada exitosamente.\n";
+
                                         break;
                                     }
                                     else if (publicaciones_opcion == 3)
                                     {
                                         std::cout << "Eliminar publicación\n";
-                                        listaPublicaciones.mostrarPublicacionesPorCorreo(correo);
+                                        listaPublicaciones.borrarPublicacionesPorCorreo(correo);
 
                                         break;
                                     }
@@ -2466,16 +2788,18 @@ int main()
                                             break;
                                         case 2:
                                             std::cout << "Opción seleccionada: Reporte de Relaciones de Amistad.\n";
-
+                                            matriz.generateDotMatrizDispersa(dotFilename_Relaciones);
+                                            matriz.renderGraphvizMatrizDispersa(dotFilename_Relaciones, imageFilename_Relaciones);
                                             break;
                                         case 3:
                                             std::cout << "Opción seleccionada: Reporte de Publicaciones.\n";
-
+                                            listaPublicaciones.generateDotForUsuario_amigos(correo, matriz, dotFilename_Mis_amigos_publicaciones);
+                                            listaPublicaciones.renderGraphviz_publis_amigos(dotFilename_Mis_amigos_publicaciones, imageFilename_Mis_amigos_publicaciones);
                                             break;
                                         case 4:
                                             std::cout << "Opción seleccionada: Mis Amigos.\n";
-                                            matriz.mostrarMatriz();
-
+                                            matriz.generateDotMatrizDispersa_usuario(dotFilename_Mis_amigos, correo);
+                                            matriz.renderGraphvizMatrizDispersa_usuarios(dotFilename_Mis_amigos, imageFilename_Mis_amigos);
                                             break;
                                         case 5:
                                         case 0:

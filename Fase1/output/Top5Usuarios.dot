@@ -3,5 +3,6 @@ node [shape=plaintext];
 Top5Usuarios [label=<
 <table border='1' cellborder='1' cellspacing='0'>
 <tr><td><b>Usuario</b></td><td><b>Publicaciones</b></td></tr>
+<tr><td>shadow@gmail.com</td><td>1</td></tr>
 </table>>];
 }

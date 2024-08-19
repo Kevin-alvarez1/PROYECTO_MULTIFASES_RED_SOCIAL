@@ -3,10 +3,10 @@ node [shape=plaintext];
 TOP5_USUARIOS [label=<
 <table border='2' cellborder='1' cellspacing='0'>
 <tr><td><b>Usuario</b></td><td><b>Relaciones</b></td></tr>
-<tr><td>asd</td><td>1</td></tr>
-<tr><td>samira@gmail.com</td><td>2</td></tr>
-<tr><td>shadow@gmail.com</td><td>2</td></tr>
+<tr><td>samira@gmail.com</td><td>1</td></tr>
+<tr><td>mike@gmail.com</td><td>2</td></tr>
+<tr><td>maria@gmail.com</td><td>2</td></tr>
 <tr><td>sam@gmail.com</td><td>2</td></tr>
-<tr><td>mike@gmail.com</td><td>3</td></tr>
+<tr><td>shadow@gmail.com</td><td>3</td></tr>
 </table>>];
 }

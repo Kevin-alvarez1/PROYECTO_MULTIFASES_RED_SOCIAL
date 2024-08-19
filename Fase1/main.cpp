@@ -2234,7 +2234,7 @@ void generateDotForUsuario_amigos(const std::string &usuarioCorreo, const Matriz
         }
     }
 
-    void borrarPublicacionPorId(int id)
+    void borrarPublicacionPorId(const std::string& correo, int id)
     {
         if (cabeza == nullptr)
         {
@@ -2242,22 +2242,38 @@ void generateDotForUsuario_amigos(const std::string &usuarioCorreo, const Matriz
             return;
         }
 
-        NodoPublicacion *actual = cabeza;
+        NodoPublicacion* actual = cabeza;
+        NodoPublicacion* publicacionAEliminar = nullptr;
 
-        while (actual != nullptr && actual->publicacion.getId() != id)
+        // Buscar la publicación con el id especificado
+        while (actual != nullptr)
         {
+            if (actual->publicacion.getId() == id)
+            {
+                // Verificar si el correo coincide
+                if (actual->publicacion.getCorreo() == correo)
+                {
+                    publicacionAEliminar = actual;
+                    break;
+                }
+                else
+                {
+                    std::cerr << "La publicación con ID: " << id << " no pertenece al correo proporcionado." << std::endl;
+                    return;
+                }
+            }
             actual = actual->siguiente;
         }
 
-        if (actual == nullptr)
+        if (publicacionAEliminar == nullptr)
         {
             std::cerr << "No se encontró publicación con ID: " << id << "." << std::endl;
             return;
         }
 
-        if (actual == cabeza)
+        if (publicacionAEliminar == cabeza)
         {
-            cabeza = actual->siguiente;
+            cabeza = publicacionAEliminar->siguiente;
             if (cabeza != nullptr)
             {
                 cabeza->anterior = nullptr;
@@ -2269,19 +2285,19 @@ void generateDotForUsuario_amigos(const std::string &usuarioCorreo, const Matriz
         }
         else
         {
-            actual->anterior->siguiente = actual->siguiente;
-            if (actual->siguiente != nullptr)
+            publicacionAEliminar->anterior->siguiente = publicacionAEliminar->siguiente;
+            if (publicacionAEliminar->siguiente != nullptr)
             {
-                actual->siguiente->anterior = actual->anterior;
+                publicacionAEliminar->siguiente->anterior = publicacionAEliminar->anterior;
             }
             else
             {
-                cola = actual->anterior;
+                cola = publicacionAEliminar->anterior;
             }
         }
 
-        std::cout << "Eliminando publicación con ID: " << actual->publicacion.getId() << std::endl;
-        delete actual;
+        std::cout << "Eliminando publicación con ID: " << publicacionAEliminar->publicacion.getId() << std::endl;
+        delete publicacionAEliminar;
     }
 
     void mostrarTodasLasPublicaciones() const
@@ -2752,7 +2768,12 @@ int main()
                                     else if (publicaciones_opcion == 3)
                                     {
                                         std::cout << "Eliminar publicación\n";
-                                        listaPublicaciones.borrarPublicacionesPorCorreo(correo);
+                                        int id;
+                                        listaPublicaciones.mostrarPublicacionesYAmigos(correo, matriz);
+
+                                        std::cout << "Ingrese el ID de la publicación que desea eliminar: ";
+                                        std::cin >> id;
+                                        listaPublicaciones.borrarPublicacionPorId(correo, id);
 
                                         break;
                                     }

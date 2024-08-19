@@ -3,7 +3,7 @@ node [shape=plaintext];
 RELACIONES_DE_AMISTAD [label=<
 <table border='2' cellborder='1' cellspacing='0'>
 <tr><td></td><td><b>samira@gmail.com</b></td><td><b>mike@gmail.com</b></td><td><b>maria@gmail.com</b></td></tr>
-<tr><td>shadow@gmail.com</td><td>x</td><td></td><td></td></tr>
+<tr><td>shadow@gmail.com</td><td>x</td><td>x</td><td></td></tr>
 <tr><td>sam@gmail.com</td><td></td><td>x</td><td>x</td></tr>
 </table>>];
 }

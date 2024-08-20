@@ -1,7 +1,4 @@
 digraph G {
 node [shape=record];
 rankdir=LR;
-node0 [label="{Receptor: maria@gmail.com\nEmisor: mike@gmail.com\nEstado: PENDIENTE}"];
-node1 [label="{Receptor: maria@gmail.com\nEmisor: samira@gmail.com\nEstado: PENDIENTE}"];
-node0 -> node1;
 }

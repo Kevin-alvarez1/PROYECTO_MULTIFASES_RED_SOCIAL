@@ -4,11 +4,8 @@ rankdir=LR;
 node0 [label="{Correo: mike@gmail.com\nContenido: Hola, soy Miguel\nFecha: 01/01/2023\nHora: 12:00}"];
 node1 [label="{Correo: maria@gmail.com\nContenido: Hola, soy Maria\nFecha: 02/04/2023\nHora: 24:00}"];
 node2 [label="{Correo: shadow@gmail.com\nContenido: Hola, soy Erick\nFecha: 01/12/2023\nHora: 07:00}"];
-node3 [label="{Correo: mike@gmail.com\nContenido: 30213012030123\nFecha: 12312\nHora: 12222}"];
 node0 -> node1;
 node1 -> node2;
 node1 -> node0 [style=dashed];
-node2 -> node3;
 node2 -> node1 [style=dashed];
-node3 -> node2 [style=dashed];
 }

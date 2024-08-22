@@ -2059,100 +2059,72 @@ public:
         }
     }
 
-void generateDotForUsuario_amigos(const std::string &usuarioCorreo, const MatrizDispersa &matriz, const std::string &filename) const
-{
-    std::ofstream file(filename);
-    if (!file.is_open())
+    void generateDotForUsuario_amigos(const std::string &usuarioCorreo, const MatrizDispersa &matriz, const std::string &filename) const
     {
-        std::cerr << "No se pudo abrir el archivo para escribir." << std::endl;
-        return;
-    }
-
-    file << "digraph G {" << std::endl;
-    file << "node [shape=record];" << std::endl;
-    file << "rankdir=LR;" << std::endl;
-
-    std::vector<std::string> amigos = matriz.obtenerAmigos(usuarioCorreo);
-
-    std::map<std::string, bool> correosAmigos;
-    correosAmigos[usuarioCorreo] = true;
-    for (const auto &amigo : amigos)
-    {
-        correosAmigos[amigo] = true;
-    }
-
-    NodoPublicacion *current = cabeza;
-    int id = 0;
-    std::map<NodoPublicacion *, int> nodeIds;
-    NodoPublicacion *firstNode = nullptr;
-    NodoPublicacion *lastNode = nullptr;
-
-    while (current != nullptr)
-    {
-        if (correosAmigos.find(current->publicacion.getCorreo()) != correosAmigos.end())
+        std::ofstream file(filename);
+        if (!file.is_open())
         {
-            nodeIds[current] = id;
-
-            if (firstNode == nullptr) {
-                firstNode = current;
-            }
-
-            lastNode = current;
-
-            file << "node" << id << " [label=\"{" << "Correo: " << current->publicacion.getCorreo() << "\\n"
-                << "Contenido: " << current->publicacion.getContenido() << "\\n"
-                << "Fecha: " << current->publicacion.getFecha() << "\\n"
-                << "Hora: " << current->publicacion.getHora() << "}\"];" << std::endl;
-
-            id++;
-        }
-        current = current->siguiente;
-    }
-
-    for (auto it = nodeIds.begin(); it != nodeIds.end(); ++it)
-    {
-        NodoPublicacion *currentNode = it->first;
-        int currentId = it->second;
-
-        if (currentNode->siguiente != nullptr && nodeIds.find(currentNode->siguiente) != nodeIds.end())
-        {
-            int siguienteId = nodeIds[currentNode->siguiente];
-            file << "node" << currentId << " -> node" << siguienteId << ";" << std::endl;
-
+            std::cerr << "No se pudo abrir el archivo para escribir." << std::endl;
+            return;
         }
 
-        if (currentNode->anterior != nullptr && nodeIds.find(currentNode->anterior) != nodeIds.end())
+        file << "digraph G {" << std::endl;
+        file << "node [shape=record];" << std::endl;
+        file << "rankdir=LR;" << std::endl;
+
+        std::vector<std::string> amigos = matriz.obtenerAmigos(usuarioCorreo);
+        std::map<std::string, bool> correosAmigos;
+        correosAmigos[usuarioCorreo] = true;
+        for (const auto &amigo : amigos)
         {
-            int anteriorId = nodeIds[currentNode->anterior];
-            if (anteriorId != currentId) 
+            correosAmigos[amigo] = true;
+        }
+
+        NodoPublicacion *current = cabeza;
+        std::vector<NodoPublicacion *> nodos;
+        std::map<NodoPublicacion *, int> nodeIds;
+        int id = 0;
+
+        while (current != nullptr)
+        {
+            if (correosAmigos.find(current->publicacion.getCorreo()) != correosAmigos.end())
             {
-                file << "node" << currentId << " -> node" << anteriorId << " [style=dashed];" << std::endl;
+                nodos.push_back(current);
+                nodeIds[current] = id;
 
+                file << "node" << id << " [label=\"{" << "Correo: " << current->publicacion.getCorreo() << "\\n"
+                    << "Contenido: " << current->publicacion.getContenido() << "\\n"
+                    << "Fecha: " << current->publicacion.getFecha() << "\\n"
+                    << "Hora: " << current->publicacion.getHora() << "}\"];" << std::endl;
+
+                id++;
+            }
+            current = current->siguiente;
+        }
+
+        for (size_t i = 0; i < nodos.size(); ++i)
+        {
+            if (i + 1 < nodos.size())
+            {
+                int id1 = nodeIds[nodos[i]];
+                int id2 = nodeIds[nodos[i + 1]];
+                file << "node" << id1 << " -> node" << id2 << ";" << std::endl;
+                file << "node" << id2 << " -> node" << id1 << ";" << std::endl; // Conexión bidireccional
             }
         }
-    }
 
-    if (firstNode != nullptr && lastNode != nullptr && nodeIds.find(firstNode) != nodeIds.end() && nodeIds.find(lastNode) != nodeIds.end())
-    {
-        int firstId = nodeIds[firstNode];
-        int lastId = nodeIds[lastNode];
-        
-        file << "node" << firstId << " -> node" << lastId << ";" << std::endl;
-        file << "node" << lastId << " -> node" << firstId << " [style=dashed];" << std::endl;
+        if (!nodos.empty())
+        {
+            int firstId = nodeIds[nodos.front()];
+            int lastId = nodeIds[nodos.back()];
+            
+            file << "node" << firstId << " -> node" << lastId << ";" << std::endl;
+            file << "node" << lastId << " -> node" << firstId << ";" << std::endl;
+        }
 
+        file << "}" << std::endl;
+        file.close();
     }
-    if (nodeIds.size() > 1)
-    {
-        file << "node0 -> node1;" << std::endl;
-    }
-    if (nodeIds.size() > 1)
-    {
-        file << "node1 -> node0;" << std::endl;
-    }
-
-    file << "}" << std::endl;
-    file.close();
-}
 
 
         

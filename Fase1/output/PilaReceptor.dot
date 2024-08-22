@@ -1,4 +1,5 @@
 digraph G {
 node [shape=record];
 rankdir=LR;
+node0 [label="{Receptor: ana.hernandez@example.com\nEmisor: juan.martinez@example.com\nEstado: PENDIENTE}"];
 }

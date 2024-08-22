@@ -1,5 +1,4 @@
 digraph G {
 node [shape=record];
 rankdir=LR;
-node0 [label="{Correo: sam@gmail.com\nReceptor: shadow@gmail.com\nEstado: ACEPTADA}"];
 }

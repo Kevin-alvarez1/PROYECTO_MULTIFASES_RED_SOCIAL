@@ -1390,119 +1390,84 @@ public:
 
     void mostrarEmisores(const ListaRelaciones &listaRelaciones, const std::string &correo) const
     {
-        if (cabeza == nullptr)
-        {
-            // Si la lista de emisores está vacía, buscar en la lista de relaciones
-            bool encontrado = false;
-            NodoRelacion *actualRelacion = listaRelaciones.obtenerCabeza();
-            while (actualRelacion)
-            {
-                auto estado = actualRelacion->relacion.getEstado();
-                if (actualRelacion->relacion.getEmisor() == correo &&
-                    (estado != "ACEPTADA" && estado != "RECHAZADA"))
-                {
-                    encontrado = true;
-                    std::cout << "========================================" << std::endl;
-                    std::cout << "\n----------------Enviadas----------------";
-                    std::cout << "\n========================================" << std::endl;
-                    std::cout << "Correo: " << actualRelacion->relacion.getEmisor()
-                              << ", Receptor: " << actualRelacion->relacion.getReceptor()
-                              << ", Estado: " << estado
-                              << "\n========================================"
-                              << std::endl;
-                }
-                actualRelacion = actualRelacion->siguiente;
-            }
+        bool encontradoEnEmisores = false;
+        bool encontradoEnRelaciones = false;
 
-            if (!encontrado)
+        // Crear un mapa para almacenar los usuarios con los que el correo tiene solicitudes aceptadas
+        std::map<std::string, bool> usuariosConAceptada;
+
+        // Verificar en la lista de relaciones si hay alguna solicitud aceptada
+        NodoRelacion *actualRelacion = listaRelaciones.obtenerCabeza();
+        while (actualRelacion)
+        {
+            if ((actualRelacion->relacion.getEmisor() == correo || actualRelacion->relacion.getReceptor() == correo) &&
+                actualRelacion->relacion.getEstado() == "ACEPTADA")
             {
-                std::cout << "No hay solicitudes de amistad para el correo proporcionado en la lista de relaciones." << std::endl;
+                usuariosConAceptada[actualRelacion->relacion.getEmisor()] = true;
+                usuariosConAceptada[actualRelacion->relacion.getReceptor()] = true;
             }
+            actualRelacion = actualRelacion->siguiente;
         }
-        else
-        {
-            // Si la lista de emisores no está vacía, mostrar y buscar en ambas listas
-            Nodo_emisor *actual = cabeza;
-            bool encontradoEnEmisores = false;
 
+        // Mostrar solicitudes en la lista de emisores si existe
+        if (cabeza != nullptr)
+        {
+            Nodo_emisor *actual = cabeza;
             while (actual)
             {
                 auto estado = actual->emisor.getEstado();
                 if (actual->emisor.getCorreo() == correo &&
                     (estado != "ACEPTADA" && estado != "RECHAZADA"))
                 {
-                    encontradoEnEmisores = true;
-                    std::cout << "========================================" << std::endl;
-                    std::cout << "\n----------------Enviadas----------------";
-                    std::cout << "\n========================================" << std::endl;
-                    std::cout << "Correo: " << actual->emisor.getCorreo()
-                              << ", Receptor: " << actual->emisor.getReceptor()
-                              << ", Estado: " << estado
-                              << "\n========================================"
-                              << std::endl;
+                    // Verificar si ya existe una solicitud aceptada en ListaRelaciones
+                    if (usuariosConAceptada.find(actual->emisor.getReceptor()) == usuariosConAceptada.end())
+                    {
+                        encontradoEnEmisores = true;
+                        std::cout << "========================================" << std::endl;
+                        std::cout << "\n----------------Enviadas----------------";
+                        std::cout << "\n========================================" << std::endl;
+                        std::cout << "Correo: " << actual->emisor.getCorreo()
+                                << ", Receptor: " << actual->emisor.getReceptor()
+                                << ", Estado: " << estado
+                                << "\n========================================"
+                                << std::endl;
+                    }
                 }
                 actual = actual->siguiente;
             }
+        }
 
-            if (encontradoEnEmisores)
+        // Verificar en la lista de relaciones si hay solicitudes pendientes que deben mostrarse
+        actualRelacion = listaRelaciones.obtenerCabeza();
+        while (actualRelacion)
+        {
+            auto estado = actualRelacion->relacion.getEstado();
+            if (actualRelacion->relacion.getEmisor() == correo &&
+                (estado != "ACEPTADA" && estado != "RECHAZADA"))
             {
-                // Verificar en la lista de relaciones
-                bool encontradoEnRelaciones = false;
-                NodoRelacion *actualRelacion = listaRelaciones.obtenerCabeza();
-                while (actualRelacion)
+                if (usuariosConAceptada.find(actualRelacion->relacion.getReceptor()) == usuariosConAceptada.end())
                 {
-                    auto estado = actualRelacion->relacion.getEstado();
-                    if (actualRelacion->relacion.getEmisor() == correo &&
-                        (estado != "ACEPTADA" && estado != "RECHAZADA"))
-                    {
-                        encontradoEnRelaciones = true;
-                        std::cout << "========================================" << std::endl;
-                        std::cout << "\n----------------Enviadas----------------";
-                        std::cout << "\n========================================" << std::endl;
-                        std::cout << "Correo: " << actualRelacion->relacion.getEmisor()
-                                  << ", Receptor: " << actualRelacion->relacion.getReceptor()
-                                  << ", Estado: " << estado
-                                  << "\n========================================"
-                                  << std::endl;
-                    }
-                    actualRelacion = actualRelacion->siguiente;
-                }
-
-                if (!encontradoEnRelaciones)
-                {
-                    std::cout << "La solicitud no está en la lista de relaciones." << std::endl;
+                    encontradoEnRelaciones = true;
+                    std::cout << "========================================" << std::endl;
+                    std::cout << "\n----------------Enviadas----------------";
+                    std::cout << "\n========================================" << std::endl;
+                    std::cout << "Correo: " << actualRelacion->relacion.getEmisor()
+                            << ", Receptor: " << actualRelacion->relacion.getReceptor()
+                            << ", Estado: " << estado
+                            << "\n========================================"
+                            << std::endl;
                 }
             }
-            else
-            {
-                bool encontrado = false;
-                NodoRelacion *actualRelacion = listaRelaciones.obtenerCabeza();
-                while (actualRelacion)
-                {
-                    auto estado = actualRelacion->relacion.getEstado();
-                    if (actualRelacion->relacion.getEmisor() == correo &&
-                        (estado != "ACEPTADA" && estado != "RECHAZADA"))
-                    {
-                        encontrado = true;
-                        std::cout << "========================================" << std::endl;
-                        std::cout << "\n----------------Enviadas----------------";
-                        std::cout << "\n========================================" << std::endl;
-                        std::cout << "Correo: " << actualRelacion->relacion.getEmisor()
-                                  << ", Receptor: " << actualRelacion->relacion.getReceptor()
-                                  << ", Estado: " << estado
-                                  << "\n========================================"
-                                  << std::endl;
-                    }
-                    actualRelacion = actualRelacion->siguiente;
-                }
+            actualRelacion = actualRelacion->siguiente;
+        }
 
-                if (!encontrado)
-                {
-                    std::cout << "No hay solicitudes de amistad para el correo proporcionado en la lista de relaciones." << std::endl;
-                }
-            }
+        // Mostrar mensajes si no se encontraron solicitudes
+        if (!encontradoEnEmisores && !encontradoEnRelaciones)
+        {
+            std::cout << "No hay solicitudes de amistad para el correo proporcionado en las listas." << std::endl;
         }
     }
+
 
     void eliminarPrimero()
     {
@@ -1682,26 +1647,49 @@ public:
 
     void buscarYApilarPendientes(const std::string &correo, const ListaEmisor &listaEmisor, const ListaRelaciones &listaRelaciones)
     {
-        // Buscar en ListaEmisor
+        // Verificar si ya existe una solicitud aceptada entre el usuario y los demás
+        std::map<std::string, bool> usuariosConAceptada;
+
+        NodoRelacion *actualRelacion = listaRelaciones.obtenerCabeza();
+
+        while (actualRelacion)
+        {
+            // Verificar si ya existe una solicitud aceptada con el usuario
+            if ((actualRelacion->relacion.getEmisor() == correo || actualRelacion->relacion.getReceptor() == correo) &&
+                actualRelacion->relacion.getEstado() == "ACEPTADA")
+            {
+                usuariosConAceptada[actualRelacion->relacion.getEmisor()] = true;
+                usuariosConAceptada[actualRelacion->relacion.getReceptor()] = true;
+            }
+            actualRelacion = actualRelacion->siguiente;
+        }
+
+        // Buscar en ListaEmisor y ListaRelaciones
         Nodo_emisor *actualEmisor = listaEmisor.obtenerCabeza();
+        actualRelacion = listaRelaciones.obtenerCabeza();
 
         while (actualEmisor)
         {
             if (actualEmisor->emisor.getReceptor() == correo && actualEmisor->emisor.getEstado() == "PENDIENTE")
             {
-                apilar(Receptor(correo, actualEmisor->emisor.getCorreo(), "PENDIENTE"));
+                // Verificar si ya existe una solicitud aceptada en ListaRelaciones
+                if (usuariosConAceptada.find(actualEmisor->emisor.getCorreo()) == usuariosConAceptada.end())
+                {
+                    apilar(Receptor(correo, actualEmisor->emisor.getCorreo(), "PENDIENTE"));
+                }
             }
             actualEmisor = actualEmisor->siguiente;
         }
-
-        // Buscar en ListaRelaciones
-        NodoRelacion *actualRelacion = listaRelaciones.obtenerCabeza();
 
         while (actualRelacion)
         {
             if (actualRelacion->relacion.getReceptor() == correo && actualRelacion->relacion.getEstado() == "PENDIENTE")
             {
-                apilar(Receptor(correo, actualRelacion->relacion.getEmisor(), "PENDIENTE"));
+                // Verificar si ya existe una solicitud aceptada en ListaRelaciones
+                if (usuariosConAceptada.find(actualRelacion->relacion.getEmisor()) == usuariosConAceptada.end())
+                {
+                    apilar(Receptor(correo, actualRelacion->relacion.getEmisor(), "PENDIENTE"));
+                }
             }
             actualRelacion = actualRelacion->siguiente;
         }
@@ -1715,6 +1703,7 @@ public:
             std::cout << "Solicitudes pendientes apiladas para el correo: " << correo << std::endl;
         }
     }
+
 
     void rechazarSolicitud(const std::string &correoEmisor, ListaEmisor &listaEmisor, ListaRelaciones &listaRelaciones)
     {

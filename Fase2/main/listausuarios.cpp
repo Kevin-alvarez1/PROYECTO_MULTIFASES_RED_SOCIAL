@@ -2,14 +2,12 @@
 #include <iostream>
 ListaUsuarios::ListaUsuarios() : cabeza(nullptr), cola(nullptr) {}
 
-ListaUsuarios::~ListaUsuarios()
-{
+ListaUsuarios::~ListaUsuarios() {
     Nodo *actual = cabeza;
-    while (actual != nullptr)
-    {
-        Nodo *temp = actual;
-        actual = actual->siguiente;
-        delete temp;
+    while (actual != nullptr) {
+        Nodo *siguiente = actual->siguiente;
+        delete actual;
+        actual = siguiente;
     }
 }
 
@@ -74,8 +72,6 @@ void ListaUsuarios::cargarUsuariosDesdeJson(const std::string &nombreArchivo)
 
             Usuario usuario(nombre, apellido, fecha_de_nacimiento, correo, contrasena);
             agregarUsuario(usuario);
-            mostrarDatosPorCorreo(correo);
-
         }
     }
     catch (const nlohmann::json::exception &e)
@@ -179,23 +175,26 @@ void ListaUsuarios::generateDot(const std::string &filename) const
 
 bool ListaUsuarios::buscarUsuarioPorCorreoyContrasena(const std::string &correo, const std::string &contrasena) const
 {
-    std::cout << "=================================== " << std::endl;
-
     Nodo *temp = cabeza;
     while (temp != nullptr)
     {
+        // Imprimir datos para depuración
+        std::cout << "Comparando con: Correo: " << temp->usuario.getCorreo()
+                  << ", Contraseña: " << temp->usuario.getContrasena() << std::endl;
+
+        // Comparar correo y contraseña
         if (temp->usuario.getCorreo() == correo && temp->usuario.getContrasena() == contrasena)
         {
-            temp = nullptr;
-            delete temp;
-            return true;
+            std::cout << "Usuario encontrado: " << temp->usuario.getNombre() << std::endl;
+            return true; // Usuario encontrado
         }
-        temp = temp->siguiente;
+        temp = temp->siguiente; // Avanza al siguiente nodo
     }
-    std::cout << "=================================== " << std::endl;
 
-    return false;
+    std::cout << "Usuario no encontrado." << std::endl;
+    return false; // No se encontró el usuario
 }
+
 
 
 void ListaUsuarios::renderGraphviz(const std::string &dotFilename, const std::string &imageFilename) const

@@ -4,7 +4,7 @@
 #include <QDialog>
 #include "ListaUsuarios.h"
 
-class Login;  // Declaración adelantada
+class Login;
 
 namespace Ui {
 class Admin;
@@ -15,7 +15,7 @@ class Admin : public QDialog
     Q_OBJECT
 
 public:
-    explicit Admin(QWidget *parent = nullptr);
+    explicit Admin(ListaUsuarios *listaUsuarios, QWidget *parent = nullptr);
     ~Admin();
 
 private slots:
@@ -26,8 +26,8 @@ private slots:
 
 private:
     Ui::Admin *ui;
-    ListaUsuarios listaUsuarios; // Instancia de la lista de usuarios
-    Login *login; // Ventana para el administrador
+    ListaUsuarios *listaUsuarios; // Cambiar a puntero
+    Login *login;
 };
 
 #endif // ADMIN_H

@@ -6,7 +6,6 @@
 
 class Admin;
 class Usuarios;
-class ListaUsuarios;
 
 namespace Ui {
 class Login;
@@ -17,7 +16,7 @@ class Login : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit Login(QWidget *parent = nullptr);
+    explicit Login(ListaUsuarios *listaUsuarios, QWidget *parent = nullptr);
     ~Login();
 
 private slots:
@@ -27,7 +26,7 @@ private:
     Ui::Login *ui;
     Admin *adminWindow;
     Usuarios *usuarioWindow;
-    ListaUsuarios *listaUsuarios;
+    ListaUsuarios *listaUsuarios; // Cambiar a puntero
 };
 
 #endif // LOGIN_H

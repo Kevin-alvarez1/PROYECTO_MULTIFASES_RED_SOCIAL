@@ -80,23 +80,24 @@ void ListaUsuarios::cargarUsuariosDesdeJson(const std::string &nombreArchivo)
     }
 }
 
-void ListaUsuarios::mostrarDatosPorCorreo(const std::string &correo) const
+// ListaUsuarios.cpp
+Usuario ListaUsuarios::mostrarDatosPorCorreo(const std::string &correo) const
 {
-    Nodo *actual = cabeza;
+    Nodo* actual = cabeza;
     while (actual != nullptr)
     {
         if (actual->usuario.getCorreo() == correo)
         {
-            std::cout << "Usuario encontrado:" << std::endl;
-            std::cout << "Nombre: " << actual->usuario.getNombre() << std::endl;
-            std::cout << "Correo: " << actual->usuario.getCorreo() << std::endl;
-            std::cout << "Contraseña: " << actual->usuario.getContrasena() << std::endl;
-            return;
+            // Devuelve el usuario encontrado
+            return actual->usuario;
         }
         actual = actual->siguiente;
     }
-    std::cerr << "Usuario con correo " << correo << " no encontrado." << std::endl;
+
+    // Devuelve un objeto Usuario con valores vacíos si no se encuentra el usuario
+    return Usuario("", "", "", "", "");  // Valores predeterminados para un usuario "vacío"
 }
+
 
 void ListaUsuarios::borrarUsuarioPorCorreo(const std::string &correo)
 {

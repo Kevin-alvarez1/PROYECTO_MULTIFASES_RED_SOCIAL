@@ -20,6 +20,8 @@ public:
 private slots:
     void on_cerrar_sesion_btn_clicked();
 
+    void on_buscar_correo_btn_clicked();
+
 private:
     Ui::Usuarios *ui;
     Login *login;

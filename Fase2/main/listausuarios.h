@@ -28,7 +28,7 @@ public:
     void agregarUsuario(const Usuario &usuario);
     bool usuarioDuplicado(const std::string &correo) const;
     void cargarUsuariosDesdeJson(const std::string &nombreArchivo);
-    void mostrarDatosPorCorreo(const std::string &correo) const;
+    Usuario mostrarDatosPorCorreo(const std::string &correo) const;
     void borrarUsuarioPorCorreo(const std::string &correo);
     void generateDot(const std::string &filename) const;
     void renderGraphviz(const std::string &dotFilename, const std::string &imageFilename) const;

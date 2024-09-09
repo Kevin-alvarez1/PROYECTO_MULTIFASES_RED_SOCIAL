@@ -9,7 +9,6 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    // Crear la ventana de Login, pasando el puntero a la instancia de ListaUsuarios
     Login w(&listaUsuarios);
     w.show();
 

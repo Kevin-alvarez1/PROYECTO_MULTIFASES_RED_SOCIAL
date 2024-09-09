@@ -6,6 +6,7 @@
 
 class Admin;
 class Usuarios;
+class Registrarse;
 
 namespace Ui {
 class Login;
@@ -22,10 +23,14 @@ public:
 private slots:
     void on_InicioSesion_btn_clicked();
 
+    void on_Registrarse_btn_clicked();
+
 private:
     Ui::Login *ui;
     Admin *adminWindow;
     Usuarios *usuarioWindow;
+    Registrarse *registrarseWindow;
+
     ListaUsuarios *listaUsuarios; // Cambiar a puntero
 };
 

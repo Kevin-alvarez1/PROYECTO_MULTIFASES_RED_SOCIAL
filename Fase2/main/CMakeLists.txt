@@ -27,6 +27,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         listausuarios.h listausuarios.cpp
         usuario.h usuario.cpp
         usuarios.h usuarios.cpp usuarios.ui
+        registrarse.h registrarse.cpp registrarse.ui
 
 
     )

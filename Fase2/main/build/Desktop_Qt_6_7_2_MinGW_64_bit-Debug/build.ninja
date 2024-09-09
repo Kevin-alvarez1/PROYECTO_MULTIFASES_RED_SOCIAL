@@ -105,6 +105,14 @@ build CMakeFiles/main.dir/usuarios.cpp.obj: CXX_COMPILER__main_unscanned_Debug C
   OBJECT_DIR = CMakeFiles\main.dir
   OBJECT_FILE_DIR = CMakeFiles\main.dir
 
+build CMakeFiles/main.dir/registrarse.cpp.obj: CXX_COMPILER__main_unscanned_Debug C$:/Users/Player/Desktop/Carpeta$ de$ EDD/-EDD-Proyecto1_202203038/Fase2/main/registrarse.cpp || cmake_object_order_depends_target_main
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEP_FILE = CMakeFiles\main.dir\registrarse.cpp.obj.d
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -I"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/include" -isystem C:/Qt/6.7.2/mingw_64/include/QtCore -isystem C:/Qt/6.7.2/mingw_64/include -isystem C:/Qt/6.7.2/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.7.2/mingw_64/include/QtWidgets -isystem C:/Qt/6.7.2/mingw_64/include/QtGui
+  OBJECT_DIR = CMakeFiles\main.dir
+  OBJECT_FILE_DIR = CMakeFiles\main.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target main
@@ -113,7 +121,7 @@ build CMakeFiles/main.dir/usuarios.cpp.obj: CXX_COMPILER__main_unscanned_Debug C
 #############################################
 # Link the executable main.exe
 
-build main.exe: CXX_EXECUTABLE_LINKER__main_Debug CMakeFiles/main.dir/main_autogen/mocs_compilation.cpp.obj CMakeFiles/main.dir/main.cpp.obj CMakeFiles/main.dir/login.cpp.obj CMakeFiles/main.dir/admin.cpp.obj CMakeFiles/main.dir/listausuarios.cpp.obj CMakeFiles/main.dir/usuario.cpp.obj CMakeFiles/main.dir/usuarios.cpp.obj | C$:/Qt/6.7.2/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.7.2/mingw_64/lib/libQt6Gui.a C$:/Qt/6.7.2/mingw_64/lib/libQt6Core.a C$:/Qt/6.7.2/mingw_64/lib/libQt6EntryPoint.a || main_autogen main_autogen_timestamp_deps
+build main.exe: CXX_EXECUTABLE_LINKER__main_Debug CMakeFiles/main.dir/main_autogen/mocs_compilation.cpp.obj CMakeFiles/main.dir/main.cpp.obj CMakeFiles/main.dir/login.cpp.obj CMakeFiles/main.dir/admin.cpp.obj CMakeFiles/main.dir/listausuarios.cpp.obj CMakeFiles/main.dir/usuario.cpp.obj CMakeFiles/main.dir/usuarios.cpp.obj CMakeFiles/main.dir/registrarse.cpp.obj | C$:/Qt/6.7.2/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.7.2/mingw_64/lib/libQt6Gui.a C$:/Qt/6.7.2/mingw_64/lib/libQt6Core.a C$:/Qt/6.7.2/mingw_64/lib/libQt6EntryPoint.a || main_autogen main_autogen_timestamp_deps
   FLAGS = -DQT_QML_DEBUG -g
   LINK_FLAGS = -mwindows
   LINK_LIBRARIES = C:/Qt/6.7.2/mingw_64/lib/libQt6Widgets.a  C:/Qt/6.7.2/mingw_64/lib/libQt6Gui.a  C:/Qt/6.7.2/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -lmingw32  C:/Qt/6.7.2/mingw_64/lib/libQt6EntryPoint.a  -lshell32  -ld3d11  -ldxgi  -ldxguid  -ld3d12  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
@@ -200,7 +208,7 @@ build main_autogen_timestamp_deps: phony
 #############################################
 # Utility command for main_autogen
 
-build main_autogen: phony CMakeFiles/main_autogen main_autogen/include/ui_login.h main_autogen/include/ui_admin.h main_autogen/include/ui_usuarios.h main_autogen/timestamp main_autogen/mocs_compilation.cpp main_autogen_timestamp_deps
+build main_autogen: phony CMakeFiles/main_autogen main_autogen/include/ui_login.h main_autogen/include/ui_admin.h main_autogen/include/ui_usuarios.h main_autogen/include/ui_registrarse.h main_autogen/timestamp main_autogen/mocs_compilation.cpp main_autogen_timestamp_deps
 
 
 #############################################
@@ -217,7 +225,7 @@ build main_autogen/timestamp main_autogen/mocs_compilation.cpp | ${cmake_ninja_w
 #############################################
 # Phony custom command for CMakeFiles\main_autogen
 
-build CMakeFiles/main_autogen main_autogen/include/ui_login.h main_autogen/include/ui_admin.h main_autogen/include/ui_usuarios.h | ${cmake_ninja_workdir}CMakeFiles/main_autogen ${cmake_ninja_workdir}main_autogen/include/ui_login.h ${cmake_ninja_workdir}main_autogen/include/ui_admin.h ${cmake_ninja_workdir}main_autogen/include/ui_usuarios.h: phony main_autogen/timestamp || main_autogen_timestamp_deps
+build CMakeFiles/main_autogen main_autogen/include/ui_login.h main_autogen/include/ui_admin.h main_autogen/include/ui_usuarios.h main_autogen/include/ui_registrarse.h | ${cmake_ninja_workdir}CMakeFiles/main_autogen ${cmake_ninja_workdir}main_autogen/include/ui_login.h ${cmake_ninja_workdir}main_autogen/include/ui_admin.h ${cmake_ninja_workdir}main_autogen/include/ui_usuarios.h ${cmake_ninja_workdir}main_autogen/include/ui_registrarse.h: phony main_autogen/timestamp || main_autogen_timestamp_deps
 
 # =============================================================================
 # Target aliases.

@@ -4,6 +4,8 @@
 #include "./ui_admin.h"
 #include "usuarios.h"
 #include "./ui_usuarios.h"
+#include "registrarse.h"
+#include "./ui_registrarse.h"
 #include <QMessageBox>
 
 Login::Login(ListaUsuarios *listaUsuarios, QWidget *parent)
@@ -11,7 +13,7 @@ Login::Login(ListaUsuarios *listaUsuarios, QWidget *parent)
     ui(new Ui::Login),
     adminWindow(nullptr),
     usuarioWindow(nullptr),
-    listaUsuarios(listaUsuarios) // Inicializar con el puntero pasado
+    listaUsuarios(listaUsuarios)
 {
     ui->setupUi(this);
 }
@@ -38,7 +40,7 @@ void Login::on_InicioSesion_btn_clicked()
     } else {
         if (listaUsuarios->buscarUsuarioPorCorreoyContrasena(correo, contrasena)){
             if (!usuarioWindow) {
-                usuarioWindow = new Usuarios();
+                usuarioWindow = new Usuarios(listaUsuarios);
             }
             usuarioWindow->show();
             this->hide();
@@ -47,3 +49,13 @@ void Login::on_InicioSesion_btn_clicked()
         }
     }
 }
+
+void Login::on_Registrarse_btn_clicked()
+{
+    if (!usuarioWindow) {
+        registrarseWindow = new Registrarse(listaUsuarios);
+    }
+    registrarseWindow->show();
+    this->hide();
+}
+

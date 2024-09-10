@@ -65,7 +65,7 @@
        <property name="frameShadow">
         <enum>QFrame::Shadow::Raised</enum>
        </property>
-       <widget class="QLineEdit" name="lineEdit">
+       <widget class="QLineEdit" name="buscar_usuario_admin_txt_area">
         <property name="geometry">
          <rect>
           <x>20</x>
@@ -75,7 +75,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="buscar_usuario_admin_btn">
         <property name="geometry">
          <rect>
           <x>300</x>
@@ -97,6 +97,21 @@
           <height>24</height>
          </rect>
         </property>
+        <item>
+         <property name="text">
+          <string>PreOrder</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>InOrder</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>PostOrder</string>
+         </property>
+        </item>
        </widget>
        <widget class="QPushButton" name="pushButton_2">
         <property name="geometry">
@@ -111,7 +126,7 @@
          <string>Aplicar</string>
         </property>
        </widget>
-       <widget class="QTableWidget" name="tableWidget">
+       <widget class="QTableWidget" name="tabla_buscar_admin">
         <property name="geometry">
          <rect>
           <x>20</x>
@@ -125,12 +140,12 @@
         </attribute>
         <column>
          <property name="text">
-          <string>New Column</string>
+          <string>Nombres</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>Nombres</string>
+          <string>Apellidos</string>
          </property>
         </column>
         <column>

@@ -1,7 +1,8 @@
-// ListaUsuarios.cpp
 #include "ListaUsuarios.h"
+#include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <functional>
 
 ListaUsuarios::ListaUsuarios() : raiz(nullptr) {}
 
@@ -51,6 +52,29 @@ NodoAVL* ListaUsuarios::rotarIzquierda(NodoAVL* x) {
     return y;
 }
 
+NodoAVL* ListaUsuarios::balancear(NodoAVL* nodo) {
+    int balanceFactor = balance(nodo);
+
+    if (balanceFactor > 1) {
+        if (balance(nodo->izquierdo) >= 0) {
+            return rotarDerecha(nodo);
+        } else {
+            nodo->izquierdo = rotarIzquierda(nodo->izquierdo);
+            return rotarDerecha(nodo);
+        }
+    }
+    if (balanceFactor < -1) {
+        if (balance(nodo->derecho) <= 0) {
+            return rotarIzquierda(nodo);
+        } else {
+            nodo->derecho = rotarDerecha(nodo->derecho);
+            return rotarIzquierda(nodo);
+        }
+    }
+
+    return nodo;
+}
+
 NodoAVL* ListaUsuarios::insertar(NodoAVL* nodo, const Usuario& usuario) {
     if (nodo == nullptr) {
         return new NodoAVL(usuario);
@@ -61,38 +85,12 @@ NodoAVL* ListaUsuarios::insertar(NodoAVL* nodo, const Usuario& usuario) {
     } else if (usuario.getCorreo() > nodo->usuario.getCorreo()) {
         nodo->derecho = insertar(nodo->derecho, usuario);
     } else {
-        return nodo; // El correo ya existe
+        // Usuario ya existe, no se permite duplicados
+        return nodo;
     }
 
     nodo->altura = std::max(altura(nodo->izquierdo), altura(nodo->derecho)) + 1;
-
-    int bal = balance(nodo);
-
-    if (bal > 1 && usuario.getCorreo() < nodo->izquierdo->usuario.getCorreo()) {
-        return rotarDerecha(nodo);
-    }
-    if (bal < -1 && usuario.getCorreo() > nodo->derecho->usuario.getCorreo()) {
-        return rotarIzquierda(nodo);
-    }
-    if (bal > 1 && usuario.getCorreo() > nodo->izquierdo->usuario.getCorreo()) {
-        nodo->izquierdo = rotarIzquierda(nodo->izquierdo);
-        return rotarDerecha(nodo);
-    }
-    if (bal < -1 && usuario.getCorreo() < nodo->derecho->usuario.getCorreo()) {
-        nodo->derecho = rotarDerecha(nodo->derecho);
-        return rotarIzquierda(nodo);
-    }
-
-    return nodo;
-}
-
-void ListaUsuarios::agregarUsuario(const Usuario& usuario) {
-    if (buscarUsuarioPorCorreo(usuario.getCorreo()) != nullptr) {
-        std::cerr << "Usuario con correo " << usuario.getCorreo() << " ya existe." << std::endl;
-        return;
-    }
-
-    raiz = insertar(raiz, usuario);
+    return balancear(nodo);
 }
 
 NodoAVL* ListaUsuarios::buscar(NodoAVL* nodo, const std::string& correo) const {
@@ -107,14 +105,21 @@ NodoAVL* ListaUsuarios::buscar(NodoAVL* nodo, const std::string& correo) const {
     return buscar(nodo->derecho, correo);
 }
 
-Usuario* ListaUsuarios::buscarUsuarioPorCorreo(const std::string& correo) const {
+Usuario ListaUsuarios::mostrarDatosPorCorreo(const std::string& correo) const {
     NodoAVL* nodo = buscar(raiz, correo);
-    return (nodo ? &nodo->usuario : nullptr);
+    if (nodo) {
+        return nodo->usuario;
+    }
+    return Usuario("", "", "", "", ""); // Usuario vacío si no se encuentra
+}
+
+bool ListaUsuarios::usuarioDuplicado(const std::string& correo) const {
+    return buscar(raiz, correo) != nullptr;
 }
 
 NodoAVL* ListaUsuarios::minimoNodo(NodoAVL* nodo) {
     NodoAVL* actual = nodo;
-    while (actual->izquierdo != nullptr) {
+    while (actual && actual->izquierdo) {
         actual = actual->izquierdo;
     }
     return actual;
@@ -150,25 +155,7 @@ NodoAVL* ListaUsuarios::eliminar(NodoAVL* nodo, const std::string& correo) {
     }
 
     nodo->altura = std::max(altura(nodo->izquierdo), altura(nodo->derecho)) + 1;
-
-    int bal = balance(nodo);
-
-    if (bal > 1 && balance(nodo->izquierdo) >= 0) {
-        return rotarDerecha(nodo);
-    }
-    if (bal > 1 && balance(nodo->izquierdo) < 0) {
-        nodo->izquierdo = rotarIzquierda(nodo->izquierdo);
-        return rotarDerecha(nodo);
-    }
-    if (bal < -1 && balance(nodo->derecho) <= 0) {
-        return rotarIzquierda(nodo);
-    }
-    if (bal < -1 && balance(nodo->derecho) > 0) {
-        nodo->derecho = rotarDerecha(nodo->derecho);
-        return rotarIzquierda(nodo);
-    }
-
-    return nodo;
+    return balancear(nodo);
 }
 
 void ListaUsuarios::borrarUsuarioPorCorreo(const std::string& correo) {
@@ -188,7 +175,6 @@ void ListaUsuarios::cargarUsuariosDesdeJson(const std::string& nombreArchivo) {
         archivo >> jsonData;
 
         for (const auto& item : jsonData) {
-            // Asegúrate de que las claves coincidan con las del JSON
             std::string nombre = item.at("nombres").get<std::string>();
             std::string apellido = item.at("apellidos").get<std::string>();
             std::string fecha_de_nacimiento = item.at("fecha_de_nacimiento").get<std::string>();
@@ -198,99 +184,34 @@ void ListaUsuarios::cargarUsuariosDesdeJson(const std::string& nombreArchivo) {
             Usuario usuario(nombre, apellido, fecha_de_nacimiento, correo, contrasena);
             agregarUsuario(usuario);
         }
-    } catch (const nlohmann::json::exception &e) {
+    } catch (const nlohmann::json::exception& e) {
         std::cerr << "Error al procesar el archivo JSON: " << e.what() << std::endl;
     }
+
+    archivo.close();
 }
 
 
-void ListaUsuarios::generateDot(const std::string& filename) const {
-    std::ofstream file(filename);
-    if (file.is_open()) {
-        file << "digraph G {" << std::endl;
-        file << "node [shape=record];" << std::endl;
-        file << "rankdir=TB;" << std::endl;  // Cambio de dirección para árbol
-
-        std::function<void(NodoAVL*, int)> printNode = [&](NodoAVL* nodo, int id) {
-            if (nodo != nullptr) {
-                int leftId = id * 2 + 1;
-                int rightId = id * 2 + 2;
-                file << "node" << id << " [label=\"{Nombre: " << nodo->usuario.getNombre() << "\\n"
-                     << "Correo: " << nodo->usuario.getCorreo() << "}\"];" << std::endl;
-                if (nodo->izquierdo != nullptr) {
-                    file << "node" << id << " -> node" << leftId << ";" << std::endl;
-                    printNode(nodo->izquierdo, leftId);
-                }
-                if (nodo->derecho != nullptr) {
-                    file << "node" << id << " -> node" << rightId << ";" << std::endl;
-                    printNode(nodo->derecho, rightId);
-                }
-            }
-        };
-
-        printNode(raiz, 0);
-
-        file << "}" << std::endl;
-        file.close();
+void ListaUsuarios::agregarUsuario(const Usuario& usuario) {
+    if (!usuarioDuplicado(usuario.getCorreo())) {
+        raiz = insertar(raiz, usuario);
     } else {
-        std::cerr << "No se pudo abrir el archivo" << std::endl;
+        std::cerr << "El usuario con correo " << usuario.getCorreo() << " ya existe." << std::endl;
     }
 }
+
+Usuario* ListaUsuarios::buscarUsuarioPorCorreo(const std::string& correo) {
+    NodoAVL* nodo = buscar(raiz, correo);
+    if (nodo != nullptr) {
+        return &nodo->usuario; // Retorna el puntero al usuario dentro del nodo
+    }
+    return nullptr; // Retorna nullptr si el usuario no se encuentra
+}
+
+
 
 bool ListaUsuarios::buscarUsuarioPorCorreoyContrasena(const std::string& correo, const std::string& contrasena) const {
-    Usuario* usuario = buscarUsuarioPorCorreo(correo);
-    if (usuario && usuario->getContrasena() == contrasena) {
-        std::cout << "Usuario encontrado: " << usuario->getNombre() << std::endl;
-        return true;
-    }
-    std::cout << "Usuario no encontrado." << std::endl;
-    return false;
+    NodoAVL* nodo = buscar(raiz, correo);
+    return nodo && nodo->usuario.getContrasena() == contrasena;
 }
 
-void ListaUsuarios::renderGraphviz(const std::string& dotFilename, const std::string& imageFilename) const {
-    generateDot(dotFilename);
-    std::string command = "dot -Tpng " + dotFilename + " -o " + imageFilename;
-    system(command.c_str());
-}
-bool ListaUsuarios::usuarioDuplicado(const std::string &correo) const
-{
-    NodoAVL* actual = raiz;
-    while (actual != nullptr)
-    {
-        if (correo == actual->usuario.getCorreo())
-        {
-            return true; // El usuario con el correo especificado ya existe
-        }
-        else if (correo < actual->usuario.getCorreo())
-        {
-            actual = actual->izquierdo; // Buscar en el subárbol izquierdo
-        }
-        else
-        {
-            actual = actual->derecho; // Buscar en el subárbol derecho
-        }
-    }
-    return false; // No se encontró el usuario
-}
-Usuario ListaUsuarios::mostrarDatosPorCorreo(const std::string &correo) const
-{
-    NodoAVL* actual = raiz;
-    while (actual != nullptr)
-    {
-        if (correo == actual->usuario.getCorreo())
-        {
-            return actual->usuario; // Usuario encontrado
-        }
-        else if (correo < actual->usuario.getCorreo())
-        {
-            actual = actual->izquierdo; // Buscar en el subárbol izquierdo
-        }
-        else
-        {
-            actual = actual->derecho; // Buscar en el subárbol derecho
-        }
-    }
-
-    // Usuario no encontrado; devolver un objeto Usuario con valores predeterminados
-    return Usuario("", "", "", "", ""); // Puedes ajustar esto según tu diseño
-}

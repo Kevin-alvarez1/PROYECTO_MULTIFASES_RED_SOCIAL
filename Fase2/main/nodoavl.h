@@ -1,7 +1,7 @@
 #ifndef NODOAVL_H
 #define NODOAVL_H
 
-#include "Usuario.h"
+#include "usuario.h" // O cualquier dependencia que sea necesaria
 
 class NodoAVL {
 public:
@@ -10,11 +10,9 @@ public:
     NodoAVL* derecho;
     int altura;
 
-    // Constructor
-    NodoAVL(const Usuario& user);
+    NodoAVL(const Usuario& user);  // Constructor
 
-private:
-         // Otros métodos privados si los necesitas
+    // Puedes añadir más métodos si es necesario
 };
 
 #endif // NODOAVL_H

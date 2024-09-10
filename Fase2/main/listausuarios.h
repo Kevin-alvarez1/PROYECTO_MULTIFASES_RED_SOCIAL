@@ -13,6 +13,7 @@ class ListaUsuarios {
 private:
 
     NodoAVL* raiz;
+    NodoAVL* balancear(NodoAVL* nodo);
 
     // Métodos privados para el manejo del árbol AVL
     int altura(NodoAVL* nodo) const;
@@ -24,20 +25,20 @@ private:
     NodoAVL* eliminar(NodoAVL* nodo, const std::string& correo);
     NodoAVL* minimoNodo(NodoAVL* nodo);
     void eliminarArbol(NodoAVL* nodo);
+    int obtenerAltura(NodoAVL* nodo);
+    int obtenerBalance(NodoAVL* nodo);
 
 public:
     ListaUsuarios();
     ~ListaUsuarios();
 
     void agregarUsuario(const Usuario& usuario);
-    Usuario* buscarUsuarioPorCorreo(const std::string& correo) const;
+    Usuario* buscarUsuarioPorCorreo(const std::string& correo);
     void borrarUsuarioPorCorreo(const std::string& correo);
     void cargarUsuariosDesdeJson(const std::string& nombreArchivo);
-    void generateDot(const std::string& filename) const;
     bool buscarUsuarioPorCorreoyContrasena(const std::string& correo, const std::string& contrasena) const;
-    void renderGraphviz(const std::string& dotFilename, const std::string& imageFilename) const;
     bool usuarioDuplicado(const std::string &correo) const;
-    Usuario mostrarDatosPorCorreo(const std::string &correo) const;
+    Usuario mostrarDatosPorCorreo(const std::string& correo) const;
 
 
 };

@@ -17,10 +17,10 @@
    <widget class="QPushButton" name="InicioSesion_btn">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>180</x>
       <y>360</y>
-      <width>241</width>
-      <height>91</height>
+      <width>451</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
@@ -45,6 +45,9 @@
       <width>451</width>
       <height>24</height>
      </rect>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::EchoMode::PasswordEchoOnEdit</enum>
     </property>
    </widget>
    <widget class="QLabel" name="label">

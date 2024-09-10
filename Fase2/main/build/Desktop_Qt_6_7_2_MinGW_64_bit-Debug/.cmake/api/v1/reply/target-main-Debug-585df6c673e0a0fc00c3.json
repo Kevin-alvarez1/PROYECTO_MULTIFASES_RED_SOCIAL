@@ -75,13 +75,13 @@
 			{
 				"command" : 4,
 				"file" : 1,
-				"line" : 68,
+				"line" : 70,
 				"parent" : 0
 			},
 			{
 				"command" : 5,
 				"file" : 1,
-				"line" : 51,
+				"line" : 53,
 				"parent" : 0
 			},
 			{
@@ -368,7 +368,9 @@
 				6,
 				9,
 				11,
-				13
+				13,
+				16,
+				19
 			]
 		}
 	],
@@ -495,7 +497,9 @@
 				6,
 				9,
 				11,
-				13
+				13,
+				16,
+				19
 			]
 		},
 		{
@@ -508,8 +512,11 @@
 				10,
 				12,
 				15,
-				16,
-				17
+				18,
+				20,
+				21,
+				22,
+				23
 			]
 		},
 		{
@@ -519,14 +526,15 @@
 				4,
 				7,
 				14,
-				18
+				17,
+				24
 			]
 		},
 		{
 			"name" : "CMake Rules",
 			"sourceIndexes" : 
 			[
-				19
+				25
 			]
 		}
 	],
@@ -553,7 +561,7 @@
 		},
 		{
 			"backtrace" : 4,
-			"path" : "login.h",
+			"path" : "Login.h",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -563,18 +571,18 @@
 		},
 		{
 			"backtrace" : 4,
-			"path" : "admin.h",
+			"path" : "Admin.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 4,
 			"compileGroupIndex" : 0,
-			"path" : "admin.cpp",
+			"path" : "Admin.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 4,
-			"path" : "admin.ui",
+			"path" : "Admin.ui",
 			"sourceGroupIndex" : 2
 		},
 		{
@@ -616,6 +624,33 @@
 			"sourceGroupIndex" : 2
 		},
 		{
+			"backtrace" : 4,
+			"path" : "registrarse.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 4,
+			"compileGroupIndex" : 0,
+			"path" : "registrarse.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 4,
+			"path" : "registrarse.ui",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 4,
+			"path" : "nodoavl.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 4,
+			"compileGroupIndex" : 0,
+			"path" : "nodoavl.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
 			"backtrace" : 0,
 			"isGenerated" : true,
 			"path" : "build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/include/ui_login.h",
@@ -624,13 +659,19 @@
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
-			"path" : "build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/include/ui_admin.h",
+			"path" : "build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/include/ui_Admin.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 0,
 			"isGenerated" : true,
 			"path" : "build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/include/ui_usuarios.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/include/ui_registrarse.h",
 			"sourceGroupIndex" : 1
 		},
 		{

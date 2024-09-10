@@ -1,4 +1,4 @@
-C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/EWIEGA46WW/moc_login.cpp: C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/login.h \
+C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/EWIEGA46WW/moc_Login.cpp: C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Login.h \
   C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/moc_predefs.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/q20functional.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/q20memory.h \
@@ -394,5 +394,7 @@ C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/bui
   C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/wchar.h \
   C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/wctype.h \
   C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/ListaUsuarios.h \
+  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/NodoAVL.h \
+  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Usuario.h \
   C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/json.hpp \
   C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/usuario.h

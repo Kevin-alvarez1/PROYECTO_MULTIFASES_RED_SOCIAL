@@ -257,9 +257,15 @@
 	"HEADERS" : 
 	[
 		[
-			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/admin.h",
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/Admin.h",
 			"MU",
-			"EWIEGA46WW/moc_admin.cpp",
+			"EWIEGA46WW/moc_Admin.cpp",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/Login.h",
+			"MU",
+			"EWIEGA46WW/moc_Login.cpp",
 			null
 		],
 		[
@@ -269,9 +275,9 @@
 			null
 		],
 		[
-			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/login.h",
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/nodoavl.h",
 			"MU",
-			"EWIEGA46WW/moc_login.cpp",
+			"EWIEGA46WW/moc_nodoavl.cpp",
 			null
 		],
 		[
@@ -365,7 +371,7 @@
 	"SOURCES" : 
 	[
 		[
-			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/admin.cpp",
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/Admin.cpp",
 			"MU",
 			null
 		],
@@ -381,6 +387,11 @@
 		],
 		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/main.cpp",
+			"MU",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/nodoavl.cpp",
 			"MU",
 			null
 		],

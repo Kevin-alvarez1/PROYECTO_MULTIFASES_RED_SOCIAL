@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>4</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -980,7 +980,7 @@
        <string>NOMBRES</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_2">
+     <widget class="QLineEdit" name="nombre_editar_txt">
       <property name="geometry">
        <rect>
         <x>150</x>
@@ -1009,7 +1009,7 @@
        <string>APELLIDOS</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_3">
+     <widget class="QLineEdit" name="apellido_editar_txt">
       <property name="geometry">
        <rect>
         <x>150</x>
@@ -1038,7 +1038,7 @@
        <string>CORREO</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_4">
+     <widget class="QLineEdit" name="correo_editar_txt">
       <property name="geometry">
        <rect>
         <x>150</x>
@@ -1046,6 +1046,15 @@
         <width>751</width>
         <height>24</height>
        </rect>
+      </property>
+      <property name="echoMode">
+       <enum>QLineEdit::EchoMode::Normal</enum>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="clearButtonEnabled">
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QLabel" name="label_20">
@@ -1067,7 +1076,7 @@
        <string>CONTRASEÑA</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_5">
+     <widget class="QLineEdit" name="contrasena_editar_txt">
       <property name="geometry">
        <rect>
         <x>150</x>
@@ -1096,7 +1105,7 @@
        <string>FECHA DE NACIMIENTO</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_6">
+     <widget class="QLineEdit" name="fechaNacimiento_editar_txt">
       <property name="geometry">
        <rect>
         <x>150</x>
@@ -1106,7 +1115,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_7">
+     <widget class="QPushButton" name="Modificar_boton">
       <property name="geometry">
        <rect>
         <x>150</x>
@@ -1119,7 +1128,7 @@
        <string>MODIFICAR DATOS</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_8">
+     <widget class="QPushButton" name="Eliminar_boton">
       <property name="geometry">
        <rect>
         <x>580</x>

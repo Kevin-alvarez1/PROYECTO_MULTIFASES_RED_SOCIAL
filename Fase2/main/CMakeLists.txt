@@ -28,6 +28,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         usuario.h usuario.cpp
         usuarios.h usuarios.cpp usuarios.ui
         registrarse.h registrarse.cpp registrarse.ui
+        nodoavl.h nodoavl.cpp
 
 
     )

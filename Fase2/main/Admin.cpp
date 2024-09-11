@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <fstream>
 #include "login.h"
+#include <QInputDialog>
 
 Admin::Admin(ListaUsuarios *listaUsuarios, QWidget *parent)
     : QDialog(parent),
@@ -69,12 +70,9 @@ void Admin::on_buscar_usuario_admin_btn_clicked()
     std::string correo = ui->buscar_usuario_admin_txt_area->text().toStdString();
 
     // Buscar el usuario con el correo ingresado
-    Usuario usuario = listaUsuarios->mostrarDatosPorCorreo(correo);
+    Usuario* usuario = listaUsuarios->buscarUsuarioPorCorreo(correo);
 
-    // Limpiar la tabla antes de mostrar los resultados
-    ui->tabla_buscar_admin->setRowCount(0);  // Limpia las filas actuales de la tabla
-
-    if (usuario.getCorreo() == correo)
+    if (usuario)
     {
         bool encontrado = false;
         int filas = ui->tabla_buscar_admin->rowCount();
@@ -94,10 +92,10 @@ void Admin::on_buscar_usuario_admin_btn_clicked()
             ui->tabla_buscar_admin->insertRow(fila);
 
             // Insertar los datos en las celdas correspondientes
-            ui->tabla_buscar_admin->setItem(fila, 0, new QTableWidgetItem(QString::fromStdString(usuario.getNombre())));
-            ui->tabla_buscar_admin->setItem(fila, 1, new QTableWidgetItem(QString::fromStdString(usuario.getApellido())));
-            ui->tabla_buscar_admin->setItem(fila, 2, new QTableWidgetItem(QString::fromStdString(usuario.getCorreo())));
-            ui->tabla_buscar_admin->setItem(fila, 3, new QTableWidgetItem(QString::fromStdString(usuario.getFechaDeNacimiento())));
+            ui->tabla_buscar_admin->setItem(fila, 0, new QTableWidgetItem(QString::fromStdString(usuario->getNombre())));
+            ui->tabla_buscar_admin->setItem(fila, 1, new QTableWidgetItem(QString::fromStdString(usuario->getApellido())));
+            ui->tabla_buscar_admin->setItem(fila, 2, new QTableWidgetItem(QString::fromStdString(usuario->getCorreo())));
+            ui->tabla_buscar_admin->setItem(fila, 3, new QTableWidgetItem(QString::fromStdString(usuario->getFechaDeNacimiento())));
 
             // Crear botones de Modificar y Eliminar
             QPushButton* btnModificar = new QPushButton("Modificar");
@@ -108,11 +106,12 @@ void Admin::on_buscar_usuario_admin_btn_clicked()
             ui->tabla_buscar_admin->setCellWidget(fila, 5, btnEliminar);
 
             // Conectar los botones a sus respectivos slots
-            connect(btnModificar, &QPushButton::clicked, [this, correo]() {
-                this->on_modificar_usuario_clicked(correo);
+            connect(btnModificar, &QPushButton::clicked, [this, usuario, fila]() {
+                // Pasar el usuario y la fila para poder actualizar
+                this->on_modificar_usuario_clicked(usuario->getCorreo(), fila);
             });
-            connect(btnEliminar, &QPushButton::clicked, [this, correo]() {
-                this->on_eliminar_usuario_clicked(correo);
+            connect(btnEliminar, &QPushButton::clicked, [this, usuario]() {
+                this->on_eliminar_usuario_clicked(usuario->getCorreo());
             });
         }
     }
@@ -122,22 +121,123 @@ void Admin::on_buscar_usuario_admin_btn_clicked()
         QMessageBox::warning(this, "Error", "Usuario con correo " + QString::fromStdString(correo) + " no encontrado.");
     }
 }
-void Admin::on_modificar_usuario_clicked(const std::string& correo)
+
+void Admin::actualizarFilaEnTabla(const Usuario& usuario, int fila)
 {
-    // Lógica para modificar el usuario
-    // Puedes abrir un diálogo para modificar los datos del usuario
-    QMessageBox::information(this, "Modificar Usuario", "Modificar usuario con correo: " + QString::fromStdString(correo));
+    // Asegúrate de que la fila existe
+    if (fila < 0 || fila >= ui->tabla_buscar_admin->rowCount()) {
+        qDebug() << "Fila no válida para actualizar.";
+        return;
+    }
+
+    // Actualizar los datos de la fila en la tabla
+    ui->tabla_buscar_admin->setItem(fila, 0, new QTableWidgetItem(QString::fromStdString(usuario.getNombre())));
+    ui->tabla_buscar_admin->setItem(fila, 1, new QTableWidgetItem(QString::fromStdString(usuario.getApellido())));
+    ui->tabla_buscar_admin->setItem(fila, 2, new QTableWidgetItem(QString::fromStdString(usuario.getCorreo())));
+    ui->tabla_buscar_admin->setItem(fila, 3, new QTableWidgetItem(QString::fromStdString(usuario.getFechaDeNacimiento())));
+
+    // Opcional: Si es necesario actualizar también los botones, puedes hacerlo aquí
+    QPushButton* btnModificar = new QPushButton("Modificar");
+    QPushButton* btnEliminar = new QPushButton("Eliminar");
+
+    // Añadir los botones a las columnas correspondientes
+    ui->tabla_buscar_admin->setCellWidget(fila, 4, btnModificar);
+    ui->tabla_buscar_admin->setCellWidget(fila, 5, btnEliminar);
+
+    // Conectar los botones a sus respectivos slots
+    connect(btnModificar, &QPushButton::clicked, [this, usuario, fila]() {
+        this->on_modificar_usuario_clicked(usuario.getCorreo(), fila);
+    });
+    connect(btnEliminar, &QPushButton::clicked, [this, usuario]() {
+        this->on_eliminar_usuario_clicked(usuario.getCorreo());
+    });
 }
+
+void Admin::on_modificar_usuario_clicked(const std::string& correo, int fila)
+{
+    // Buscar al usuario con el correo proporcionado
+    Usuario* usuario = listaUsuarios->buscarUsuarioPorCorreo(correo);
+
+    if (!usuario) {
+        // Mostrar un mensaje si el usuario no fue encontrado
+        QMessageBox::warning(this, "Error", "Usuario con correo: " + QString::fromStdString(correo) + " no encontrado.");
+        return;
+    }
+
+    // Mostrar ventanas emergentes para obtener los nuevos datos
+    bool ok;
+
+    QString nuevoNombre = QInputDialog::getText(this, "Modificar Nombre",
+                                                "Nuevo Nombre:",
+                                                QLineEdit::Normal,
+                                                QString::fromStdString(usuario->getNombre()),
+                                                &ok);
+    if (!ok || nuevoNombre.isEmpty()) return;
+
+    QString nuevoApellido = QInputDialog::getText(this, "Modificar Apellido",
+                                                  "Nuevo Apellido:",
+                                                  QLineEdit::Normal,
+                                                  QString::fromStdString(usuario->getApellido()),
+                                                  &ok);
+    if (!ok || nuevoApellido.isEmpty()) return;
+
+    QString nuevoCorreo = QInputDialog::getText(this, "Modificar Correo",
+                                                "Nuevo Correo:",
+                                                QLineEdit::Normal,
+                                                QString::fromStdString(usuario->getCorreo()),
+                                                &ok);
+    if (!ok || nuevoCorreo.isEmpty()) return;
+
+    QString nuevaContrasena = QInputDialog::getText(this, "Modificar Contraseña",
+                                                    "Nueva Contraseña:",
+                                                    QLineEdit::Normal,
+                                                    QString::fromStdString(usuario->getContrasena()),
+                                                    &ok);
+    if (!ok || nuevaContrasena.isEmpty()) return;
+
+    QString nuevaFechaNacimiento = QInputDialog::getText(this, "Modificar Fecha de Nacimiento",
+                                                         "Nueva Fecha de Nacimiento:",
+                                                         QLineEdit::Normal,
+                                                         QString::fromStdString(usuario->getFechaDeNacimiento()),
+                                                         &ok);
+    if (!ok || nuevaFechaNacimiento.isEmpty()) return;
+
+    // Verificar que el nuevo correo no esté en uso por otro usuario
+    if (nuevoCorreo.toStdString() != usuario->getCorreo() && listaUsuarios->usuarioDuplicado(nuevoCorreo.toStdString())) {
+        QMessageBox::warning(this, "Error", "El correo electrónico ya está en uso por otro usuario.");
+        return;
+    }
+
+    // Eliminar el usuario original del árbol (por el correo antiguo)
+    listaUsuarios->borrarUsuarioPorCorreo(usuario->getCorreo());
+
+    // Actualizar los datos del usuario
+    usuario->setNombre(nuevoNombre.toStdString());
+    usuario->setApellido(nuevoApellido.toStdString());
+    usuario->setFechaDeNacimiento(nuevaFechaNacimiento.toStdString());
+    usuario->setContrasena(nuevaContrasena.toStdString());
+    usuario->setCorreo(nuevoCorreo.toStdString());  // Actualizar correo
+
+    // Volver a insertar el usuario en el árbol con los datos actualizados
+    listaUsuarios->agregarUsuario(*usuario);
+
+    // Actualizar los datos de la fila en la tabla
+    actualizarFilaEnTabla(*usuario, fila);
+
+    // Mostrar mensaje de éxito
+    QMessageBox::information(this, "Éxito", "Los datos del usuario se han actualizado correctamente.");
+}
+
+
 
 void Admin::on_eliminar_usuario_clicked(const std::string& correo)
 {
-    // Lógica para eliminar el usuario
-    // Asegúrate de eliminar el usuario de la tabla y de la lista de usuarios
+
     listaUsuarios->borrarUsuarioPorCorreo(correo);
 
     // Eliminar la fila correspondiente de la tabla
     for (int i = 0; i < ui->tabla_buscar_admin->rowCount(); ++i) {
-        QTableWidgetItem* item = ui->tabla_buscar_admin->item(i, 2); // Columna de correo
+        QTableWidgetItem* item = ui->tabla_buscar_admin->item(i, 2);
         if (item && item->text().toStdString() == correo) {
             ui->tabla_buscar_admin->removeRow(i);
             break;

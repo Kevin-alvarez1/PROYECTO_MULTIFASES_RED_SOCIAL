@@ -23,10 +23,10 @@ private slots:
     void on_Publicaciones_boton_archivo_clicked();
     void on_Solicitudes_boton_archivo_clicked();
     void on_CerrarSesion_boton_2_clicked();
-    void on_modificar_usuario_clicked(const std::string& correo);
+    void on_modificar_usuario_clicked(const std::string& correo, int fila);
     void on_eliminar_usuario_clicked(const std::string& correo);
     void on_buscar_usuario_admin_btn_clicked();
-
+    void actualizarFilaEnTabla(const Usuario& usuario, int fila);
 private:
     Ui::Admin *ui;
     ListaUsuarios *listaUsuarios; // Cambiar a puntero

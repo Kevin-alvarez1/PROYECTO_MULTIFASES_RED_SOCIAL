@@ -256,3 +256,41 @@ std::vector<Usuario> ListaUsuarios::obtenerUsuariosEnOrden(const std::string& ti
 
     return usuarios;
 }
+void ListaUsuarios::generateDot(const std::string& filename) const {
+    std::ofstream file(filename + ".dot");
+
+    if (!file.is_open()) {
+        std::cerr << "No se pudo abrir el archivo para escribir." << std::endl;
+        return;
+    }
+
+    file << "digraph AVLTree {" << std::endl;
+    file << "    node [shape=record];" << std::endl;
+
+    generateDotRec(raiz, file);
+
+    file << "}" << std::endl;
+
+    file.close();
+
+    // Convertir el archivo DOT a PNG usando Graphviz
+    std::string command = "dot -Tpng " + filename + ".dot -o " + filename + ".png";
+    int result = system(command.c_str());
+
+    if (result != 0) {
+        std::cerr << "Error al convertir el archivo DOT a PNG." << std::endl;
+    }
+}
+
+void ListaUsuarios::generateDotRec(NodoAVL* nodo, std::ofstream& file) const {
+    if (nodo != nullptr) {
+        if (nodo->izquierdo != nullptr) {
+            file << "    \"" << nodo->usuario.getCorreo() << "\" -> \"" << nodo->izquierdo->usuario.getCorreo() << "\";" << std::endl;
+        }
+        if (nodo->derecho != nullptr) {
+            file << "    \"" << nodo->usuario.getCorreo() << "\" -> \"" << nodo->derecho->usuario.getCorreo() << "\";" << std::endl;
+        }
+        generateDotRec(nodo->izquierdo, file);
+        generateDotRec(nodo->derecho, file);
+    }
+}

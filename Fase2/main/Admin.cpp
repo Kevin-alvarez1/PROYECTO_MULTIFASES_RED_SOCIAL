@@ -286,3 +286,46 @@ void Admin::on_aplicar_orden_comboBox_orden_tabla_usuario_clicked()
     }
 }
 
+
+void Admin::on_Generar_reporte_btn_clicked() {
+    listaUsuarios->generateDot("Arbol_Usuarios");
+
+    QString imagePath = "Arbol_Usuarios.png";
+
+    actualizarPanelConImagen(imagePath);
+}
+
+void Admin::actualizarPanelConImagen(const QString& imagePath) {
+    // Eliminar el layout existente si hay uno
+    QLayout* existingLayout = ui->arbol_usuario_frame->layout();
+    if (existingLayout) {
+        QLayoutItem* item;
+        while ((item = existingLayout->takeAt(0))) {
+            delete item->widget(); // Eliminar el widget
+            delete item; // Eliminar el item del layout
+        }
+        delete existingLayout; // Eliminar el layout
+    }
+
+    // Crear y asignar un nuevo layout
+    QVBoxLayout* newLayout = new QVBoxLayout();
+    ui->arbol_usuario_frame->setLayout(newLayout);
+
+    // Crear un QLabel para mostrar la imagen
+    QLabel* imageLabel = new QLabel();
+    QPixmap pixmap(imagePath);
+    imageLabel->setPixmap(pixmap);
+
+    // Ajustar el tamaño de QLabel al tamaño de la imagen
+    imageLabel->resize(pixmap.size());
+
+    // Crear una QScrollArea
+    QScrollArea* scrollArea = new QScrollArea();
+    scrollArea->setWidgetResizable(true); // Permitir que el contenido cambie de tamaño con el área de desplazamiento
+    scrollArea->setWidget(imageLabel); // Establecer el QLabel como el widget de la QScrollArea
+
+    // Agregar la QScrollArea al layout
+    newLayout->addWidget(scrollArea);
+}
+
+

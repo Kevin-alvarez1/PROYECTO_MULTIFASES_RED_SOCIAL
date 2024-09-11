@@ -799,11 +799,11 @@ C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/usuar
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/usuario.h
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/usuarios.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/listausuarios.cpp
+C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/listausuarios.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/usuarios.cpp
  uic:ui_usuarios.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/admin.cpp
  uic:ui_admin.h
-C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/listausuarios.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/login.h
  mmc:Q_OBJECT
  mdp:C:/Qt/6.7.2/mingw_64/include/QtCore/q20functional.h
@@ -1204,7 +1204,6 @@ C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/login
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/json.hpp
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/Login.h
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/usuario.h
-C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/nodoavl.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/registrarse.h
  mmc:Q_OBJECT
  mdp:C:/Qt/6.7.2/mingw_64/include/QtCore/q20functional.h
@@ -1605,17 +1604,18 @@ C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/regis
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/json.hpp
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/registrarse.h
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/usuario.h
+C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/nodoavl.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/usuario.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/login.cpp
  uic:./ui_Admin.h
  uic:./ui_login.h
  uic:./ui_registrarse.h
  uic:./ui_usuarios.h
-C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/nodoavl.cpp
+C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/main.cpp
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/registrarse.cpp
  uic:./ui_usuarios.h
  uic:ui_registrarse.h
-C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/main.cpp
+C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/nodoavl.cpp
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/usuario.cpp
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/Admin.h
  mmc:Q_OBJECT
@@ -1762,7 +1762,13 @@ C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/Admin
  mdp:C:/Qt/6.7.2/mingw_64/include/QtGui/qwindowdefs.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtGui/qwindowdefs_win.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/QDialog
+ mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qlayoutitem.h
+ mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/QVBoxLayout
+ mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qboxlayout.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qdialog.h
+ mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qgridlayout.h
+ mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qlayout.h
+ mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qlayoutitem.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qsizepolicy.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qtwidgets-config.h
  mdp:C:/Qt/6.7.2/mingw_64/include/QtWidgets/qtwidgetsexports.h

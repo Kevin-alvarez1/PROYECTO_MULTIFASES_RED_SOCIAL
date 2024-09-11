@@ -28,6 +28,7 @@ private:
     void eliminarArbol(NodoAVL* nodo);
     int obtenerAltura(NodoAVL* nodo);
     int obtenerBalance(NodoAVL* nodo);
+    void generateDotRec(NodoAVL* nodo, std::ofstream& file) const;
 
 public:
     ListaUsuarios();
@@ -44,6 +45,7 @@ public:
     void inOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const;  // Recorrido InOrder
     void postOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const; // Recorrido PostOrder
     std::vector<Usuario> obtenerUsuariosEnOrden(const std::string& tipoOrden) const; // Obtiene los usuarios en el orden especificado
+    void generateDot(const std::string& filename) const;
 
 };
 

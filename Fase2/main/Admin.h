@@ -2,7 +2,9 @@
 #define ADMIN_H
 
 #include <QDialog>
+#include <QLayoutItem.h>
 #include "ListaUsuarios.h"
+#include <QVBoxLayout>
 
 class Login;
 
@@ -28,6 +30,9 @@ private slots:
     void on_buscar_usuario_admin_btn_clicked();
     void actualizarFilaEnTabla(const Usuario& usuario, int fila);
     void on_aplicar_orden_comboBox_orden_tabla_usuario_clicked();
+    void actualizarPanelConImagen(const QString& imagePath);
+
+    void on_Generar_reporte_btn_clicked();
 
 private:
     Ui::Admin *ui;

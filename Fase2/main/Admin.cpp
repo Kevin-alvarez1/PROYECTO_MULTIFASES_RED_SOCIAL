@@ -71,6 +71,7 @@ void Admin::on_buscar_usuario_admin_btn_clicked()
 
     // Buscar el usuario con el correo ingresado
     Usuario* usuario = listaUsuarios->buscarUsuarioPorCorreo(correo);
+    ui->tabla_buscar_admin->setRowCount(0);
 
     if (usuario)
     {
@@ -136,7 +137,6 @@ void Admin::actualizarFilaEnTabla(const Usuario& usuario, int fila)
     ui->tabla_buscar_admin->setItem(fila, 2, new QTableWidgetItem(QString::fromStdString(usuario.getCorreo())));
     ui->tabla_buscar_admin->setItem(fila, 3, new QTableWidgetItem(QString::fromStdString(usuario.getFechaDeNacimiento())));
 
-    // Opcional: Si es necesario actualizar también los botones, puedes hacerlo aquí
     QPushButton* btnModificar = new QPushButton("Modificar");
     QPushButton* btnEliminar = new QPushButton("Eliminar");
 
@@ -242,6 +242,47 @@ void Admin::on_eliminar_usuario_clicked(const std::string& correo)
             ui->tabla_buscar_admin->removeRow(i);
             break;
         }
+    }
+}
+
+
+void Admin::on_aplicar_orden_comboBox_orden_tabla_usuario_clicked()
+{
+    // Obtener el texto seleccionado en el combo box
+    QString criterioOrden = ui->comboBox_orden_tabla_usuario->currentText();
+
+    // Obtener el vector de usuarios en el orden seleccionado
+    std::vector<Usuario> usuariosOrdenados = listaUsuarios->obtenerUsuariosEnOrden(criterioOrden.toStdString());
+
+    // Limpiar la tabla actual antes de actualizarla
+    ui->tabla_buscar_admin->setRowCount(0);  // Resetear las filas de la tabla
+
+    // Actualizar la tabla con los usuarios ordenados
+    for (const Usuario& usuario : usuariosOrdenados) {
+        int row = ui->tabla_buscar_admin->rowCount();  // Obtener el número de filas actuales
+        ui->tabla_buscar_admin->insertRow(row);  // Insertar una nueva fila
+
+        // Insertar los datos del usuario en las columnas correspondientes
+        ui->tabla_buscar_admin->setItem(row, 0, new QTableWidgetItem(QString::fromStdString(usuario.getNombre())));
+        ui->tabla_buscar_admin->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(usuario.getApellido())));
+        ui->tabla_buscar_admin->setItem(row, 2, new QTableWidgetItem(QString::fromStdString(usuario.getCorreo())));
+        ui->tabla_buscar_admin->setItem(row, 3, new QTableWidgetItem(QString::fromStdString(usuario.getFechaDeNacimiento())));
+        // Crear botones de Modificar y Eliminar
+        QPushButton* btnModificar = new QPushButton("Modificar");
+        QPushButton* btnEliminar = new QPushButton("Eliminar");
+
+        // Añadir los botones a las columnas correspondientes
+        ui->tabla_buscar_admin->setCellWidget(row, 4, btnModificar);
+        ui->tabla_buscar_admin->setCellWidget(row, 5, btnEliminar);
+
+        // Conectar los botones a sus respectivos slots
+        connect(btnModificar, &QPushButton::clicked, [this, usuario, row]() {
+            // Pasar el usuario y la fila para poder actualizar
+            this->on_modificar_usuario_clicked(usuario.getCorreo(), row);
+        });
+        connect(btnEliminar, &QPushButton::clicked, [this, usuario]() {
+            this->on_eliminar_usuario_clicked(usuario.getCorreo());
+        });
     }
 }
 

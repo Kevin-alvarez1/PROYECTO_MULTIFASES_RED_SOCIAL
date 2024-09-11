@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include "json.hpp"
+#include <vector>
 
 class ListaUsuarios {
 private:
@@ -39,7 +40,10 @@ public:
     bool buscarUsuarioPorCorreoyContrasena(const std::string& correo, const std::string& contrasena) const;
     bool usuarioDuplicado(const std::string &correo) const;
     Usuario mostrarDatosPorCorreo(const std::string& correo) const;
-
+    void preOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const; // Recorrido PreOrder
+    void inOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const;  // Recorrido InOrder
+    void postOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const; // Recorrido PostOrder
+    std::vector<Usuario> obtenerUsuariosEnOrden(const std::string& tipoOrden) const; // Obtiene los usuarios en el orden especificado
 
 };
 

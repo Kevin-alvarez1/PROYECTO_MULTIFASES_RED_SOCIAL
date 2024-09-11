@@ -215,3 +215,44 @@ bool ListaUsuarios::buscarUsuarioPorCorreoyContrasena(const std::string& correo,
     return nodo && nodo->usuario.getContrasena() == contrasena;
 }
 
+// PreOrder
+void ListaUsuarios::preOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const {
+    if (nodo != nullptr) {
+        usuarios.push_back(nodo->usuario);  // Visitar el nodo
+        preOrder(nodo->izquierdo, usuarios);  // Recorrer el subárbol izquierdo
+        preOrder(nodo->derecho, usuarios);   // Recorrer el subárbol derecho
+    }
+}
+
+// InOrder
+void ListaUsuarios::inOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const {
+    if (nodo != nullptr) {
+        inOrder(nodo->izquierdo, usuarios);  // Recorrer el subárbol izquierdo
+        usuarios.push_back(nodo->usuario);  // Visitar el nodo
+        inOrder(nodo->derecho, usuarios);   // Recorrer el subárbol derecho
+    }
+}
+
+// PostOrder
+void ListaUsuarios::postOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const {
+    if (nodo != nullptr) {
+        postOrder(nodo->izquierdo, usuarios);  // Recorrer el subárbol izquierdo
+        postOrder(nodo->derecho, usuarios);   // Recorrer el subárbol derecho
+        usuarios.push_back(nodo->usuario);  // Visitar el nodo
+    }
+}
+
+// Método para obtener usuarios en un vector según el recorrido
+std::vector<Usuario> ListaUsuarios::obtenerUsuariosEnOrden(const std::string& tipoOrden) const {
+    std::vector<Usuario> usuarios;
+
+    if (tipoOrden == "PreOrder") {
+        preOrder(raiz, usuarios);
+    } else if (tipoOrden == "InOrder") {
+        inOrder(raiz, usuarios);
+    } else if (tipoOrden == "PostOrder") {
+        postOrder(raiz, usuarios);
+    }
+
+    return usuarios;
+}

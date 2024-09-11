@@ -27,6 +27,8 @@ private slots:
     void on_eliminar_usuario_clicked(const std::string& correo);
     void on_buscar_usuario_admin_btn_clicked();
     void actualizarFilaEnTabla(const Usuario& usuario, int fila);
+    void on_aplicar_orden_comboBox_orden_tabla_usuario_clicked();
+
 private:
     Ui::Admin *ui;
     ListaUsuarios *listaUsuarios; // Cambiar a puntero

@@ -96,7 +96,7 @@ void Usuarios::on_Modificar_boton_clicked()
     std::string nuevoApellido = ui->apellido_editar_txt->text().toStdString();
     std::string nuevoCorreo = ui->correo_editar_txt->text().toStdString();
     std::string nuevaContrasena = ui->contrasena_editar_txt->text().toStdString();
-    std::string nuevaFechaNacimiento = ui->fechaNacimiento_editar_txt->text().toStdString();
+    std::string nuevaFechaNacimiento = ui->fecha_nacimiento_edit->text().toStdString();
 
     // Verificar que los campos no estén vacíos
     if (nuevoNombre.empty() || nuevoApellido.empty() || nuevoCorreo.empty() || nuevaContrasena.empty() || nuevaFechaNacimiento.empty()) {

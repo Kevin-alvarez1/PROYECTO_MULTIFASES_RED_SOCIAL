@@ -5,6 +5,7 @@
 #include <fstream>
 #include "login.h"
 #include <QInputDialog>
+#include <QRegularExpression>
 
 Admin::Admin(ListaUsuarios *listaUsuarios, QWidget *parent)
     : QDialog(parent),
@@ -13,6 +14,7 @@ Admin::Admin(ListaUsuarios *listaUsuarios, QWidget *parent)
     login(nullptr)
 {
     ui->setupUi(this);
+
 }
 
 Admin::~Admin()
@@ -51,8 +53,9 @@ void Admin::on_Solicitudes_boton_archivo_clicked()
 
 void Admin::on_Publicaciones_boton_archivo_clicked()
 {
-    // Implementar la funcionalidad para publicaciones
+
 }
+
 
 void Admin::on_CerrarSesion_boton_2_clicked()
 {
@@ -196,11 +199,17 @@ void Admin::on_modificar_usuario_clicked(const std::string& correo, int fila)
     if (!ok || nuevaContrasena.isEmpty()) return;
 
     QString nuevaFechaNacimiento = QInputDialog::getText(this, "Modificar Fecha de Nacimiento",
-                                                         "Nueva Fecha de Nacimiento:",
+                                                         "Nueva Fecha de Nacimiento (YYYY/MM/DD):",
                                                          QLineEdit::Normal,
                                                          QString::fromStdString(usuario->getFechaDeNacimiento()),
                                                          &ok);
     if (!ok || nuevaFechaNacimiento.isEmpty()) return;
+
+    // Verificar el formato de la fecha
+    if (!esFechaValida(nuevaFechaNacimiento)) {
+        QMessageBox::warning(this, "Error", "La fecha de nacimiento no tiene el formato correcto (YYYY/MM/DD).");
+        return;
+    }
 
     // Verificar que el nuevo correo no esté en uso por otro usuario
     if (nuevoCorreo.toStdString() != usuario->getCorreo() && listaUsuarios->usuarioDuplicado(nuevoCorreo.toStdString())) {
@@ -228,6 +237,34 @@ void Admin::on_modificar_usuario_clicked(const std::string& correo, int fila)
     QMessageBox::information(this, "Éxito", "Los datos del usuario se han actualizado correctamente.");
 }
 
+bool Admin::esFechaValida(const QString& fecha) {
+    QRegularExpression regex("^\\d{4}/\\d{2}/\\d{2}$");
+    QRegularExpressionMatch match = regex.match(fecha);
+
+    if (!match.hasMatch()) {
+        return false;
+    }
+
+    // Validar el rango de los valores de la fecha
+    QStringList partes = fecha.split('/');
+    int año = partes[0].toInt();
+    int mes = partes[1].toInt();
+    int día = partes[2].toInt();
+
+    if (año < 1 || año > 9999) return false;
+    if (mes < 1 || mes > 12) return false;
+
+    // Validar días según el mes
+    if (mes == 2) { // Febrero
+        if (día < 1 || día > (año % 4 == 0 && (año % 100 != 0 || año % 400 == 0) ? 29 : 28)) return false;
+    } else if (mes == 4 || mes == 6 || mes == 9 || mes == 11) { // Meses con 30 días
+        if (día < 1 || día > 30) return false;
+    } else { // Meses con 31 días
+        if (día < 1 || día > 31) return false;
+    }
+
+    return true;
+}
 
 
 void Admin::on_eliminar_usuario_clicked(const std::string& correo)
@@ -277,7 +314,6 @@ void Admin::on_aplicar_orden_comboBox_orden_tabla_usuario_clicked()
 
         // Conectar los botones a sus respectivos slots
         connect(btnModificar, &QPushButton::clicked, [this, usuario, row]() {
-            // Pasar el usuario y la fila para poder actualizar
             this->on_modificar_usuario_clicked(usuario.getCorreo(), row);
         });
         connect(btnEliminar, &QPushButton::clicked, [this, usuario]() {
@@ -296,35 +332,29 @@ void Admin::on_Generar_reporte_btn_clicked() {
 }
 
 void Admin::actualizarPanelConImagen(const QString& imagePath) {
-    // Eliminar el layout existente si hay uno
     QLayout* existingLayout = ui->arbol_usuario_frame->layout();
     if (existingLayout) {
         QLayoutItem* item;
         while ((item = existingLayout->takeAt(0))) {
-            delete item->widget(); // Eliminar el widget
-            delete item; // Eliminar el item del layout
+            delete item->widget();
+            delete item;
         }
-        delete existingLayout; // Eliminar el layout
+        delete existingLayout;
     }
 
-    // Crear y asignar un nuevo layout
     QVBoxLayout* newLayout = new QVBoxLayout();
     ui->arbol_usuario_frame->setLayout(newLayout);
 
-    // Crear un QLabel para mostrar la imagen
     QLabel* imageLabel = new QLabel();
     QPixmap pixmap(imagePath);
     imageLabel->setPixmap(pixmap);
 
-    // Ajustar el tamaño de QLabel al tamaño de la imagen
     imageLabel->resize(pixmap.size());
 
-    // Crear una QScrollArea
     QScrollArea* scrollArea = new QScrollArea();
-    scrollArea->setWidgetResizable(true); // Permitir que el contenido cambie de tamaño con el área de desplazamiento
-    scrollArea->setWidget(imageLabel); // Establecer el QLabel como el widget de la QScrollArea
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setWidget(imageLabel);
 
-    // Agregar la QScrollArea al layout
     newLayout->addWidget(scrollArea);
 }
 

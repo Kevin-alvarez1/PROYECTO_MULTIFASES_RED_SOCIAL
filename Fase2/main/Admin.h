@@ -2,9 +2,8 @@
 #define ADMIN_H
 
 #include <QDialog>
-#include <QLayoutItem.h>
-#include "ListaUsuarios.h"
 #include <QVBoxLayout>
+#include "ListaUsuarios.h"
 
 class Login;
 
@@ -31,12 +30,13 @@ private slots:
     void actualizarFilaEnTabla(const Usuario& usuario, int fila);
     void on_aplicar_orden_comboBox_orden_tabla_usuario_clicked();
     void actualizarPanelConImagen(const QString& imagePath);
+    bool esFechaValida(const QString& fecha);
 
     void on_Generar_reporte_btn_clicked();
 
 private:
     Ui::Admin *ui;
-    ListaUsuarios *listaUsuarios; // Cambiar a puntero
+    ListaUsuarios *listaUsuarios;
     Login *login;
 };
 

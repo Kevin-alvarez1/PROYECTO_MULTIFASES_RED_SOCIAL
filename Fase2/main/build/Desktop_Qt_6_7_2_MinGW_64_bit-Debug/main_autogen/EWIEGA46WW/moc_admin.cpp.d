@@ -143,7 +143,6 @@ C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/bui
   C:/Qt/6.7.2/mingw_64/include/QtGui/qwindowdefs.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qwindowdefs_win.h \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/QDialog \
-  C:/Qt/6.7.2/mingw_64/include/QtWidgets/QLayoutItem.h \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/QVBoxLayout \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/qboxlayout.h \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/qdialog.h \

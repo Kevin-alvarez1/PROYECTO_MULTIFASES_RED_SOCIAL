@@ -14,6 +14,7 @@ Login::Login(ListaUsuarios *listaUsuarios, QWidget *parent)
     adminWindow(nullptr),
     usuarioWindow(nullptr),
     listaUsuarios(listaUsuarios)
+
 {
     ui->setupUi(this);
 }

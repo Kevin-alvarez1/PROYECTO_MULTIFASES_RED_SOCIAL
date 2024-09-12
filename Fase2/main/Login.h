@@ -2,7 +2,7 @@
 #define LOGIN_H
 
 #include <QMainWindow>
-#include "ListaUsuarios.h" // Incluir el encabezado de ListaUsuarios
+#include "ListaUsuarios.h"
 
 class Admin;
 class Usuarios;
@@ -30,8 +30,7 @@ private:
     Admin *adminWindow;
     Usuarios *usuarioWindow;
     Registrarse *registrarseWindow;
-
-    ListaUsuarios *listaUsuarios; // Cambiar a puntero
+    ListaUsuarios *listaUsuarios;
 };
 
 #endif // LOGIN_H

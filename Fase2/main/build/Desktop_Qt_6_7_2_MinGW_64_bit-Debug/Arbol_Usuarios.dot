@@ -1,9 +1,10 @@
 digraph AVLTree {
     node [shape=record];
-    "miguel.rodriguez@example.com" -> "carlos.gomez@example.com";
-    "miguel.rodriguez@example.com" -> "shadow@gmail.com";
-    "carlos.gomez@example.com" -> "asd";
-    "carlos.gomez@example.com" -> "maria.lopez@example.com";
-    "shadow@gmail.com" -> "sam@gmail.com";
-    "shadow@gmail.com" -> "sofia.gonzalez@example.com";
+    "asd" -> "et@example.com";
+    "asd" -> "mr@example.com";
+    "et@example.com" -> "cg@example.com";
+    "et@example.com" -> "jg@example.com";
+    "mr@example.com" -> "lr@example.com";
+    "mr@example.com" -> "sg@example.com";
+    "lr@example.com" -> "ml@example.com";
 }

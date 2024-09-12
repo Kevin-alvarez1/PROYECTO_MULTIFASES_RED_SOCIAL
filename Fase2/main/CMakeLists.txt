@@ -29,6 +29,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         usuarios.h usuarios.cpp usuarios.ui
         registrarse.h registrarse.cpp registrarse.ui
         nodoavl.h nodoavl.cpp
+        publicacion.h Publicacion.cpp
+        comentario.h Comentario.cpp
+        listadoblepublicacion.h listadoblepublicacion.cpp
 
 
 

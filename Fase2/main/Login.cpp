@@ -34,7 +34,7 @@ void Login::on_InicioSesion_btn_clicked()
 
     if (correo == admin_usuario_std && contrasena == admin_contraseña_std) {
         if (!adminWindow) {
-            adminWindow = new Admin(listaUsuarios, this); // Pasar el puntero
+            adminWindow = new Admin(listaUsuarios, listadoblepublicacion, this); // Pasar el puntero
         }
         adminWindow->show();
         this->hide();

@@ -269,6 +269,18 @@
 			null
 		],
 		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/comentario.h",
+			"MU",
+			"EWIEGA46WW/moc_comentario.cpp",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/listadoblepublicacion.h",
+			"MU",
+			"EWIEGA46WW/moc_listadoblepublicacion.cpp",
+			null
+		],
+		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/listausuarios.h",
 			"MU",
 			"EWIEGA46WW/moc_listausuarios.cpp",
@@ -278,6 +290,12 @@
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/nodoavl.h",
 			"MU",
 			"EWIEGA46WW/moc_nodoavl.cpp",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/publicacion.h",
+			"MU",
+			"EWIEGA46WW/moc_publicacion.cpp",
 			null
 		],
 		[
@@ -376,6 +394,16 @@
 			null
 		],
 		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/comentario.cpp",
+			"MU",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/listadoblepublicacion.cpp",
+			"MU",
+			null
+		],
+		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/listausuarios.cpp",
 			"MU",
 			null
@@ -392,6 +420,11 @@
 		],
 		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/nodoavl.cpp",
+			"MU",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/publicacion.cpp",
 			"MU",
 			null
 		],

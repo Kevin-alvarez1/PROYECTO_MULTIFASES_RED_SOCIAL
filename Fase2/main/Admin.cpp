@@ -7,10 +7,11 @@
 #include <QInputDialog>
 #include <QRegularExpression>
 
-Admin::Admin(ListaUsuarios *listaUsuarios, QWidget *parent)
+Admin::Admin(ListaUsuarios *listaUsuarios, ListaDoblePublicacion listadoblepublicacion, QWidget *parent)
     : QDialog(parent),
     ui(new Ui::Admin),
     listaUsuarios(listaUsuarios),
+    listadoblepublicacion(listadoblepublicacion),
     login(nullptr)
 {
     ui->setupUi(this);
@@ -53,8 +54,42 @@ void Admin::on_Solicitudes_boton_archivo_clicked()
 
 void Admin::on_Publicaciones_boton_archivo_clicked()
 {
+    QString filename = QFileDialog::getOpenFileName(this, "Seleccionar archivo JSON", "", "Archivos JSON (*.json)");
+    std::cout << "Intentando leer el archivo..." << std::endl;
 
+    if (!filename.isEmpty())
+    {
+        std::ifstream archivo(filename.toStdString());
+
+        if (archivo.is_open())
+        {
+            std::cout << "Archivo abierto correctamente." << std::endl;
+
+            try {
+                listadoblepublicacion.cargarPublicacionesDesdeJson(filename.toStdString());
+                listadoblepublicacion.mostrarTodasLasPublicaciones();
+
+                QMessageBox::information(this, "Cargar publicaciones", "Publicaciones cargadas exitosamente.");
+            } catch (const std::exception& e) {
+                std::cerr << "Error al cargar las publicaciones: " << e.what() << std::endl;
+                QMessageBox::critical(this, "Error", "Hubo un error al cargar el archivo JSON.");
+            }
+
+            archivo.close();
+        }
+        else
+        {
+            std::cerr << "No se pudo abrir el archivo." << std::endl;
+            QMessageBox::warning(this, "Error", "No se pudo abrir el archivo.");
+        }
+    }
+    else
+    {
+        std::cerr << "No se seleccionó ningún archivo." << std::endl;
+        QMessageBox::warning(this, "Error", "No se seleccionó ningún archivo.");
+    }
 }
+
 
 
 void Admin::on_CerrarSesion_boton_2_clicked()

@@ -1,36 +1,78 @@
 #include "Publicacion.h"
 #include <iostream>
-#include "publicacion.h"
 
+// Constructor
+Publicacion::Publicacion(int id, const std::string& correo, const std::string& contenido, const std::string& fecha, const std::string& hora)
+    : id_(id), correo_(correo), contenido_(contenido), fecha_(fecha), hora_(hora), cabezaComentario_(nullptr) {}
 
-Publicacion::Publicacion(int id, const std::string &correo, const std::string &contenido, const std::string &fecha, const std::string &hora)
-    : id_(id), correo_(correo), contenido_(contenido), fecha_(fecha), hora_(hora) {}
+// Destructor para limpiar la memoria de la lista enlazada
+Publicacion::~Publicacion() {
+    limpiarComentarios();
+}
 
-int Publicacion::getId() const { return id_; }
-std::string Publicacion::getCorreo() const { return correo_; }
-std::string Publicacion::getContenido() const { return contenido_; }
-std::string Publicacion::getFecha() const { return fecha_; }
-std::string Publicacion::getHora() const { return hora_; }
-std::vector<Comentario> Publicacion::getComentarios() const { return comentarios_; }
-
-void Publicacion::setId(int id) { id_ = id; }
-void Publicacion::setCorreo(const std::string &correo) { correo_ = correo; }
-void Publicacion::setContenido(const std::string &contenido) { contenido_ = contenido; }
-void Publicacion::setFecha(const std::string &fecha) { fecha_ = fecha; }
-void Publicacion::setHora(const std::string &hora) { hora_ = hora; }
-void Publicacion::agregarComentario(const Comentario &comentario) { comentarios_.push_back(comentario); }
-void Publicacion::mostrarComentarios() const {
-    for (const auto &comentario : comentarios_) {
-        std::cout << "Comentario por " << comentario.getCorreo() << ": " << comentario.getComentario() << std::endl;
+void Publicacion::limpiarComentarios() {
+    NodoComentario* actual = cabezaComentario_;
+    while (actual != nullptr) {
+        NodoComentario* siguiente = actual->siguiente;
+        delete actual;
+        actual = siguiente;
     }
+    cabezaComentario_ = nullptr;
 }
 
 
-void Publicacion::mostrarInformacion() const {
-    std::cout << "ID: " << id_ << std::endl;
-    std::cout << "Correo: " << correo_ << std::endl;
-    std::cout << "Contenido: " << contenido_ << std::endl;
-    std::cout << "Fecha: " << fecha_ << std::endl;
-    std::cout << "Hora: " << hora_ << std::endl;
-    mostrarComentarios();
+// Getters
+int Publicacion::getId() const {
+    return id_;
+}
+
+std::string Publicacion::getCorreo() const {
+    return correo_;
+}
+
+std::string Publicacion::getContenido() const {
+    return contenido_;
+}
+
+std::string Publicacion::getFecha() const {
+    return fecha_;
+}
+
+std::string Publicacion::getHora() const {
+    return hora_;
+}
+
+// Setters
+void Publicacion::setContenido(const std::string& nuevoContenido) {
+    contenido_ = nuevoContenido;
+}
+
+// Método para agregar un comentario a la lista enlazada
+void Publicacion::agregarComentario(const Comentario& comentario) {
+    NodoComentario* nuevoNodo = new NodoComentario(comentario);
+    if (cabezaComentario_ == nullptr) {
+        cabezaComentario_ = nuevoNodo;
+    } else {
+        NodoComentario* actual = cabezaComentario_;
+        while (actual->siguiente != nullptr) {
+            actual = actual->siguiente;
+        }
+        actual->siguiente = nuevoNodo;
+    }
+}
+
+// Método para mostrar todos los comentarios de la publicación
+void Publicacion::mostrarComentarios() const {
+    NodoComentario* actual = cabezaComentario_;
+    if (actual == nullptr) {
+        std::cout << "No hay comentarios para esta publicación." << std::endl;
+        return;
+    }
+    std::cout << "Comentarios para la publicación ID " << id_ << ":" << std::endl;
+    while (actual != nullptr) {
+        std::cout << "- Comentario de " << actual->comentario.getCorreo()
+        << " (" << actual->comentario.getFecha() << " a las " << actual->comentario.getHora() << "): "
+        << actual->comentario.getComentario() << std::endl;
+        actual = actual->siguiente;
+    }
 }

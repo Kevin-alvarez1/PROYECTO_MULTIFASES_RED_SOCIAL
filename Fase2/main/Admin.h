@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QVBoxLayout>
 #include "ListaUsuarios.h"
+#include "listadoblepublicacion.h"
 
 class Login;
 
@@ -16,7 +17,7 @@ class Admin : public QDialog
     Q_OBJECT
 
 public:
-    explicit Admin(ListaUsuarios *listaUsuarios, QWidget *parent = nullptr);
+    explicit Admin(ListaUsuarios *listaUsuarios, ListaDoblePublicacion listadoblepublicacion, QWidget *parent = nullptr);
     ~Admin();
 
 private slots:
@@ -37,6 +38,8 @@ private slots:
 private:
     Ui::Admin *ui;
     ListaUsuarios *listaUsuarios;
+    ListaDoblePublicacion listadoblepublicacion;
+
     Login *login;
 };
 

@@ -42,7 +42,7 @@ void Login::on_InicioSesion_btn_clicked()
         if (listaUsuarios->buscarUsuarioPorCorreoyContrasena(correo, contrasena)) {
             if (!usuarioWindow) {
                 // Aquí corregimos el orden de los parámetros
-                usuarioWindow = new Usuarios(correo, listaUsuarios, this); // Pasamos el correo del usuario primero
+                usuarioWindow = new Usuarios(correo, listaUsuarios, listadoblepublicacion, this); // Pasamos el correo del usuario primero
             }
             usuarioWindow->show();
             this->hide();

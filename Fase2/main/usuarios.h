@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ListaUsuarios.h"
+#include "listadoblepublicacion.h"
 
 namespace Ui {
 class Usuarios;
@@ -14,7 +15,7 @@ class Usuarios : public QDialog
     Q_OBJECT
 
 public:
-    explicit Usuarios(std::string correoUsuario, ListaUsuarios* listaUsuarios, QWidget *parent = nullptr);
+    explicit Usuarios(std::string correoUsuario, ListaUsuarios* listaUsuarios, ListaDoblePublicacion listadoblepublicacion, QWidget *parent = nullptr);
     ~Usuarios();
 
 private slots:
@@ -28,7 +29,9 @@ private:
     Ui::Usuarios *ui;
     Login *login;
     ListaUsuarios *listaUsuarios;
-    std::string correoActualUsuario_; // Variable para guardar el correo del usuario autenticado
+    std::string correoActualUsuario_;
+    ListaDoblePublicacion listadoblepublicacion;
+
 };
 
 #endif // USUARIOS_H

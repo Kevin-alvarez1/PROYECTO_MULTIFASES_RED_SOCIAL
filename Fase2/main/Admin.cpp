@@ -363,7 +363,13 @@ void Admin::on_Generar_reporte_btn_clicked() {
 
     QString imagePath = "Arbol_Usuarios.png";
 
+    listadoblepublicacion.generateDot("ListaDoblePublis");
+
+    QString imagePathP = "ListaDoblePublis.png";
+
     actualizarPanelConImagen(imagePath);
+    actualizarPanelConImagen_publis(imagePathP);
+
 }
 
 void Admin::actualizarPanelConImagen(const QString& imagePath) {
@@ -392,5 +398,30 @@ void Admin::actualizarPanelConImagen(const QString& imagePath) {
 
     newLayout->addWidget(scrollArea);
 }
+void Admin::actualizarPanelConImagen_publis(const QString& imagePathP) {
+    QLayout* existingLayout = ui->lista_doble_publis_frame->layout();
+    if (existingLayout) {
+        QLayoutItem* item;
+        while ((item = existingLayout->takeAt(0))) {
+            delete item->widget();
+            delete item;
+        }
+        delete existingLayout;
+    }
 
+    QVBoxLayout* newLayout = new QVBoxLayout();
+    ui->lista_doble_publis_frame->setLayout(newLayout);
+
+    QLabel* imageLabel = new QLabel();
+    QPixmap pixmap(imagePathP);
+    imageLabel->setPixmap(pixmap);
+
+    imageLabel->resize(pixmap.size());
+
+    QScrollArea* scrollArea = new QScrollArea();
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setWidget(imageLabel);
+
+    newLayout->addWidget(scrollArea);
+}
 

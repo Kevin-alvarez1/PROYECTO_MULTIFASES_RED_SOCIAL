@@ -3,12 +3,14 @@
 #include "login.h"
 #include "QMessageBox"
 
-Usuarios::Usuarios(std::string correoUsuario, ListaUsuarios *listaUsuarios, QWidget *parent)
+Usuarios::Usuarios(std::string correoUsuario, ListaUsuarios *listaUsuarios, ListaDoblePublicacion listadoblepublicacion, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::Usuarios)
     , login(nullptr)
     , listaUsuarios(listaUsuarios)
-    , correoActualUsuario_(correoUsuario) // Almacenar el correo del usuario autenticado
+    , correoActualUsuario_(correoUsuario)
+    , listadoblepublicacion(listadoblepublicacion)
+
 {
     ui->setupUi(this);
     ui->correo_editar_txt->setText(QString::fromStdString(correoUsuario));

@@ -59,6 +59,51 @@ void ListaDoblePublicacion::cargarPublicacionesDesdeJson(const std::string &file
     }
 }
 
+void ListaDoblePublicacion::generateDot(const std::string &filename) {
+    std::string dotFilename = filename + ".dot";
+
+    std::ofstream file(dotFilename);
+    if (!file.is_open()) {
+        std::cerr << "No se pudo abrir el archivo para escribir el DOT." << std::endl;
+        return;
+    }
+
+    file << "digraph G {\n";
+    file << "  node [shape=record];\n";
+
+    NodoPublicacion* actual = cabeza;
+    int nodoId = 0;
+
+    while (actual != nullptr) {
+        file << "  nodo" << nodoId << " [label=\"{"
+             << actual->publicacion.getCorreo() << " | "
+             << actual->publicacion.getContenido() << "}\"];\n";
+
+        if (actual->siguiente != nullptr) {
+            file << "  nodo" << nodoId << " -> nodo" << nodoId + 1 << ";\n";
+            file << "  nodo" << nodoId + 1 << " -> nodo" << nodoId << ";\n"; // Doble enlace
+        }
+
+        actual = actual->siguiente;
+        nodoId++;
+    }
+
+    file << "}\n";
+    file.close();
+
+    std::string pngFilename = filename + ".png";
+    crearPNG(dotFilename, pngFilename);
+}
+
+void ListaDoblePublicacion::crearPNG(const std::string &dotFilename, const std::string &pngFilename) {
+    std::string command = "dot -Tpng " + dotFilename + " -o " + pngFilename;
+    int result = system(command.c_str());
+    if (result != 0) {
+        std::cerr << "Error al ejecutar el comando Graphviz para generar el PNG." << std::endl;
+    }
+}
+
+
 void ListaDoblePublicacion::agregarPublicacion(const Publicacion &publicacion)
 {
     NodoPublicacion *nuevoNodo = new NodoPublicacion(publicacion);

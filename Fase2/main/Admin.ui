@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -420,6 +420,29 @@
        <property name="frameShadow">
         <enum>QFrame::Shadow::Raised</enum>
        </property>
+       <widget class="QWidget" name="lista_doble_publis_frame" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>551</width>
+          <height>351</height>
+         </rect>
+        </property>
+        <widget class="QLabel" name="lista_doble_publis_label">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>541</width>
+           <height>351</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </widget>
       </widget>
       <widget class="QLabel" name="label_5">
        <property name="geometry">

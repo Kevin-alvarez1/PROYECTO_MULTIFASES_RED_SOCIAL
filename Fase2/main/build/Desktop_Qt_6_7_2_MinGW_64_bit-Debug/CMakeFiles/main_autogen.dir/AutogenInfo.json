@@ -263,27 +263,33 @@
 			null
 		],
 		[
-			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/Login.h",
-			"MU",
-			"EWIEGA46WW/moc_Login.cpp",
-			null
-		],
-		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/comentario.h",
 			"MU",
 			"EWIEGA46WW/moc_comentario.cpp",
 			null
 		],
 		[
-			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/listadoblepublicacion.h",
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/listaDoblePublicacion.h",
 			"MU",
-			"EWIEGA46WW/moc_listadoblepublicacion.cpp",
+			"EWIEGA46WW/moc_listaDoblePublicacion.cpp",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/lista_solicitudes.h",
+			"MU",
+			"EWIEGA46WW/moc_lista_solicitudes.cpp",
 			null
 		],
 		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/listausuarios.h",
 			"MU",
 			"EWIEGA46WW/moc_listausuarios.cpp",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/login.h",
+			"MU",
+			"EWIEGA46WW/moc_login.cpp",
 			null
 		],
 		[
@@ -302,6 +308,12 @@
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/registrarse.h",
 			"MU",
 			"EWIEGA46WW/moc_registrarse.cpp",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/solicitud.h",
+			"MU",
+			"EWIEGA46WW/moc_solicitud.cpp",
 			null
 		],
 		[
@@ -399,6 +411,11 @@
 			null
 		],
 		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/lista_solicitudes.cpp",
+			"MU",
+			null
+		],
+		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/listadoblepublicacion.cpp",
 			"MU",
 			null
@@ -430,6 +447,11 @@
 		],
 		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/registrarse.cpp",
+			"MU",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/solicitud.cpp",
 			"MU",
 			null
 		],

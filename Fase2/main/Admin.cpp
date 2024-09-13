@@ -7,11 +7,12 @@
 #include <QInputDialog>
 #include <QRegularExpression>
 
-Admin::Admin(ListaUsuarios *listaUsuarios, ListaDoblePublicacion listadoblepublicacion, QWidget *parent)
+Admin::Admin(ListaUsuarios *listaUsuarios, ListaDoblePublicacion listadoblepublicacion,  ListaSolicitudes lista_solicitudes, QWidget *parent)
     : QDialog(parent),
     ui(new Ui::Admin),
     listaUsuarios(listaUsuarios),
     listadoblepublicacion(listadoblepublicacion),
+    lista_solicitudes(lista_solicitudes),
     login(nullptr)
 {
     ui->setupUi(this);
@@ -49,7 +50,26 @@ void Admin::on_Usuarios_boton_archivo_clicked()
 
 void Admin::on_Solicitudes_boton_archivo_clicked()
 {
-    // Implementar la funcionalidad para solicitudes
+    QString filename = QFileDialog::getOpenFileName(this, "Seleccionar archivo JSON", "", "Archivos JSON (*.json)");
+
+    if (!filename.isEmpty())
+    {
+        std::ifstream archivo(filename.toStdString());
+
+        if (archivo.is_open())
+        {
+            lista_solicitudes.cargarRelacionesDesdeJson(filename.toStdString());
+            QMessageBox::information(this, "Cargar usuarios", "Usuarios cargados exitosamente.");
+        }
+        else
+        {
+            QMessageBox::warning(this, "Error", "No se pudo abrir el archivo.");
+        }
+    }
+    else
+    {
+        QMessageBox::warning(this, "Error", "No se seleccionó ningún archivo.");
+    }
 }
 
 void Admin::on_Publicaciones_boton_archivo_clicked()

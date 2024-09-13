@@ -15,6 +15,7 @@ Login::Login(ListaUsuarios *listaUsuarios, QWidget *parent)
     usuarioWindow(nullptr),
     listaUsuarios(listaUsuarios)
 
+
 {
     ui->setupUi(this);
 }
@@ -34,7 +35,7 @@ void Login::on_InicioSesion_btn_clicked()
 
     if (correo == admin_usuario_std && contrasena == admin_contraseña_std) {
         if (!adminWindow) {
-            adminWindow = new Admin(listaUsuarios, listadoblepublicacion, this); // Pasar el puntero
+            adminWindow = new Admin(listaUsuarios, listadoblepublicacion, lista_solicitudes, this); // Pasar el puntero
         }
         adminWindow->show();
         this->hide();
@@ -42,7 +43,7 @@ void Login::on_InicioSesion_btn_clicked()
         if (listaUsuarios->buscarUsuarioPorCorreoyContrasena(correo, contrasena)) {
             if (!usuarioWindow) {
                 // Aquí corregimos el orden de los parámetros
-                usuarioWindow = new Usuarios(correo, listaUsuarios, listadoblepublicacion, this); // Pasamos el correo del usuario primero
+                usuarioWindow = new Usuarios(correo, listaUsuarios, listadoblepublicacion, lista_solicitudes, this); // Pasamos el correo del usuario primero
             }
             usuarioWindow->show();
             this->hide();

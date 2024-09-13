@@ -1,4 +1,4 @@
-#include "listadoblepublicacion.h"
+#include "listaDoblePublicacion.h"
 #include <iostream>
 #include <fstream>
 #include "json.hpp"

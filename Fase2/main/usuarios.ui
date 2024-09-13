@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -501,7 +501,7 @@
         <height>179</height>
        </rect>
       </property>
-      <widget class="QTableWidget" name="tableWidget">
+      <widget class="QTableWidget" name="tabla_usuarios_solicitud">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -703,6 +703,22 @@
      </property>
      <property name="text">
       <string>SOLICITUDES ENVIADAS</string>
+     </property>
+    </widget>
+    <widget class="QCommandLinkButton" name="commandLinkButton">
+     <property name="geometry">
+      <rect>
+       <x>1090</x>
+       <y>0</y>
+       <width>31</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset theme="QIcon::ThemeIcon::ViewRestore"/>
      </property>
     </widget>
    </widget>

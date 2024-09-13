@@ -3,7 +3,8 @@
 
 #include <QMainWindow>
 #include "ListaUsuarios.h"
-#include "listadoblepublicacion.h"
+#include "listaDoblePublicacion.h"
+#include "lista_solicitudes.h"
 
 class Admin;
 class Usuarios;
@@ -33,7 +34,7 @@ private:
     Registrarse *registrarseWindow;
     ListaUsuarios *listaUsuarios;
     ListaDoblePublicacion listadoblepublicacion;
-
+    ListaSolicitudes lista_solicitudes;
 };
 
 #endif // LOGIN_H

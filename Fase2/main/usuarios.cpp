@@ -3,14 +3,14 @@
 #include "login.h"
 #include "QMessageBox"
 
-Usuarios::Usuarios(std::string correoUsuario, ListaUsuarios *listaUsuarios, ListaDoblePublicacion listadoblepublicacion, QWidget *parent)
+Usuarios::Usuarios(std::string correoUsuario, ListaUsuarios *listaUsuarios, ListaDoblePublicacion listadoblepublicacion, ListaSolicitudes lista_solicitudes, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::Usuarios)
     , login(nullptr)
     , listaUsuarios(listaUsuarios)
     , correoActualUsuario_(correoUsuario)
     , listadoblepublicacion(listadoblepublicacion)
-
+    , lista_solicitudes(lista_solicitudes)
 {
     ui->setupUi(this);
     ui->correo_editar_txt->setText(QString::fromStdString(correoUsuario));
@@ -131,4 +131,75 @@ void Usuarios::on_Modificar_boton_clicked()
         QMessageBox::warning(this, "Error", "No se pudo encontrar al usuario.");
     }
 }
+
+
+void Usuarios::on_commandLinkButton_clicked() {
+
+    QString criterioOrden = "InOrder";
+    QString correoActual = QString::fromStdString(correoActualUsuario_);
+
+    // Obtener usuarios en el orden especificado
+    std::vector<Usuario> usuarios = listaUsuarios->obtenerUsuariosEnOrden(criterioOrden.toStdString());
+
+    // Obtener la tabla
+    QTableWidget* tabla = findChild<QTableWidget*>("tabla_usuarios_solicitud");
+
+    if (tabla) {
+        std::vector<Usuario> usuariosFiltrados;
+        for (const auto& usuario : usuarios) {
+            if (usuario.getCorreo() != correoActual.toStdString()) {
+                usuariosFiltrados.push_back(usuario);
+            }
+        }
+
+        tabla->setRowCount(usuariosFiltrados.size());
+        tabla->setColumnCount(5); // 5 columnas: Nombre, Apellido, Correo, Fecha de nacimiento, Botón
+
+        // Establecer los encabezados de las columnas
+        tabla->setHorizontalHeaderLabels(QStringList() << "Nombre" << "Apellido" << "Correo" << "Fecha de nacimiento" << "Acción");
+
+        // Llenar la tabla con los usuarios filtrados
+        for (size_t i = 0; i < usuariosFiltrados.size(); ++i) {
+            const Usuario& usuario = usuariosFiltrados[i];
+
+            tabla->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(usuario.getNombre())));
+            tabla->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(usuario.getApellido())));
+            tabla->setItem(i, 2, new QTableWidgetItem(QString::fromStdString(usuario.getCorreo())));
+            tabla->setItem(i, 3, new QTableWidgetItem(QString::fromStdString(usuario.getFechaDeNacimiento())));
+
+            // Crear el botón de enviar solicitud
+            QPushButton* btnEnviarSolicitud = new QPushButton("Enviar solicitud");
+
+            // Añadir el botón a la tabla en la columna 4
+            tabla->setCellWidget(i, 4, btnEnviarSolicitud);
+
+            // Conectar el botón con un slot para manejar el clic, pasando el correo del usuario
+            connect(btnEnviarSolicitud, &QPushButton::clicked, [this, usuario]() {
+                this->on_btnEnviarSolicitud_clicked(usuario.getCorreo());
+            });
+        }
+    } else {
+        qWarning("La tabla no se encontró.");
+    }
+}
+
+
+void Usuarios::on_btnEnviarSolicitud_clicked(const std::string& correoReceptor) {
+    // Obtener el correo del usuario actual (emisor)
+    std::string correoEmisor = correoActualUsuario_;
+
+    // Verificar si el usuario actual está tratando de enviarse una solicitud a sí mismo
+    if (correoEmisor == correoReceptor) {
+        QMessageBox::warning(this, "Error", "No puedes enviarte una solicitud a ti mismo.");
+        return;
+    }
+
+    // Añadir la solicitud a la lista de solicitudes (usando la clase `ListaSolicitudes`)
+    lista_solicitudes.enviarSolicitud(correoEmisor, correoReceptor);
+
+    // Mostrar un mensaje de confirmación
+    QMessageBox::information(this, "Solicitud Enviada", "Se ha enviado una solicitud a " + QString::fromStdString(correoReceptor) + ".");
+}
+
+
 

@@ -31,7 +31,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         nodoavl.h nodoavl.cpp
         publicacion.h Publicacion.cpp
         comentario.h Comentario.cpp
-        listadoblepublicacion.h listadoblepublicacion.cpp
+        listaDoblePublicacion.h listadoblepublicacion.cpp
+        lista_solicitudes.h lista_solicitudes.cpp
+        solicitud.h solicitud.cpp
 
 
 

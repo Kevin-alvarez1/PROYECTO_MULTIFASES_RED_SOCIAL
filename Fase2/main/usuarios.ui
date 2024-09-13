@@ -577,7 +577,7 @@
         <height>219</height>
        </rect>
       </property>
-      <widget class="QTableWidget" name="tableWidget_2">
+      <widget class="QTableWidget" name="solicitudes_recibidas_tabla">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -623,7 +623,7 @@
         <height>219</height>
        </rect>
       </property>
-      <widget class="QTableWidget" name="tableWidget_3">
+      <widget class="QTableWidget" name="solicitudes_enviadas_tabla">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -705,10 +705,10 @@
       <string>SOLICITUDES ENVIADAS</string>
      </property>
     </widget>
-    <widget class="QCommandLinkButton" name="commandLinkButton">
+    <widget class="QCommandLinkButton" name="actualizar_tablas">
      <property name="geometry">
       <rect>
-       <x>1090</x>
+       <x>1100</x>
        <y>0</y>
        <width>31</width>
        <height>41</height>

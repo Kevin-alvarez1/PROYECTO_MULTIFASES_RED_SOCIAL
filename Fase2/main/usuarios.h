@@ -26,8 +26,10 @@ private slots:
 
     void on_Modificar_boton_clicked();
 
-    void on_commandLinkButton_clicked();
     void on_btnEnviarSolicitud_clicked(const std::string& correo);
+    void on_btnCancelar_clicked(const std::string& correo);
+
+    void on_actualizar_tablas_clicked();
 
 private:
     Ui::Usuarios *ui;

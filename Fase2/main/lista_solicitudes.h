@@ -2,6 +2,8 @@
 #define LISTA_SOLICITUDES_H
 
 #include "solicitud.h"
+#include <string>
+#include <vector>
 
 class ListaSolicitudes {
 private:
@@ -23,6 +25,7 @@ public:
     void mostrarSolicitudes() const;
     void cargarRelacionesDesdeJson(const std::string &filename);
     void enviarSolicitud(const std::string &emisor, const std::string &receptor);
+    std::vector<std::string> obtenerSolicitudesEnviadas(const std::string &correoEmisor) const;
 
 };
 

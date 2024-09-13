@@ -20,8 +20,7 @@ Registrarse::~Registrarse()
     delete ui;
 }
 
-void Registrarse::on_Registrar_boton_clicked()
-{
+void Registrarse::on_Registrar_boton_clicked() {
     // Convertir los campos de registro de QString a std::string
     std::string nombre = ui->nombre_registro_txt_area->text().toStdString();
     std::string apellido = ui->apellido_registro_txt_area->text().toStdString();
@@ -29,6 +28,12 @@ void Registrarse::on_Registrar_boton_clicked()
     std::string correo = ui->correo_registro_txt_area->text().toStdString();
     std::string contrasena = ui->contrasena_registro_txt_area->text().toStdString();
     std::string confirmacion_contrasena = ui->confirmacion_contrasena_txt_area->text().toStdString();
+
+    // Verificar si algún campo está vacío
+    if (nombre.empty() || apellido.empty() || fecha_de_nacimiento.empty() || correo.empty() || contrasena.empty() || confirmacion_contrasena.empty()) {
+        QMessageBox::warning(this, "Error", "Todos los campos deben ser completados.");
+        return;
+    }
 
     // Verificar si las contraseñas coinciden
     if (contrasena != confirmacion_contrasena) {
@@ -63,8 +68,6 @@ void Registrarse::on_Registrar_boton_clicked()
     ui->fecha_nacimiento_registro->clear();
     ui->correo_registro_txt_area->clear();
     ui->contrasena_registro_txt_area->clear();
-
     ui->confirmacion_contrasena_txt_area->clear();
-
 }
 

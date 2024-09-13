@@ -103,3 +103,17 @@ void ListaSolicitudes::enviarSolicitud(const std::string &emisor, const std::str
 
     std::cout << "Solicitud enviada de " << emisor << " a " << receptor << " con estado PENDIENTE." << std::endl;
 }
+
+std::vector<std::string> ListaSolicitudes::obtenerSolicitudesEnviadas(const std::string &correoEmisor) const {
+    std::vector<std::string> receptores;
+    NodoSolicitud* actual = cabeza;
+
+    while (actual != nullptr) {
+        if (actual->solicitud.getEmisor() == correoEmisor) {
+            receptores.push_back(actual->solicitud.getReceptor());
+        }
+        actual = actual->siguiente;
+    }
+
+    return receptores;
+}

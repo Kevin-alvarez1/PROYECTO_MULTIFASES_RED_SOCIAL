@@ -115,7 +115,7 @@ void Admin::on_Publicaciones_boton_archivo_clicked()
 void Admin::on_CerrarSesion_boton_2_clicked()
 {
     if (!login) {
-        login = new Login(listaUsuarios, this); // Pasar el puntero
+        login = new Login(listaUsuarios,  this); // Pasar el puntero
     }
 
     login->show();

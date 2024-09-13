@@ -88,9 +88,6 @@ void Usuarios::on_Eliminar_boton_clicked()
     }
 }
 
-
-
-
 void Usuarios::on_Modificar_boton_clicked()
 {
     // Obtener los nuevos datos desde las áreas de texto
@@ -132,57 +129,13 @@ void Usuarios::on_Modificar_boton_clicked()
     }
 }
 
+void Usuarios::on_btnCancelar_clicked(const std::string& correoReceptor) {
 
-void Usuarios::on_commandLinkButton_clicked() {
+    std::string correoEmisor = correoActualUsuario_;
+    lista_solicitudes.eliminarSolicitud(correoEmisor, correoReceptor);
+    QMessageBox::information(this, "Solicitud Cancelada", "Se ha cancelado la enviadaa " + QString::fromStdString(correoReceptor) + ".");
 
-    QString criterioOrden = "InOrder";
-    QString correoActual = QString::fromStdString(correoActualUsuario_);
-
-    // Obtener usuarios en el orden especificado
-    std::vector<Usuario> usuarios = listaUsuarios->obtenerUsuariosEnOrden(criterioOrden.toStdString());
-
-    // Obtener la tabla
-    QTableWidget* tabla = findChild<QTableWidget*>("tabla_usuarios_solicitud");
-
-    if (tabla) {
-        std::vector<Usuario> usuariosFiltrados;
-        for (const auto& usuario : usuarios) {
-            if (usuario.getCorreo() != correoActual.toStdString()) {
-                usuariosFiltrados.push_back(usuario);
-            }
-        }
-
-        tabla->setRowCount(usuariosFiltrados.size());
-        tabla->setColumnCount(5); // 5 columnas: Nombre, Apellido, Correo, Fecha de nacimiento, Botón
-
-        // Establecer los encabezados de las columnas
-        tabla->setHorizontalHeaderLabels(QStringList() << "Nombre" << "Apellido" << "Correo" << "Fecha de nacimiento" << "Acción");
-
-        // Llenar la tabla con los usuarios filtrados
-        for (size_t i = 0; i < usuariosFiltrados.size(); ++i) {
-            const Usuario& usuario = usuariosFiltrados[i];
-
-            tabla->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(usuario.getNombre())));
-            tabla->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(usuario.getApellido())));
-            tabla->setItem(i, 2, new QTableWidgetItem(QString::fromStdString(usuario.getCorreo())));
-            tabla->setItem(i, 3, new QTableWidgetItem(QString::fromStdString(usuario.getFechaDeNacimiento())));
-
-            // Crear el botón de enviar solicitud
-            QPushButton* btnEnviarSolicitud = new QPushButton("Enviar solicitud");
-
-            // Añadir el botón a la tabla en la columna 4
-            tabla->setCellWidget(i, 4, btnEnviarSolicitud);
-
-            // Conectar el botón con un slot para manejar el clic, pasando el correo del usuario
-            connect(btnEnviarSolicitud, &QPushButton::clicked, [this, usuario]() {
-                this->on_btnEnviarSolicitud_clicked(usuario.getCorreo());
-            });
-        }
-    } else {
-        qWarning("La tabla no se encontró.");
-    }
 }
-
 
 void Usuarios::on_btnEnviarSolicitud_clicked(const std::string& correoReceptor) {
     // Obtener el correo del usuario actual (emisor)
@@ -201,5 +154,72 @@ void Usuarios::on_btnEnviarSolicitud_clicked(const std::string& correoReceptor) 
     QMessageBox::information(this, "Solicitud Enviada", "Se ha enviado una solicitud a " + QString::fromStdString(correoReceptor) + ".");
 }
 
+void Usuarios::on_actualizar_tablas_clicked() {
+    QString correoActual = QString::fromStdString(correoActualUsuario_);
+
+    // Obtener usuarios en el orden especificado
+    QString criterioOrden = "InOrder";
+    std::vector<Usuario> usuarios = listaUsuarios->obtenerUsuariosEnOrden(criterioOrden.toStdString());
+
+    // Obtener la tabla de usuarios
+    QTableWidget* tablaUsuarios = findChild<QTableWidget*>("tabla_usuarios_solicitud");
+    if (tablaUsuarios) {
+        std::vector<Usuario> usuariosFiltrados;
+        for (const auto& usuario : usuarios) {
+            if (usuario.getCorreo() != correoActual.toStdString()) {
+                usuariosFiltrados.push_back(usuario);
+            }
+        }
+
+        tablaUsuarios->setRowCount(usuariosFiltrados.size());
+        tablaUsuarios->setColumnCount(5); // 5 columnas: Nombre, Apellido, Correo, Fecha de nacimiento, Botón
+
+        tablaUsuarios->setHorizontalHeaderLabels(QStringList() << "Nombre" << "Apellido" << "Correo" << "Fecha de nacimiento" << " ");
+
+        for (size_t i = 0; i < usuariosFiltrados.size(); ++i) {
+            const Usuario& usuario = usuariosFiltrados[i];
+
+            tablaUsuarios->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(usuario.getNombre())));
+            tablaUsuarios->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(usuario.getApellido())));
+            tablaUsuarios->setItem(i, 2, new QTableWidgetItem(QString::fromStdString(usuario.getCorreo())));
+            tablaUsuarios->setItem(i, 3, new QTableWidgetItem(QString::fromStdString(usuario.getFechaDeNacimiento())));
+
+            QPushButton* btnEnviarSolicitud = new QPushButton("Enviar solicitud");
+            tablaUsuarios->setCellWidget(i, 4, btnEnviarSolicitud);
+
+            connect(btnEnviarSolicitud, &QPushButton::clicked, [this, usuario]() {
+                this->on_btnEnviarSolicitud_clicked(usuario.getCorreo());
+            });
+        }
+    } else {
+        qWarning("La tabla de usuarios no se encontró.");
+    }
+
+    // Obtener la tabla de solicitudes enviadas
+    QTableWidget* solicitudes_enviadas_tabla = findChild<QTableWidget*>("solicitudes_enviadas_tabla");
+    if (solicitudes_enviadas_tabla) {
+        // Obtener las solicitudes enviadas del usuario actual
+        std::vector<std::string> solicitudesEnviadas = lista_solicitudes.obtenerSolicitudesEnviadas(correoActualUsuario_);
+
+        solicitudes_enviadas_tabla->setRowCount(solicitudesEnviadas.size());
+        solicitudes_enviadas_tabla->setColumnCount(2);
+
+        solicitudes_enviadas_tabla->setHorizontalHeaderLabels(QStringList() << "Correo" << " ");
+
+        for (size_t i = 0; i < solicitudesEnviadas.size(); ++i) {
+            solicitudes_enviadas_tabla->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(solicitudesEnviadas[i])));
+
+            QPushButton* btnCancelar = new QPushButton("Cancelar");
+            solicitudes_enviadas_tabla->setCellWidget(i, 1, btnCancelar);
+
+            // Conectar el botón de cancelar con el slot correspondiente
+            connect(btnCancelar, &QPushButton::clicked, [this, correoReceptor = solicitudesEnviadas[i]]() {
+                this->on_btnCancelar_clicked(correoReceptor);
+            });
+        }
+    } else {
+        qWarning("La tabla de solicitudes enviadas no se encontró.");
+    }
+}
 
 

@@ -8,14 +8,15 @@
 #include "./ui_registrarse.h"
 #include <QMessageBox>
 
-Login::Login(ListaUsuarios *listaUsuarios, QWidget *parent)
+Login::Login(ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion, ListaSolicitudes *lista_solicitudes, QWidget *parent)
     : QMainWindow(parent),
     ui(new Ui::Login),
     adminWindow(nullptr),
     usuarioWindow(nullptr),
-    listaUsuarios(listaUsuarios)
-
-
+    registrarseWindow(nullptr),
+    listaUsuarios(listaUsuarios),
+    listadoblepublicacion(listadoblepublicacion),
+    lista_solicitudes(lista_solicitudes)
 {
     ui->setupUi(this);
 }
@@ -27,7 +28,6 @@ Login::~Login()
 
 void Login::on_InicioSesion_btn_clicked()
 {
-    // Convertir QString a std::string
     std::string correo = ui->usuario_inicio_sesion_txt_area->text().toStdString();
     std::string contrasena = ui->contrasena_txt_area->text().toStdString();
     std::string admin_usuario_std = "admin@gmail.com";
@@ -35,15 +35,14 @@ void Login::on_InicioSesion_btn_clicked()
 
     if (correo == admin_usuario_std && contrasena == admin_contraseña_std) {
         if (!adminWindow) {
-            adminWindow = new Admin(listaUsuarios, listadoblepublicacion, lista_solicitudes, this); // Pasar el puntero
+            adminWindow = new Admin(listaUsuarios, listadoblepublicacion, lista_solicitudes, this);
         }
         adminWindow->show();
         this->hide();
     } else {
         if (listaUsuarios->buscarUsuarioPorCorreoyContrasena(correo, contrasena)) {
             if (!usuarioWindow) {
-                // Aquí corregimos el orden de los parámetros
-                usuarioWindow = new Usuarios(correo, listaUsuarios, listadoblepublicacion, lista_solicitudes, this); // Pasamos el correo del usuario primero
+                usuarioWindow = new Usuarios(correo, listaUsuarios, listadoblepublicacion, lista_solicitudes, this);
             }
             usuarioWindow->show();
             this->hide();
@@ -55,10 +54,13 @@ void Login::on_InicioSesion_btn_clicked()
 
 void Login::on_Registrarse_btn_clicked()
 {
-    if (!usuarioWindow) {
-        registrarseWindow = new Registrarse(listaUsuarios);
+    if (!registrarseWindow) {
+        registrarseWindow = new Registrarse(listaUsuarios, listadoblepublicacion, lista_solicitudes, this);
+
     }
     registrarseWindow->show();
     this->hide();
 }
+
+
 

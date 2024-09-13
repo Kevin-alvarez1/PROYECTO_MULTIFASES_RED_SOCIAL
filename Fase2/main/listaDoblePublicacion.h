@@ -7,8 +7,9 @@
 class ListaDoblePublicacion
 {
 private:
-    struct NodoPublicacion
+    class NodoPublicacion
     {
+    public:
         Publicacion publicacion;
         NodoPublicacion *siguiente;
         NodoPublicacion *anterior;

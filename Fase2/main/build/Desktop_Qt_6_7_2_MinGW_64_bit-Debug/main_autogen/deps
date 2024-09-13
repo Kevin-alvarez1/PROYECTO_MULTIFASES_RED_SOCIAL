@@ -569,12 +569,14 @@ main_autogen/timestamp: \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Admin.cpp \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Admin.h \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/CMakeLists.txt \
+	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Comentario.cpp \
+	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Login.cpp \
+	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Login.h \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/.qtc/package-manager/auto-setup.cmake \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/CMakeFiles/3.29.3/CMakeCXXCompiler.cmake \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/CMakeFiles/3.29.3/CMakeRCCompiler.cmake \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/CMakeFiles/3.29.3/CMakeSystem.cmake \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/moc_predefs.h \
-	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/comentario.cpp \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/comentario.h \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/json.hpp \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/listaDoblePublicacion.h \
@@ -583,7 +585,6 @@ main_autogen/timestamp: \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/listadoblepublicacion.cpp \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/listausuarios.cpp \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/listausuarios.h \
-	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/login.cpp \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/login.h \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/main.cpp \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/nodoavl.cpp \
@@ -599,7 +600,7 @@ main_autogen/timestamp: \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/usuarios.cpp \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/usuarios.h \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Admin.ui \
-	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/login.ui \
+	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Login.ui \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/registrarse.ui \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/usuarios.ui \
 	C:/Qt/Tools/CMake_64/bin/cmake.exe

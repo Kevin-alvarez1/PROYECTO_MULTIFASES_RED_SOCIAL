@@ -7,7 +7,7 @@
 #include <QInputDialog>
 #include <QRegularExpression>
 
-Admin::Admin(ListaUsuarios *listaUsuarios, ListaDoblePublicacion listadoblepublicacion,  ListaSolicitudes lista_solicitudes, QWidget *parent)
+Admin::Admin(ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion,  ListaSolicitudes *lista_solicitudes, QWidget *parent)
     : QDialog(parent),
     ui(new Ui::Admin),
     listaUsuarios(listaUsuarios),
@@ -58,7 +58,7 @@ void Admin::on_Solicitudes_boton_archivo_clicked()
 
         if (archivo.is_open())
         {
-            lista_solicitudes.cargarRelacionesDesdeJson(filename.toStdString());
+            lista_solicitudes->cargarRelacionesDesdeJson(filename.toStdString());
             QMessageBox::information(this, "Cargar usuarios", "Usuarios cargados exitosamente.");
         }
         else
@@ -86,8 +86,8 @@ void Admin::on_Publicaciones_boton_archivo_clicked()
             std::cout << "Archivo abierto correctamente." << std::endl;
 
             try {
-                listadoblepublicacion.cargarPublicacionesDesdeJson(filename.toStdString());
-                listadoblepublicacion.mostrarTodasLasPublicaciones();
+                listadoblepublicacion->cargarPublicacionesDesdeJson(filename.toStdString());
+                listadoblepublicacion->mostrarTodasLasPublicaciones();
 
                 QMessageBox::information(this, "Cargar publicaciones", "Publicaciones cargadas exitosamente.");
             } catch (const std::exception& e) {
@@ -115,7 +115,7 @@ void Admin::on_Publicaciones_boton_archivo_clicked()
 void Admin::on_CerrarSesion_boton_2_clicked()
 {
     if (!login) {
-        login = new Login(listaUsuarios,  this); // Pasar el puntero
+        login = new Login(listaUsuarios, listadoblepublicacion, lista_solicitudes, this);
     }
 
     login->show();
@@ -383,7 +383,7 @@ void Admin::on_Generar_reporte_btn_clicked() {
 
     QString imagePath = "Arbol_Usuarios.png";
 
-    listadoblepublicacion.generateDot("ListaDoblePublis");
+    listadoblepublicacion->generateDot("ListaDoblePublis");
 
     QString imagePathP = "ListaDoblePublis.png";
 

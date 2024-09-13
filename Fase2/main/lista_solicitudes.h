@@ -7,7 +7,8 @@
 
 class ListaSolicitudes {
 private:
-    struct NodoSolicitud {
+    class NodoSolicitud {
+    public:
         Solicitud solicitud;
         NodoSolicitud* siguiente;
 

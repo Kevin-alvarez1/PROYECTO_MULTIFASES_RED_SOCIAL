@@ -6,11 +6,12 @@
 #include "login.h"
 
 
-Registrarse::Registrarse(ListaUsuarios *listaUsuarios, QWidget *parent)
-    : QDialog(parent)
-    , ui(new Ui::Registrarse)
-    , listaUsuarios(listaUsuarios)
-    , login(nullptr)
+Registrarse::Registrarse(ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion, ListaSolicitudes *lista_solicitudes, QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::Registrarse),
+    listaUsuarios(listaUsuarios),
+    listadoblepublicacion(listadoblepublicacion),
+    lista_solicitudes(lista_solicitudes)
 {
     ui->setupUi(this);
 }
@@ -19,6 +20,7 @@ Registrarse::~Registrarse()
 {
     delete ui;
 }
+
 
 void Registrarse::on_Registrar_boton_clicked() {
     // Convertir los campos de registro de QString a std::string
@@ -56,7 +58,7 @@ void Registrarse::on_Registrar_boton_clicked() {
     // Mostrar mensaje de éxito
     QMessageBox::information(this, "Registro Exitoso", "El usuario ha sido registrado con éxito.");
     if (!login) {
-        login = new Login(listaUsuarios, this); // Pasar el puntero
+        login = new Login(listaUsuarios, listadoblepublicacion, lista_solicitudes, this);
     }
 
     login->show();

@@ -16,7 +16,7 @@ class Usuarios : public QDialog
     Q_OBJECT
 
 public:
-    explicit Usuarios(std::string correoUsuario, ListaUsuarios* listaUsuarios, ListaDoblePublicacion listadoblepublicacion, ListaSolicitudes lista_solicitudes, QWidget *parent = nullptr);
+    explicit Usuarios(std::string correoUsuario,  ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion, ListaSolicitudes *lista_solicitudes, QWidget *parent = nullptr);
     ~Usuarios();
 
 private slots:
@@ -34,10 +34,10 @@ private slots:
 private:
     Ui::Usuarios *ui;
     Login *login;
-    ListaUsuarios *listaUsuarios;
     std::string correoActualUsuario_;
-    ListaDoblePublicacion listadoblepublicacion;
-    ListaSolicitudes lista_solicitudes;
+    ListaUsuarios *listaUsuarios;
+    ListaDoblePublicacion *listadoblepublicacion;
+    ListaSolicitudes *lista_solicitudes;
 };
 
 #endif // USUARIOS_H

@@ -18,7 +18,7 @@ class Admin : public QDialog
     Q_OBJECT
 
 public:
-    explicit Admin(ListaUsuarios *listaUsuarios, ListaDoblePublicacion listadoblepublicacion, ListaSolicitudes lista_solicitudes, QWidget *parent = nullptr);
+    explicit Admin(ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion, ListaSolicitudes *lista_solicitudes, QWidget *parent = nullptr);
     ~Admin();
 
 private slots:
@@ -41,8 +41,8 @@ private slots:
 private:
     Ui::Admin *ui;
     ListaUsuarios *listaUsuarios;
-    ListaDoblePublicacion listadoblepublicacion;
-    ListaSolicitudes lista_solicitudes;
+    ListaDoblePublicacion *listadoblepublicacion;
+    ListaSolicitudes *lista_solicitudes;
     Login *login;
 };
 

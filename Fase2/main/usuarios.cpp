@@ -3,7 +3,7 @@
 #include "login.h"
 #include "QMessageBox"
 
-Usuarios::Usuarios(std::string correoUsuario, ListaUsuarios *listaUsuarios, ListaDoblePublicacion listadoblepublicacion, ListaSolicitudes lista_solicitudes, QWidget *parent)
+Usuarios::Usuarios(std::string correoUsuario, ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion, ListaSolicitudes *lista_solicitudes, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::Usuarios)
     , login(nullptr)
@@ -24,7 +24,7 @@ Usuarios::~Usuarios()
 void Usuarios::on_cerrar_sesion_btn_clicked()
 {
     if (!login) {
-        login = new Login(listaUsuarios, this); // Pasar el puntero
+        login = new Login(listaUsuarios, listadoblepublicacion, lista_solicitudes, this);
     }
 
     login->show();
@@ -78,7 +78,7 @@ void Usuarios::on_Eliminar_boton_clicked()
 
         // Mostrar la ventana de inicio de sesión después de la eliminación
         if (!login) {
-            login = new Login(listaUsuarios, this); // Pasar el puntero
+            login = new Login(listaUsuarios, listadoblepublicacion, lista_solicitudes, this);
         }
         login->show();
         this->hide();  // Ocultar la ventana actual
@@ -132,7 +132,7 @@ void Usuarios::on_Modificar_boton_clicked()
 void Usuarios::on_btnCancelar_clicked(const std::string& correoReceptor) {
 
     std::string correoEmisor = correoActualUsuario_;
-    lista_solicitudes.eliminarSolicitud(correoEmisor, correoReceptor);
+    lista_solicitudes->eliminarSolicitud(correoEmisor, correoReceptor);
     QMessageBox::information(this, "Solicitud Cancelada", "Se ha cancelado la enviadaa " + QString::fromStdString(correoReceptor) + ".");
 
 }
@@ -148,7 +148,7 @@ void Usuarios::on_btnEnviarSolicitud_clicked(const std::string& correoReceptor) 
     }
 
     // Añadir la solicitud a la lista de solicitudes (usando la clase `ListaSolicitudes`)
-    lista_solicitudes.enviarSolicitud(correoEmisor, correoReceptor);
+    lista_solicitudes->enviarSolicitud(correoEmisor, correoReceptor);
 
     // Mostrar un mensaje de confirmación
     QMessageBox::information(this, "Solicitud Enviada", "Se ha enviado una solicitud a " + QString::fromStdString(correoReceptor) + ".");
@@ -172,7 +172,7 @@ void Usuarios::on_actualizar_tablas_clicked() {
         }
 
         tablaUsuarios->setRowCount(usuariosFiltrados.size());
-        tablaUsuarios->setColumnCount(5); // 5 columnas: Nombre, Apellido, Correo, Fecha de nacimiento, Botón
+        tablaUsuarios->setColumnCount(5);
 
         tablaUsuarios->setHorizontalHeaderLabels(QStringList() << "Nombre" << "Apellido" << "Correo" << "Fecha de nacimiento" << " ");
 
@@ -199,7 +199,7 @@ void Usuarios::on_actualizar_tablas_clicked() {
     QTableWidget* solicitudes_enviadas_tabla = findChild<QTableWidget*>("solicitudes_enviadas_tabla");
     if (solicitudes_enviadas_tabla) {
         // Obtener las solicitudes enviadas del usuario actual
-        std::vector<std::string> solicitudesEnviadas = lista_solicitudes.obtenerSolicitudesEnviadas(correoActualUsuario_);
+        std::vector<std::string> solicitudesEnviadas = lista_solicitudes->obtenerSolicitudesEnviadas(correoActualUsuario_);
 
         solicitudes_enviadas_tabla->setRowCount(solicitudesEnviadas.size());
         solicitudes_enviadas_tabla->setColumnCount(2);

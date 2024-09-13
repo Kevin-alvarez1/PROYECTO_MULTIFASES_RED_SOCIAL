@@ -2,20 +2,21 @@
 #define REGISTRARSE_H
 
 #include <QDialog>
-#include "ListaUsuarios.h" // Incluir el encabezado de ListaUsuarios
+#include "ListaUsuarios.h"
+#include "listaDoblePublicacion.h"
+#include "lista_solicitudes.h"
+#include "login.h"
 
-class Login;
 namespace Ui {
 class Registrarse;
 }
-
 
 class Registrarse : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Registrarse(ListaUsuarios *listaUsuarios, QWidget *parent = nullptr);
+    explicit Registrarse(ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion, ListaSolicitudes *lista_solicitudes, QWidget *parent = nullptr);
     ~Registrarse();
 
 private slots:
@@ -23,9 +24,10 @@ private slots:
 
 private:
     Ui::Registrarse *ui;
-    ListaUsuarios *listaUsuarios; // Cambiar a puntero
+    ListaUsuarios *listaUsuarios;
+    ListaDoblePublicacion *listadoblepublicacion;
+    ListaSolicitudes *lista_solicitudes;
     Login *login;
-
 };
 
 #endif // REGISTRARSE_H

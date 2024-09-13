@@ -263,6 +263,12 @@
 			null
 		],
 		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/Login.h",
+			"MU",
+			"EWIEGA46WW/moc_Login.cpp",
+			null
+		],
+		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/comentario.h",
 			"MU",
 			"EWIEGA46WW/moc_comentario.cpp",
@@ -284,12 +290,6 @@
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/listausuarios.h",
 			"MU",
 			"EWIEGA46WW/moc_listausuarios.cpp",
-			null
-		],
-		[
-			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/login.h",
-			"MU",
-			"EWIEGA46WW/moc_login.cpp",
 			null
 		],
 		[
@@ -406,7 +406,12 @@
 			null
 		],
 		[
-			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/comentario.cpp",
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/Comentario.cpp",
+			"MU",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/Login.cpp",
 			"MU",
 			null
 		],
@@ -422,11 +427,6 @@
 		],
 		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/listausuarios.cpp",
-			"MU",
-			null
-		],
-		[
-			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/login.cpp",
 			"MU",
 			null
 		],

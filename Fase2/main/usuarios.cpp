@@ -154,6 +154,7 @@ void Usuarios::on_btnEnviarSolicitud_clicked(const std::string& correoReceptor) 
     QMessageBox::information(this, "Solicitud Enviada", "Se ha enviado una solicitud a " + QString::fromStdString(correoReceptor) + ".");
 }
 
+
 void Usuarios::on_actualizar_tablas_clicked() {
     QString correoActual = QString::fromStdString(correoActualUsuario_);
 
@@ -163,19 +164,36 @@ void Usuarios::on_actualizar_tablas_clicked() {
 
     // Obtener la tabla de usuarios
     QTableWidget* tablaUsuarios = findChild<QTableWidget*>("tabla_usuarios_solicitud");
+    QTableWidget* tablaSolicitudesEnviadas = findChild<QTableWidget*>("solicitudes_enviadas_tabla");
+
     if (tablaUsuarios) {
         std::vector<Usuario> usuariosFiltrados;
+
         for (const auto& usuario : usuarios) {
+            // Evitar mostrar el usuario actual en la tabla
             if (usuario.getCorreo() != correoActual.toStdString()) {
-                usuariosFiltrados.push_back(usuario);
+
+                // Verificar si ya existe una solicitud en estado PENDIENTE o ACEPTADA
+                bool solicitudExistente = lista_solicitudes->existeSolicitudEnEstado(
+                                              correoActual.toStdString(), usuario.getCorreo(), "PENDIENTE") ||
+                                          lista_solicitudes->existeSolicitudEnEstado(
+                                              correoActual.toStdString(), usuario.getCorreo(), "ACEPTADA");
+
+                // Si no existe una solicitud en estado PENDIENTE o ACEPTADA, agregar el usuario a la lista filtrada
+                if (!solicitudExistente) {
+                    usuariosFiltrados.push_back(usuario);
+                }
             }
         }
 
+        // Configurar la tabla
         tablaUsuarios->setRowCount(usuariosFiltrados.size());
         tablaUsuarios->setColumnCount(5);
 
+        // Encabezados de la tabla
         tablaUsuarios->setHorizontalHeaderLabels(QStringList() << "Nombre" << "Apellido" << "Correo" << "Fecha de nacimiento" << " ");
 
+        // Rellenar la tabla con los usuarios filtrados
         for (size_t i = 0; i < usuariosFiltrados.size(); ++i) {
             const Usuario& usuario = usuariosFiltrados[i];
 
@@ -184,9 +202,11 @@ void Usuarios::on_actualizar_tablas_clicked() {
             tablaUsuarios->setItem(i, 2, new QTableWidgetItem(QString::fromStdString(usuario.getCorreo())));
             tablaUsuarios->setItem(i, 3, new QTableWidgetItem(QString::fromStdString(usuario.getFechaDeNacimiento())));
 
+            // Botón para enviar solicitud de amistad
             QPushButton* btnEnviarSolicitud = new QPushButton("Enviar solicitud");
             tablaUsuarios->setCellWidget(i, 4, btnEnviarSolicitud);
 
+            // Conectar el botón a la función de enviar solicitud
             connect(btnEnviarSolicitud, &QPushButton::clicked, [this, usuario]() {
                 this->on_btnEnviarSolicitud_clicked(usuario.getCorreo());
             });
@@ -195,31 +215,46 @@ void Usuarios::on_actualizar_tablas_clicked() {
         qWarning("La tabla de usuarios no se encontró.");
     }
 
-    // Obtener la tabla de solicitudes enviadas
-    QTableWidget* solicitudes_enviadas_tabla = findChild<QTableWidget*>("solicitudes_enviadas_tabla");
-    if (solicitudes_enviadas_tabla) {
-        // Obtener las solicitudes enviadas del usuario actual
-        std::vector<std::string> solicitudesEnviadas = lista_solicitudes->obtenerSolicitudesEnviadas(correoActualUsuario_);
+    // ACTUALIZAR la tabla de solicitudes enviadas en estado "PENDIENTE"
+    if (tablaSolicitudesEnviadas) {
+        // Obtener las solicitudes enviadas en estado "PENDIENTE"
+        std::vector<std::string> solicitudesPendientes = lista_solicitudes->obtenerSolicitudesEnviadas(correoActual.toStdString());
 
-        solicitudes_enviadas_tabla->setRowCount(solicitudesEnviadas.size());
-        solicitudes_enviadas_tabla->setColumnCount(2);
+        std::vector<std::string> solicitudesValidas;
 
-        solicitudes_enviadas_tabla->setHorizontalHeaderLabels(QStringList() << "Correo" << " ");
+        // Validar si existe una solicitud "ACEPTADA" en dirección inversa
+        for (const std::string& receptor : solicitudesPendientes) {
+            bool solicitudAceptadaInversa = lista_solicitudes->existeSolicitudEnEstado(
+                receptor, correoActual.toStdString(), "ACEPTADA");
 
-        for (size_t i = 0; i < solicitudesEnviadas.size(); ++i) {
-            solicitudes_enviadas_tabla->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(solicitudesEnviadas[i])));
+            // Solo agregar la solicitud a la lista si no hay una solicitud ACEPTADA inversa
+            if (!solicitudAceptadaInversa) {
+                solicitudesValidas.push_back(receptor);
+            }
+        }
+
+        tablaSolicitudesEnviadas->setRowCount(solicitudesValidas.size());
+        tablaSolicitudesEnviadas->setColumnCount(2);
+
+        // Encabezados de la tabla
+        tablaSolicitudesEnviadas->setHorizontalHeaderLabels(QStringList() << "Receptor" << "");
+
+        for (size_t i = 0; i < solicitudesValidas.size(); ++i) {
+            tablaSolicitudesEnviadas->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(solicitudesValidas[i])));
 
             QPushButton* btnCancelar = new QPushButton("Cancelar");
-            solicitudes_enviadas_tabla->setCellWidget(i, 1, btnCancelar);
+            tablaSolicitudesEnviadas->setCellWidget(i, 1, btnCancelar);
 
-            // Conectar el botón de cancelar con el slot correspondiente
-            connect(btnCancelar, &QPushButton::clicked, [this, correoReceptor = solicitudesEnviadas[i]]() {
+            connect(btnCancelar, &QPushButton::clicked, [this, correoReceptor = solicitudesValidas[i]]() {
                 this->on_btnCancelar_clicked(correoReceptor);
             });
         }
+
     } else {
         qWarning("La tabla de solicitudes enviadas no se encontró.");
     }
 }
+
+
 
 

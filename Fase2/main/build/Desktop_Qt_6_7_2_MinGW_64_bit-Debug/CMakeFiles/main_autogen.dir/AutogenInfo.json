@@ -263,12 +263,6 @@
 			null
 		],
 		[
-			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/Login.h",
-			"MU",
-			"EWIEGA46WW/moc_Login.cpp",
-			null
-		],
-		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/comentario.h",
 			"MU",
 			"EWIEGA46WW/moc_comentario.cpp",
@@ -293,15 +287,33 @@
 			null
 		],
 		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/login.h",
+			"MU",
+			"EWIEGA46WW/moc_login.cpp",
+			null
+		],
+		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/nodoavl.h",
 			"MU",
 			"EWIEGA46WW/moc_nodoavl.cpp",
 			null
 		],
 		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/pilareceptor.h",
+			"MU",
+			"EWIEGA46WW/moc_pilareceptor.cpp",
+			null
+		],
+		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/publicacion.h",
 			"MU",
 			"EWIEGA46WW/moc_publicacion.cpp",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/receptor.h",
+			"MU",
+			"EWIEGA46WW/moc_receptor.cpp",
 			null
 		],
 		[
@@ -411,11 +423,6 @@
 			null
 		],
 		[
-			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/Login.cpp",
-			"MU",
-			null
-		],
-		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/lista_solicitudes.cpp",
 			"MU",
 			null
@@ -431,6 +438,11 @@
 			null
 		],
 		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/login.cpp",
+			"MU",
+			null
+		],
+		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/main.cpp",
 			"MU",
 			null
@@ -441,7 +453,17 @@
 			null
 		],
 		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/pilareceptor.cpp",
+			"MU",
+			null
+		],
+		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/publicacion.cpp",
+			"MU",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/receptor.cpp",
 			"MU",
 			null
 		],

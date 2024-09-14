@@ -211,8 +211,7 @@ void Admin::actualizarFilaEnTabla(const Usuario& usuario, int fila)
     });
 }
 
-void Admin::on_modificar_usuario_clicked(const std::string& correo, int fila)
-{
+void Admin::on_modificar_usuario_clicked(const std::string& correo, int fila) {
     // Buscar al usuario con el correo proporcionado
     Usuario* usuario = listaUsuarios->buscarUsuarioPorCorreo(correo);
 
@@ -272,21 +271,22 @@ void Admin::on_modificar_usuario_clicked(const std::string& correo, int fila)
         return;
     }
 
+    // Crear un nuevo usuario temporal con los datos actualizados
+    Usuario usuarioModificado = *usuario;
+    usuarioModificado.setNombre(nuevoNombre.toStdString());
+    usuarioModificado.setApellido(nuevoApellido.toStdString());
+    usuarioModificado.setFechaDeNacimiento(nuevaFechaNacimiento.toStdString());
+    usuarioModificado.setContrasena(nuevaContrasena.toStdString());
+    usuarioModificado.setCorreo(nuevoCorreo.toStdString());
+
     // Eliminar el usuario original del árbol (por el correo antiguo)
     listaUsuarios->borrarUsuarioPorCorreo(usuario->getCorreo());
 
-    // Actualizar los datos del usuario
-    usuario->setNombre(nuevoNombre.toStdString());
-    usuario->setApellido(nuevoApellido.toStdString());
-    usuario->setFechaDeNacimiento(nuevaFechaNacimiento.toStdString());
-    usuario->setContrasena(nuevaContrasena.toStdString());
-    usuario->setCorreo(nuevoCorreo.toStdString());  // Actualizar correo
-
-    // Volver a insertar el usuario en el árbol con los datos actualizados
-    listaUsuarios->agregarUsuario(*usuario);
+    // Insertar el nuevo usuario modificado en el árbol
+    listaUsuarios->agregarUsuario(usuarioModificado);
 
     // Actualizar los datos de la fila en la tabla
-    actualizarFilaEnTabla(*usuario, fila);
+    actualizarFilaEnTabla(usuarioModificado, fila);
 
     // Mostrar mensaje de éxito
     QMessageBox::information(this, "Éxito", "Los datos del usuario se han actualizado correctamente.");
@@ -418,6 +418,7 @@ void Admin::actualizarPanelConImagen(const QString& imagePath) {
 
     newLayout->addWidget(scrollArea);
 }
+
 void Admin::actualizarPanelConImagen_publis(const QString& imagePathP) {
     QLayout* existingLayout = ui->lista_doble_publis_frame->layout();
     if (existingLayout) {

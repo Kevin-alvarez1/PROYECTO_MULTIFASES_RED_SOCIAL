@@ -11,7 +11,9 @@ Registrarse::Registrarse(ListaUsuarios *listaUsuarios, ListaDoblePublicacion *li
     ui(new Ui::Registrarse),
     listaUsuarios(listaUsuarios),
     listadoblepublicacion(listadoblepublicacion),
-    lista_solicitudes(lista_solicitudes)
+    lista_solicitudes(lista_solicitudes),
+    login(nullptr)
+
 {
     ui->setupUi(this);
 }
@@ -57,10 +59,10 @@ void Registrarse::on_Registrar_boton_clicked() {
 
     // Mostrar mensaje de éxito
     QMessageBox::information(this, "Registro Exitoso", "El usuario ha sido registrado con éxito.");
+
     if (!login) {
         login = new Login(listaUsuarios, listadoblepublicacion, lista_solicitudes, this);
     }
-
     login->show();
     this->hide();
 

@@ -5,7 +5,8 @@
 #include "ListaUsuarios.h"
 #include "listaDoblePublicacion.h"
 #include "lista_solicitudes.h"
-#include "login.h"
+
+class Login;
 
 namespace Ui {
 class Registrarse;

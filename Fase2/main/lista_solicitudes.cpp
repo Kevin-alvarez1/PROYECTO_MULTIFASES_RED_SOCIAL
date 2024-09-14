@@ -104,6 +104,33 @@ void ListaSolicitudes::enviarSolicitud(const std::string &emisor, const std::str
     std::cout << "Solicitud enviada de " << emisor << " a " << receptor << " con estado PENDIENTE." << std::endl;
 }
 
+bool ListaSolicitudes::existeSolicitudEnEstado(const std::string &emisor, const std::string &receptor, const std::string &estado) {
+    NodoSolicitud* actual = cabeza;
+
+    // Recorremos toda la lista de solicitudes
+    while (actual != nullptr) {
+        const Solicitud& solicitud = actual->solicitud;
+
+        // Verificar si la solicitud es entre los dos usuarios
+        if ((solicitud.getEmisor() == emisor && solicitud.getReceptor() == receptor) ||
+            (solicitud.getEmisor() == receptor && solicitud.getReceptor() == emisor)) {
+
+            // Si el estado coincide con el proporcionado
+            if (solicitud.getEstado() == estado) {
+                return true;
+            }
+        }
+
+        // Continuar con el siguiente nodo
+        actual = actual->siguiente;
+    }
+
+    // Si no se encuentra una solicitud en el estado especificado, retornamos false
+    return false;
+}
+
+
+
 std::vector<std::string> ListaSolicitudes::obtenerSolicitudesEnviadas(const std::string &correoEmisor) const {
     std::vector<std::string> receptores;
     NodoSolicitud* actual = cabeza;

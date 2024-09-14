@@ -27,6 +27,7 @@ public:
     void cargarRelacionesDesdeJson(const std::string &filename);
     void enviarSolicitud(const std::string &emisor, const std::string &receptor);
     std::vector<std::string> obtenerSolicitudesEnviadas(const std::string &correoEmisor) const;
+    bool existeSolicitudEnEstado(const std::string &emisor, const std::string &receptor, const std::string &estado);
 
 };
 

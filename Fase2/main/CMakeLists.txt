@@ -34,6 +34,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         listaDoblePublicacion.h listadoblepublicacion.cpp
         lista_solicitudes.h lista_solicitudes.cpp
         solicitud.h solicitud.cpp
+        receptor.h receptor.cpp
+        pilareceptor.h pilareceptor.cpp
 
 
 

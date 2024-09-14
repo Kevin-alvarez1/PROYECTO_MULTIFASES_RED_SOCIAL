@@ -165,6 +165,7 @@ void Usuarios::on_actualizar_tablas_clicked() {
     // Obtener la tabla de usuarios
     QTableWidget* tablaUsuarios = findChild<QTableWidget*>("tabla_usuarios_solicitud");
     QTableWidget* tablaSolicitudesEnviadas = findChild<QTableWidget*>("solicitudes_enviadas_tabla");
+    QTableWidget* tablaSolicitudesRecibidas = findChild<QTableWidget*>("solicitudes_recibidas_tabla");
 
     if (tablaUsuarios) {
         std::vector<Usuario> usuariosFiltrados;
@@ -172,7 +173,6 @@ void Usuarios::on_actualizar_tablas_clicked() {
         for (const auto& usuario : usuarios) {
             // Evitar mostrar el usuario actual en la tabla
             if (usuario.getCorreo() != correoActual.toStdString()) {
-
                 // Verificar si ya existe una solicitud en estado PENDIENTE o ACEPTADA
                 bool solicitudExistente = lista_solicitudes->existeSolicitudEnEstado(
                                               correoActual.toStdString(), usuario.getCorreo(), "PENDIENTE") ||
@@ -192,6 +192,7 @@ void Usuarios::on_actualizar_tablas_clicked() {
 
         // Encabezados de la tabla
         tablaUsuarios->setHorizontalHeaderLabels(QStringList() << "Nombre" << "Apellido" << "Correo" << "Fecha de nacimiento" << " ");
+
 
         // Rellenar la tabla con los usuarios filtrados
         for (size_t i = 0; i < usuariosFiltrados.size(); ++i) {
@@ -249,9 +250,33 @@ void Usuarios::on_actualizar_tablas_clicked() {
                 this->on_btnCancelar_clicked(correoReceptor);
             });
         }
-
     } else {
         qWarning("La tabla de solicitudes enviadas no se encontró.");
+    }
+
+    // Actualizar la tabla de solicitudes recibidas
+    if (tablaSolicitudesRecibidas) {
+        PilaReceptor& pilaReceptor = obtenerPilaReceptor(correoActual.toStdString());
+        std::vector<Receptor> solicitudesRecibidas;
+
+        while (!pilaReceptor.estaVacia()) {
+            solicitudesRecibidas.push_back(pilaReceptor.peek());
+            pilaReceptor.pop();
+        }
+
+        tablaSolicitudesRecibidas->setRowCount(solicitudesRecibidas.size());
+        tablaSolicitudesRecibidas->setColumnCount(2);
+
+        tablaSolicitudesRecibidas->setHorizontalHeaderLabels(QStringList() << "Correo" << "Estado");
+
+        for (size_t i = 0; i < solicitudesRecibidas.size(); ++i) {
+            const Receptor& solicitud = solicitudesRecibidas[i];
+
+            tablaSolicitudesRecibidas->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(solicitud.getEmisor())));
+            tablaSolicitudesRecibidas->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(solicitud.getEstado())));
+        }
+    } else {
+        qWarning("La tabla de solicitudes recibidas no se encontró.");
     }
 }
 

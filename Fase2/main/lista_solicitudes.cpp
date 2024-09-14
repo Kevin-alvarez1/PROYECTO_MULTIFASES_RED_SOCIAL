@@ -1,9 +1,14 @@
 #include "lista_solicitudes.h"
 #include "solicitud.h"
+#include "PilaReceptor.h"
 #include <iostream>
 #include "json.hpp"
 #include <fstream>
 
+// Aquí se debe tener un método para obtener la pila del receptor
+PilaReceptor& obtenerPilaReceptor(const std::string &correoReceptor);  // Debes implementar esta función
+
+// Constructor y Destructor
 ListaSolicitudes::ListaSolicitudes() : cabeza(nullptr) {}
 
 ListaSolicitudes::~ListaSolicitudes() {
@@ -18,12 +23,14 @@ ListaSolicitudes::~ListaSolicitudes() {
 ListaSolicitudes::NodoSolicitud::NodoSolicitud(const Solicitud &solicitud)
     : solicitud(solicitud), siguiente(nullptr) {}
 
+// Función para agregar solicitud
 void ListaSolicitudes::agregarSolicitud(const Solicitud &solicitud) {
     NodoSolicitud* nuevoNodo = new NodoSolicitud(solicitud);
     nuevoNodo->siguiente = cabeza;
     cabeza = nuevoNodo;
 }
 
+// Función para eliminar solicitud
 void ListaSolicitudes::eliminarSolicitud(const std::string &emisor, const std::string &receptor) {
     NodoSolicitud* actual = cabeza;
     NodoSolicitud* anterior = nullptr;
@@ -43,6 +50,7 @@ void ListaSolicitudes::eliminarSolicitud(const std::string &emisor, const std::s
     }
 }
 
+// Función para mostrar solicitudes
 void ListaSolicitudes::mostrarSolicitudes() const {
     NodoSolicitud* actual = cabeza;
     while (actual != nullptr) {
@@ -51,6 +59,50 @@ void ListaSolicitudes::mostrarSolicitudes() const {
         << ", Estado: " << actual->solicitud.getEstado() << std::endl;
         actual = actual->siguiente;
     }
+}
+
+// Función para enviar solicitud
+void ListaSolicitudes::enviarSolicitud(const std::string &emisor, const std::string &receptor) {
+    // Crear una nueva solicitud con estado "PENDIENTE"
+    Solicitud nuevaSolicitud(emisor, receptor, "PENDIENTE");
+
+    // Verificar si ya existe una solicitud entre el mismo emisor y receptor
+    NodoSolicitud* actual = cabeza;
+    while (actual != nullptr) {
+        if (actual->solicitud.getEmisor() == emisor && actual->solicitud.getReceptor() == receptor) {
+            std::cerr << "Ya existe una solicitud entre " << emisor << " y " << receptor << std::endl;
+            return;
+        }
+        actual = actual->siguiente;
+    }
+
+    // Agregar la nueva solicitud a la lista de solicitudes
+    agregarSolicitud(nuevaSolicitud);
+
+    // Agregar la solicitud a la pila de solicitudes recibidas del receptor
+    PilaReceptor& pilaReceptor = obtenerPilaReceptor(receptor);
+    Receptor nuevaSolicitudReceptor(emisor, receptor, "PENDIENTE");
+    pilaReceptor.push(nuevaSolicitudReceptor);
+
+    std::cout << "Solicitud enviada de " << emisor << " a " << receptor << " con estado PENDIENTE." << std::endl;
+}
+
+// Función para verificar solicitudes en estado
+bool ListaSolicitudes::existeSolicitudEnEstado(const std::string &emisor, const std::string &receptor, const std::string &estado) {
+    NodoSolicitud* actual = cabeza;
+
+    while (actual != nullptr) {
+        const Solicitud& solicitud = actual->solicitud;
+        if ((solicitud.getEmisor() == emisor && solicitud.getReceptor() == receptor) ||
+            (solicitud.getEmisor() == receptor && solicitud.getReceptor() == emisor)) {
+            if (solicitud.getEstado() == estado) {
+                return true;
+            }
+        }
+        actual = actual->siguiente;
+    }
+
+    return false;
 }
 
 void ListaSolicitudes::cargarRelacionesDesdeJson(const std::string &nombreArchivo)
@@ -84,53 +136,8 @@ void ListaSolicitudes::cargarRelacionesDesdeJson(const std::string &nombreArchiv
     }
 }
 
-void ListaSolicitudes::enviarSolicitud(const std::string &emisor, const std::string &receptor) {
-    // Crear una nueva solicitud con estado "PENDIENTE"
-    Solicitud nuevaSolicitud(emisor, receptor, "PENDIENTE");
 
-    // Verificar si ya existe una solicitud entre el mismo emisor y receptor
-    NodoSolicitud* actual = cabeza;
-    while (actual != nullptr) {
-        if (actual->solicitud.getEmisor() == emisor && actual->solicitud.getReceptor() == receptor) {
-            std::cerr << "Ya existe una solicitud entre " << emisor << " y " << receptor << std::endl;
-            return;
-        }
-        actual = actual->siguiente;
-    }
-
-    // Agregar la nueva solicitud a la cola
-    agregarSolicitud(nuevaSolicitud);
-
-    std::cout << "Solicitud enviada de " << emisor << " a " << receptor << " con estado PENDIENTE." << std::endl;
-}
-
-bool ListaSolicitudes::existeSolicitudEnEstado(const std::string &emisor, const std::string &receptor, const std::string &estado) {
-    NodoSolicitud* actual = cabeza;
-
-    // Recorremos toda la lista de solicitudes
-    while (actual != nullptr) {
-        const Solicitud& solicitud = actual->solicitud;
-
-        // Verificar si la solicitud es entre los dos usuarios
-        if ((solicitud.getEmisor() == emisor && solicitud.getReceptor() == receptor) ||
-            (solicitud.getEmisor() == receptor && solicitud.getReceptor() == emisor)) {
-
-            // Si el estado coincide con el proporcionado
-            if (solicitud.getEstado() == estado) {
-                return true;
-            }
-        }
-
-        // Continuar con el siguiente nodo
-        actual = actual->siguiente;
-    }
-
-    // Si no se encuentra una solicitud en el estado especificado, retornamos false
-    return false;
-}
-
-
-
+// Obtener solicitudes enviadas por un emisor
 std::vector<std::string> ListaSolicitudes::obtenerSolicitudesEnviadas(const std::string &correoEmisor) const {
     std::vector<std::string> receptores;
     NodoSolicitud* actual = cabeza;

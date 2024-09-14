@@ -5,6 +5,7 @@
 #include "ListaUsuarios.h"
 #include "listaDoblePublicacion.h"
 #include "lista_solicitudes.h"
+#include "pilareceptor.h"
 
 namespace Ui {
 class Usuarios;
@@ -38,6 +39,7 @@ private:
     ListaUsuarios *listaUsuarios;
     ListaDoblePublicacion *listadoblepublicacion;
     ListaSolicitudes *lista_solicitudes;
+
 };
 
 #endif // USUARIOS_H

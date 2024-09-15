@@ -154,7 +154,6 @@ void Usuarios::on_btnEnviarSolicitud_clicked(const std::string& correoReceptor) 
     QMessageBox::information(this, "Solicitud Enviada", "Se ha enviado una solicitud a " + QString::fromStdString(correoReceptor) + ".");
 }
 
-
 void Usuarios::on_actualizar_tablas_clicked() {
     QString correoActual = QString::fromStdString(correoActualUsuario_);
 
@@ -254,7 +253,16 @@ void Usuarios::on_actualizar_tablas_clicked() {
     }
 
     if (tablaSolicitudesRecibidas) {
+        // Primero, vaciar la pila de solicitudes recibidas
         PilaReceptor& pilaReceptor = obtenerPilaReceptor(correoActual.toStdString());
+        while (!pilaReceptor.estaVacia()) {
+            pilaReceptor.pop();
+        }
+
+        // Luego, obtener y apilar solicitudes pendientes
+        lista_solicitudes->buscarYApilarPendientes(correoActual.toStdString(), *lista_solicitudes);
+
+        // Luego, obtener la pila de solicitudes recibidas
         std::vector<Receptor> solicitudesRecibidas;
 
         // Copia las solicitudes sin vaciar la pila
@@ -267,24 +275,32 @@ void Usuarios::on_actualizar_tablas_clicked() {
         tablaSolicitudesRecibidas->setRowCount(solicitudesRecibidas.size());
         tablaSolicitudesRecibidas->setColumnCount(3);
 
-        tablaSolicitudesRecibidas->setHorizontalHeaderLabels(QStringList() << "Emisor" << "Estado" << "");
+        tablaSolicitudesRecibidas->setHorizontalHeaderLabels(QStringList() << "Emisor" << "" << "");
 
         for (size_t i = 0; i < solicitudesRecibidas.size(); ++i) {
             const Receptor& solicitud = solicitudesRecibidas[i];
 
+            // Verifica si `getEmisor()` es el valor correcto
             tablaSolicitudesRecibidas->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(solicitud.getEmisor())));
-            tablaSolicitudesRecibidas->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(solicitud.getEstado())));
 
             QPushButton* btnAceptar = new QPushButton("Aceptar");
-            tablaSolicitudesRecibidas->setCellWidget(i, 2, btnAceptar);
+            tablaSolicitudesRecibidas->setCellWidget(i, 1, btnAceptar);
 
             connect(btnAceptar, &QPushButton::clicked, [this, solicitud]() {
                 this->on_btnAceptar_clicked(solicitud.getEmisor());
+            });
+
+            QPushButton* btnRechazar = new QPushButton("Rechazar");
+            tablaSolicitudesRecibidas->setCellWidget(i, 2, btnRechazar);
+
+            connect(btnRechazar, &QPushButton::clicked, [this, solicitud]() {
+                this->on_btnRechazar_clicked(solicitud.getEmisor());
             });
         }
     } else {
         qWarning("La tabla de solicitudes recibidas no se encontró.");
     }
+
 }
 
 void Usuarios::on_btnAceptar_clicked(const std::string& correoEmisor) {
@@ -307,6 +323,62 @@ void Usuarios::on_btnAceptar_clicked(const std::string& correoEmisor) {
     QMessageBox::information(this, "Solicitud Aceptada", "La solicitud de " + QString::fromStdString(correoEmisor) + " ha sido aceptada.");
     } catch (const std::exception& e) {
         std::cerr << "Excepción: " << e.what() << std::endl;
+    }
+}
+
+void Usuarios::on_btnRechazar_clicked(const std::string& correoEmisor) {
+    try {
+        std::string correoReceptor = correoActualUsuario_;  // Asegúrate de que `correoActualUsuario_` sea de tipo `std::string`
+
+        // Obtener la pila de solicitudes recibidas del usuario actual
+        PilaReceptor& pilaReceptor = obtenerPilaReceptor(correoReceptor);
+
+        // Verificar si la pila no está vacía
+        if (pilaReceptor.estaVacia()) {
+            QMessageBox::warning(this, "Error", "No hay solicitudes para rechazar.");
+            return;
+        }
+
+        // Intentar encontrar y eliminar la solicitud del emisor
+        bool solicitudEliminada = false;
+        PilaReceptor pilaTemporal;
+
+        // Procesar la pila para eliminar la solicitud del emisor
+        while (!pilaReceptor.estaVacia()) {
+            Receptor solicitud = pilaReceptor.peek();
+            if (solicitud.getEmisor() == correoEmisor) {
+                // Si la solicitud es del emisor que queremos rechazar, no la copiamos a la pila temporal
+                pilaReceptor.pop();
+                solicitudEliminada = true;
+                break;
+            } else {
+                // Si la solicitud no es la que queremos eliminar, la copiamos a una pila temporal
+                pilaTemporal.push(solicitud);
+                pilaReceptor.pop();
+            }
+        }
+
+        // Restaurar las solicitudes que no se eliminaron
+        while (!pilaTemporal.estaVacia()) {
+            pilaReceptor.push(pilaTemporal.peek());
+            pilaTemporal.pop();
+        }
+
+        // Eliminar la solicitud de la lista de solicitudes
+        lista_solicitudes->eliminarSolicitud(correoEmisor, correoReceptor);
+
+        // Mostrar mensaje de confirmación si la solicitud fue eliminada
+        if (solicitudEliminada) {
+            QMessageBox::information(this, "Solicitud Rechazada", "La solicitud de " + QString::fromStdString(correoEmisor) + " ha sido rechazada.");
+        } else {
+            QMessageBox::warning(this, "Error", "No se encontró una solicitud de " + QString::fromStdString(correoEmisor) + ".");
+        }
+
+        // Actualizar la interfaz gráfica para reflejar los cambios
+        on_actualizar_tablas_clicked();
+    } catch (const std::exception& e) {
+        std::cerr << "Excepción: " << e.what() << std::endl;
+        QMessageBox::critical(this, "Error", "Ocurrió un error al intentar rechazar la solicitud.");
     }
 }
 

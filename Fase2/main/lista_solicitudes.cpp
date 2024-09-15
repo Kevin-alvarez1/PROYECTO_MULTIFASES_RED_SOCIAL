@@ -4,6 +4,7 @@
 #include <iostream>
 #include "json.hpp"
 #include <fstream>
+#include <unordered_set>
 
 // Aquí se debe tener un método para obtener la pila del receptor
 PilaReceptor& obtenerPilaReceptor(const std::string &correoReceptor);  // Debes implementar esta función
@@ -138,8 +139,55 @@ void ListaSolicitudes::cargarRelacionesDesdeJson(const std::string &nombreArchiv
     }
 }
 
+std::vector<Solicitud> ListaSolicitudes::obtenerSolicitudesPorReceptor(const std::string& correoReceptor) const {
+    std::vector<Solicitud> solicitudesPorReceptor;
+    NodoSolicitud* actual = cabeza;
+    while (actual != nullptr) {
+        if (actual->solicitud.getReceptor() == correoReceptor) {
+            solicitudesPorReceptor.push_back(actual->solicitud);
+        }
+        actual = actual->siguiente;
+    }
+    return solicitudesPorReceptor;
+}
 
-// Obtener solicitudes enviadas por un emisor
+void ListaSolicitudes::buscarYApilarPendientes(const std::string &correo, const ListaSolicitudes &listaSolicitudes) {
+    std::unordered_map<std::string, bool> usuariosConAceptada;
+    std::unordered_set<std::string> emisoresYaApilados; // Conjunto para rastrear emisores ya apilados
+
+    // Recoger todas las solicitudes para el receptor especificado
+    std::vector<Solicitud> solicitudes = listaSolicitudes.obtenerSolicitudesPorReceptor(correo);
+
+    // Identificar usuarios con solicitudes aceptadas
+    for (const auto& solicitud : solicitudes) {
+        if ((solicitud.getEmisor() == correo || solicitud.getReceptor() == correo) &&
+            solicitud.getEstado() == "ACEPTADA") {
+            usuariosConAceptada[solicitud.getEmisor()] = true;
+            usuariosConAceptada[solicitud.getReceptor()] = true;
+        }
+    }
+
+    // Apilar solicitudes pendientes
+    for (const auto& solicitud : solicitudes) {
+        if (solicitud.getReceptor() == correo && solicitud.getEstado() == "PENDIENTE") {
+            if (usuariosConAceptada.find(solicitud.getEmisor()) == usuariosConAceptada.end()) {
+                // Verificar si el emisor ya ha sido apilado
+                if (emisoresYaApilados.find(solicitud.getEmisor()) == emisoresYaApilados.end()) {
+                    obtenerPilaReceptor(correo).push(Receptor(solicitud.getEmisor(), correo, "PENDIENTE"));
+                    emisoresYaApilados.insert(solicitud.getEmisor()); // Marcar emisor como apilado
+                }
+            }
+        }
+    }
+
+    // Mostrar mensaje final
+    if (obtenerPilaReceptor(correo).estaVacia()) {
+        std::cout << "No se encontraron solicitudes pendientes para el correo: " << correo << std::endl;
+    } else {
+        std::cout << "Solicitudes pendientes apiladas para el correo: " << correo << std::endl;
+    }
+}
+
 std::vector<std::string> ListaSolicitudes::obtenerSolicitudesEnviadas(const std::string &correoEmisor) const {
     std::vector<std::string> receptores;
     NodoSolicitud* actual = cabeza;

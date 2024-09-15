@@ -28,6 +28,8 @@ public:
     void enviarSolicitud(const std::string &emisor, const std::string &receptor);
     std::vector<std::string> obtenerSolicitudesEnviadas(const std::string &correoEmisor) const;
     bool existeSolicitudEnEstado(const std::string &emisor, const std::string &receptor, const std::string &estado);
+    std::vector<Solicitud> obtenerSolicitudesPorReceptor(const std::string &correoReceptor) const;
+    void buscarYApilarPendientes(const std::string &correo, const ListaSolicitudes &listaSolicitudes);
 
 };
 

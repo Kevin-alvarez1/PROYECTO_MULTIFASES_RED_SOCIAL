@@ -19,6 +19,8 @@ class Usuarios : public QDialog
 public:
     explicit Usuarios(std::string correoUsuario,  ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion, ListaSolicitudes *lista_solicitudes, QWidget *parent = nullptr);
     ~Usuarios();
+    ListaSolicitudes& obtenerListaSolicitudesEnviadas();
+    ListaSolicitudes& obtenerListaSolicitudesRecibidas();
 
 private slots:
     void on_cerrar_sesion_btn_clicked();
@@ -32,6 +34,7 @@ private slots:
 
     void on_actualizar_tablas_clicked();
     void on_btnAceptar_clicked(const std::string& correo);
+    void on_btnRechazar_clicked(const std::string& correo);
 
 private:
     Ui::Usuarios *ui;

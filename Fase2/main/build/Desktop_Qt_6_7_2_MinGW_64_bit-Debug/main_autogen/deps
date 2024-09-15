@@ -570,6 +570,8 @@ main_autogen/timestamp: \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Admin.h \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/CMakeLists.txt \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Comentario.cpp \
+	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Login.cpp \
+	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Login.h \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/.qtc/package-manager/auto-setup.cmake \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/CMakeFiles/3.29.3/CMakeCXXCompiler.cmake \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/CMakeFiles/3.29.3/CMakeRCCompiler.cmake \
@@ -583,8 +585,6 @@ main_autogen/timestamp: \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/listadoblepublicacion.cpp \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/listausuarios.cpp \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/listausuarios.h \
-	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/login.cpp \
-	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/login.h \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/main.cpp \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/nodoavl.cpp \
 	C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/nodoavl.h \

@@ -193,7 +193,6 @@ void Usuarios::on_actualizar_tablas_clicked() {
         // Encabezados de la tabla
         tablaUsuarios->setHorizontalHeaderLabels(QStringList() << "Nombre" << "Apellido" << "Correo" << "Fecha de nacimiento" << " ");
 
-
         // Rellenar la tabla con los usuarios filtrados
         for (size_t i = 0; i < usuariosFiltrados.size(); ++i) {
             const Usuario& usuario = usuariosFiltrados[i];
@@ -254,32 +253,62 @@ void Usuarios::on_actualizar_tablas_clicked() {
         qWarning("La tabla de solicitudes enviadas no se encontró.");
     }
 
-    // Actualizar la tabla de solicitudes recibidas
     if (tablaSolicitudesRecibidas) {
         PilaReceptor& pilaReceptor = obtenerPilaReceptor(correoActual.toStdString());
         std::vector<Receptor> solicitudesRecibidas;
 
-        while (!pilaReceptor.estaVacia()) {
-            solicitudesRecibidas.push_back(pilaReceptor.peek());
-            pilaReceptor.pop();
+        // Copia las solicitudes sin vaciar la pila
+        PilaReceptor copiaPilaReceptor = pilaReceptor; // Crear una copia de la pila
+        while (!copiaPilaReceptor.estaVacia()) {
+            solicitudesRecibidas.push_back(copiaPilaReceptor.peek());
+            copiaPilaReceptor.pop();
         }
 
         tablaSolicitudesRecibidas->setRowCount(solicitudesRecibidas.size());
-        tablaSolicitudesRecibidas->setColumnCount(2);
+        tablaSolicitudesRecibidas->setColumnCount(3);
 
-        tablaSolicitudesRecibidas->setHorizontalHeaderLabels(QStringList() << "Correo" << "Estado");
+        tablaSolicitudesRecibidas->setHorizontalHeaderLabels(QStringList() << "Emisor" << "Estado" << "");
 
         for (size_t i = 0; i < solicitudesRecibidas.size(); ++i) {
             const Receptor& solicitud = solicitudesRecibidas[i];
 
             tablaSolicitudesRecibidas->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(solicitud.getEmisor())));
             tablaSolicitudesRecibidas->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(solicitud.getEstado())));
+
+            QPushButton* btnAceptar = new QPushButton("Aceptar");
+            tablaSolicitudesRecibidas->setCellWidget(i, 2, btnAceptar);
+
+            connect(btnAceptar, &QPushButton::clicked, [this, solicitud]() {
+                this->on_btnAceptar_clicked(solicitud.getEmisor());
+            });
         }
     } else {
         qWarning("La tabla de solicitudes recibidas no se encontró.");
     }
 }
 
+void Usuarios::on_btnAceptar_clicked(const std::string& correoEmisor) {
+   try {
+        std::string correoReceptor = correoActualUsuario_;
+
+    // Verificar si el usuario actual está tratando de enviarse una solicitud a sí mismo
+    if (correoEmisor == correoReceptor) {
+        QMessageBox::warning(this, "Error", "No puedes enviarte una solicitud a ti mismo.");
+        return;
+    }
+
+    // Obtener la pila del receptor (usuario actual)
+    PilaReceptor& pilaReceptor = obtenerPilaReceptor(correoReceptor);
+
+    // Actualizar el estado de la solicitud en la pila del receptor
+    pilaReceptor.actualizarEstadoSolicitud(correoEmisor, correoReceptor, "ACEPTADA");
+
+    // Mostrar un mensaje de confirmación
+    QMessageBox::information(this, "Solicitud Aceptada", "La solicitud de " + QString::fromStdString(correoEmisor) + " ha sido aceptada.");
+    } catch (const std::exception& e) {
+        std::cerr << "Excepción: " << e.what() << std::endl;
+    }
+}
 
 
 

@@ -63,3 +63,59 @@ PilaReceptor& obtenerPilaReceptor(const std::string &correoReceptor) {
     }
     return pilasReceptores[correoReceptor];
 }
+
+
+void PilaReceptor::actualizarEstadoSolicitud(const std::string& emisor, const std::string& receptor, const std::string& nuevoEstado) {
+    NodoReceptor* actual = cima;
+    while (actual != nullptr) {
+        if (actual->receptor.getEmisor() == emisor &&
+            actual->receptor.getReceptor() == receptor &&
+            actual->receptor.getEstado() == "PENDIENTE") {
+            // Encontró la solicitud pendiente
+            actual->receptor.setEstado(nuevoEstado);
+            return;
+        }
+        actual = actual->siguiente;
+    }
+    std::cerr << "No se encontró la solicitud pendiente de " << emisor << " a " << receptor << std::endl;
+}
+
+PilaReceptor::PilaReceptor(const PilaReceptor& otra) : cima(nullptr) {
+    NodoReceptor* actual = otra.cima;
+    NodoReceptor* ultimo = nullptr;
+    while (actual) {
+        NodoReceptor* nuevoNodo = new NodoReceptor(*actual);
+        if (!cima) {
+            cima = nuevoNodo;
+        } else {
+            ultimo->siguiente = nuevoNodo;
+        }
+        ultimo = nuevoNodo;
+        actual = actual->siguiente;
+    }
+}
+
+PilaReceptor& PilaReceptor::operator=(const PilaReceptor& otra) {
+    if (this == &otra) return *this; // Autocopia
+
+    // Limpiar pila actual
+    while (!estaVacia()) {
+        pop();
+    }
+
+    NodoReceptor* actual = otra.cima;
+    NodoReceptor* ultimo = nullptr;
+    while (actual) {
+        NodoReceptor* nuevoNodo = new NodoReceptor(*actual);
+        if (!cima) {
+            cima = nuevoNodo;
+        } else {
+            ultimo->siguiente = nuevoNodo;
+        }
+        ultimo = nuevoNodo;
+        actual = actual->siguiente;
+    }
+
+    return *this;
+}
+

@@ -384,11 +384,11 @@
 	"dependencies" : 
 	[
 		{
-			"id" : "main_autogen_timestamp_deps::@6890427a1f51a3e7e1df"
-		},
-		{
 			"backtrace" : 0,
 			"id" : "main_autogen::@6890427a1f51a3e7e1df"
+		},
+		{
+			"id" : "main_autogen_timestamp_deps::@6890427a1f51a3e7e1df"
 		}
 	],
 	"id" : "main::@6890427a1f51a3e7e1df",
@@ -577,12 +577,12 @@
 		{
 			"backtrace" : 4,
 			"compileGroupIndex" : 0,
-			"path" : "login.cpp",
+			"path" : "Login.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 4,
-			"path" : "login.h",
+			"path" : "Login.h",
 			"sourceGroupIndex" : 1
 		},
 		{

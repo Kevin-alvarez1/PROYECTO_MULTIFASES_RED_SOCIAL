@@ -587,11 +587,16 @@
         </rect>
        </property>
        <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>258</number>
+        <number>173</number>
        </attribute>
        <column>
         <property name="text">
          <string>Correo</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string/>
         </property>
        </column>
        <column>

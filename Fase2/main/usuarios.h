@@ -31,6 +31,7 @@ private slots:
     void on_btnCancelar_clicked(const std::string& correo);
 
     void on_actualizar_tablas_clicked();
+    void on_btnAceptar_clicked(const std::string& correo);
 
 private:
     Ui::Usuarios *ui;

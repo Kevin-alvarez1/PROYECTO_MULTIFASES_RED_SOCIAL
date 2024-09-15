@@ -87,6 +87,8 @@ void ListaSolicitudes::enviarSolicitud(const std::string &emisor, const std::str
     std::cout << "Solicitud enviada de " << emisor << " a " << receptor << " con estado PENDIENTE." << std::endl;
 }
 
+
+
 // Función para verificar solicitudes en estado
 bool ListaSolicitudes::existeSolicitudEnEstado(const std::string &emisor, const std::string &receptor, const std::string &estado) {
     NodoSolicitud* actual = cabeza;

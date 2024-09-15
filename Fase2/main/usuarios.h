@@ -6,7 +6,6 @@
 #include "listaDoblePublicacion.h"
 #include "lista_solicitudes.h"
 #include "pilareceptor.h"
-
 namespace Ui {
 class Usuarios;
 }

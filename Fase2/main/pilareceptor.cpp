@@ -97,7 +97,6 @@ PilaReceptor::PilaReceptor(const PilaReceptor& otra) : cima(nullptr) {
 }
 
 
-
 PilaReceptor& PilaReceptor::operator=(const PilaReceptor& otra) {
     if (this == &otra) return *this; // Autocopia
 

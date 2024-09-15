@@ -2,6 +2,8 @@
 #include "ui_usuarios.h"
 #include "login.h"
 #include "QMessageBox"
+#include "matrizdispersa.h"
+extern MatrizDispersa matrizDispersa;
 
 Usuarios::Usuarios(std::string correoUsuario, ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion, ListaSolicitudes *lista_solicitudes, QWidget *parent)
     : QDialog(parent)
@@ -319,20 +321,44 @@ void Usuarios::on_btnAceptar_clicked(const std::string& correoEmisor) {
         // Obtener la pila del receptor (usuario actual)
         PilaReceptor& pilaReceptor = obtenerPilaReceptor(correoReceptor);
 
-        // Actualizar el estado de la solicitud en la pila del receptor
-        if (pilaReceptor.actualizarEstadoSolicitud(correoEmisor, correoReceptor, "ACEPTADA")) {
-            // También actualizar el estado de la solicitud en la lista de solicitudes
-            if (lista_solicitudes->actualizarEstadoSolicitud(correoEmisor, correoReceptor, "ACEPTADA")) {
-                // Mostrar un mensaje de confirmación
-                QMessageBox::information(this, "Solicitud Aceptada", "La solicitud de " + QString::fromStdString(correoEmisor) + " ha sido aceptada.");
-            } else {
-                // Si no se pudo actualizar en la lista de solicitudes
-                QMessageBox::warning(this, "Error", "No se pudo actualizar la solicitud en la lista.");
+        // Recorrer la pila del receptor manualmente
+        NodoReceptor* actual = pilaReceptor.getCima();  // Obtener la cima de la pila
+        NodoReceptor* anterior = nullptr;
+
+        while (actual) {
+            if (actual->receptor.getEmisor() == correoEmisor) {
+                // Eliminar de la pila
+                if (anterior) {
+                    anterior->siguiente = actual->siguiente;
+                } else {
+                    pilaReceptor.setCima(actual->siguiente);  // Actualizar la cima de la pila
+                }
+
+                // Actualizar el estado de la solicitud en lista_solicitudes
+                if (lista_solicitudes->actualizarEstadoSolicitud(correoEmisor, correoReceptor, "ACEPTADA")) {
+                    // Insertar en la matriz dispersa la nueva relación de amistad
+                    matrizDispersa.insertarRelacion(correoEmisor, correoReceptor);
+
+                    // Mostrar un mensaje de confirmación
+                    QMessageBox::information(this, "Solicitud Aceptada",
+                                             "La solicitud de " + QString::fromStdString(correoEmisor) + " ha sido aceptada.");
+
+                    matrizDispersa.mostrarMatriz();
+                    // Eliminar el nodo de la memoria
+                    delete actual;
+                    return;
+                } else {
+                    // Error en la actualización de lista_solicitudes
+                    QMessageBox::warning(this, "Error", "No se pudo actualizar la solicitud en lista_solicitudes.");
+                }
             }
-        } else {
-            // Si no se pudo actualizar en la pila del receptor
-            QMessageBox::warning(this, "Error", "No se pudo actualizar la solicitud en la pila.");
+            anterior = actual;
+            actual = actual->siguiente;
         }
+
+        // Si no se encuentra la solicitud
+        QMessageBox::warning(this, "Error",
+                             "No se encontró una solicitud de amistad del emisor " + QString::fromStdString(correoEmisor) + ".");
     } catch (const std::exception& e) {
         std::cerr << "Excepción: " << e.what() << std::endl;
         QMessageBox::critical(this, "Error", "Ocurrió un error al aceptar la solicitud.");

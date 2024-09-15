@@ -31,7 +31,8 @@ public:
     Receptor peek() const;
     void mostrarPila() const;
     bool actualizarEstadoSolicitud(const std::string& emisor, const std::string& receptor, const std::string& nuevoEstado);
-
+    NodoReceptor* getCima() const { return cima; }
+    void setCima(NodoReceptor* nuevaCima) { cima = nuevaCima; }
 };
 
 // Declaración de la función global

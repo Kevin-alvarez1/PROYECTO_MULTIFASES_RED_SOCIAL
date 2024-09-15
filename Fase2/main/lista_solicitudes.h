@@ -30,6 +30,7 @@ public:
     bool existeSolicitudEnEstado(const std::string &emisor, const std::string &receptor, const std::string &estado);
     std::vector<Solicitud> obtenerSolicitudesPorReceptor(const std::string &correoReceptor) const;
     void buscarYApilarPendientes(const std::string &correo, const ListaSolicitudes &listaSolicitudes);
+    bool actualizarEstadoSolicitud(const std::string& emisor, const std::string& receptor, const std::string& nuevoEstado);
 
 };
 

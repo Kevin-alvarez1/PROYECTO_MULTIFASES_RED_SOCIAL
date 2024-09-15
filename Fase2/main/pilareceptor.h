@@ -30,7 +30,7 @@ public:
     Receptor pop();
     Receptor peek() const;
     void mostrarPila() const;
-    void actualizarEstadoSolicitud(const std::string& emisor, const std::string& receptor, const std::string& nuevoEstado);
+    bool actualizarEstadoSolicitud(const std::string& emisor, const std::string& receptor, const std::string& nuevoEstado);
 
 };
 

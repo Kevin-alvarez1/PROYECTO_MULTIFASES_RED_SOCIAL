@@ -51,6 +51,24 @@ void ListaSolicitudes::eliminarSolicitud(const std::string &emisor, const std::s
     }
 }
 
+bool ListaSolicitudes::actualizarEstadoSolicitud(const std::string &emisor, const std::string &receptor, const std::string &nuevoEstado) {
+    NodoSolicitud* actual = cabeza;
+
+    while (actual != nullptr) {
+        // Buscar la solicitud que coincida con el emisor y receptor dados
+        if ((actual->solicitud.getEmisor() == emisor && actual->solicitud.getReceptor() == receptor) ||
+            (actual->solicitud.getEmisor() == receptor && actual->solicitud.getReceptor() == emisor)) {
+            // Actualizar el estado de la solicitud
+            actual->solicitud.setEstado(nuevoEstado);
+            return true; // La actualización fue exitosa
+        }
+        actual = actual->siguiente;
+    }
+
+    // Solicitud no encontrada
+    return false;
+}
+
 // Función para mostrar solicitudes
 void ListaSolicitudes::mostrarSolicitudes() const {
     NodoSolicitud* actual = cabeza;

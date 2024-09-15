@@ -268,7 +268,11 @@ void Usuarios::on_actualizar_tablas_clicked() {
         // Copia las solicitudes sin vaciar la pila
         PilaReceptor copiaPilaReceptor = pilaReceptor; // Crear una copia de la pila
         while (!copiaPilaReceptor.estaVacia()) {
-            solicitudesRecibidas.push_back(copiaPilaReceptor.peek());
+            Receptor solicitud = copiaPilaReceptor.peek();
+            // Verifica el estado de la solicitud antes de agregar a la lista
+            if (lista_solicitudes->existeSolicitudEnEstado(solicitud.getEmisor(), correoActual.toStdString(), "PENDIENTE")) {
+                solicitudesRecibidas.push_back(solicitud);
+            }
             copiaPilaReceptor.pop();
         }
 
@@ -280,7 +284,6 @@ void Usuarios::on_actualizar_tablas_clicked() {
         for (size_t i = 0; i < solicitudesRecibidas.size(); ++i) {
             const Receptor& solicitud = solicitudesRecibidas[i];
 
-            // Verifica si `getEmisor()` es el valor correcto
             tablaSolicitudesRecibidas->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(solicitud.getEmisor())));
 
             QPushButton* btnAceptar = new QPushButton("Aceptar");
@@ -300,29 +303,39 @@ void Usuarios::on_actualizar_tablas_clicked() {
     } else {
         qWarning("La tabla de solicitudes recibidas no se encontró.");
     }
-
 }
 
+
 void Usuarios::on_btnAceptar_clicked(const std::string& correoEmisor) {
-   try {
+    try {
         std::string correoReceptor = correoActualUsuario_;
 
-    // Verificar si el usuario actual está tratando de enviarse una solicitud a sí mismo
-    if (correoEmisor == correoReceptor) {
-        QMessageBox::warning(this, "Error", "No puedes enviarte una solicitud a ti mismo.");
-        return;
-    }
+        // Verificar si el usuario actual está tratando de aceptarse una solicitud a sí mismo
+        if (correoEmisor == correoReceptor) {
+            QMessageBox::warning(this, "Error", "No puedes aceptar una solicitud de ti mismo.");
+            return;
+        }
 
-    // Obtener la pila del receptor (usuario actual)
-    PilaReceptor& pilaReceptor = obtenerPilaReceptor(correoReceptor);
+        // Obtener la pila del receptor (usuario actual)
+        PilaReceptor& pilaReceptor = obtenerPilaReceptor(correoReceptor);
 
-    // Actualizar el estado de la solicitud en la pila del receptor
-    pilaReceptor.actualizarEstadoSolicitud(correoEmisor, correoReceptor, "ACEPTADA");
-
-    // Mostrar un mensaje de confirmación
-    QMessageBox::information(this, "Solicitud Aceptada", "La solicitud de " + QString::fromStdString(correoEmisor) + " ha sido aceptada.");
+        // Actualizar el estado de la solicitud en la pila del receptor
+        if (pilaReceptor.actualizarEstadoSolicitud(correoEmisor, correoReceptor, "ACEPTADA")) {
+            // También actualizar el estado de la solicitud en la lista de solicitudes
+            if (lista_solicitudes->actualizarEstadoSolicitud(correoEmisor, correoReceptor, "ACEPTADA")) {
+                // Mostrar un mensaje de confirmación
+                QMessageBox::information(this, "Solicitud Aceptada", "La solicitud de " + QString::fromStdString(correoEmisor) + " ha sido aceptada.");
+            } else {
+                // Si no se pudo actualizar en la lista de solicitudes
+                QMessageBox::warning(this, "Error", "No se pudo actualizar la solicitud en la lista.");
+            }
+        } else {
+            // Si no se pudo actualizar en la pila del receptor
+            QMessageBox::warning(this, "Error", "No se pudo actualizar la solicitud en la pila.");
+        }
     } catch (const std::exception& e) {
         std::cerr << "Excepción: " << e.what() << std::endl;
+        QMessageBox::critical(this, "Error", "Ocurrió un error al aceptar la solicitud.");
     }
 }
 

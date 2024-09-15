@@ -64,8 +64,7 @@ PilaReceptor& obtenerPilaReceptor(const std::string &correoReceptor) {
     return pilasReceptores[correoReceptor];
 }
 
-
-void PilaReceptor::actualizarEstadoSolicitud(const std::string& emisor, const std::string& receptor, const std::string& nuevoEstado) {
+bool PilaReceptor::actualizarEstadoSolicitud(const std::string& emisor, const std::string& receptor, const std::string& nuevoEstado) {
     NodoReceptor* actual = cima;
     while (actual != nullptr) {
         if (actual->receptor.getEmisor() == emisor &&
@@ -73,11 +72,13 @@ void PilaReceptor::actualizarEstadoSolicitud(const std::string& emisor, const st
             actual->receptor.getEstado() == "PENDIENTE") {
             // Encontró la solicitud pendiente
             actual->receptor.setEstado(nuevoEstado);
-            return;
+            return true;  // Indica que la actualización fue exitosa
         }
         actual = actual->siguiente;
     }
+    // Si no se encontró la solicitud
     std::cerr << "No se encontró la solicitud pendiente de " << emisor << " a " << receptor << std::endl;
+    return false;  // Indica que la solicitud no fue encontrada
 }
 
 PilaReceptor::PilaReceptor(const PilaReceptor& otra) : cima(nullptr) {

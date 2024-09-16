@@ -6,7 +6,6 @@
 class NodoMatrizDispersa
 {
 public:
-    // Atributos
     std::string nombreFila;
     std::string nombreColumna;
     NodoMatrizDispersa *derecha;
@@ -14,7 +13,6 @@ public:
     NodoMatrizDispersa *arriba;
     NodoMatrizDispersa *izquierda;
 
-    // Constructor
     NodoMatrizDispersa(const std::string& fila, const std::string& columna);
 };
 

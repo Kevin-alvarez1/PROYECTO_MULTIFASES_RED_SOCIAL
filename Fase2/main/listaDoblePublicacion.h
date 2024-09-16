@@ -3,6 +3,8 @@
 
 #include "publicacion.h"
 #include <string>
+#include "matrizdispersa.h"
+extern MatrizDispersa matrizDispersa;
 
 class ListaDoblePublicacion
 {
@@ -17,8 +19,8 @@ private:
         NodoPublicacion(const Publicacion &publicacion);
     };
 
-    NodoPublicacion *cabeza;  // Asegúrate de usar este nombre en el .cpp
-    NodoPublicacion *cola;    // Asegúrate de usar este nombre en el .cpp
+    NodoPublicacion *cabeza;
+    NodoPublicacion *cola;
     int siguienteId;
 
     void crearPNG(const std::string &dotFilename, const std::string &pngFilename);
@@ -29,7 +31,12 @@ public:
     void generateDot(const std::string &filename);
     void cargarPublicacionesDesdeJson(const std::string &filename);
     void agregarPublicacion(const Publicacion &publicacion);
+    void mostrarPublicacion(const Publicacion& publicacion) const;
+    void mostrarPublicacionesPorUsuario(const std::string& correo) const;
     void mostrarTodasLasPublicaciones() const;
+    void mostrarPublicacionesPorCorreo(const std::string& correo) const;
+    void mostrarPublicacionesYAmigos(const std::string &correo, const MatrizDispersa &matriz);
+    int obtenerNuevoId() const;
 };
 
 #endif // LISTADOBLEPUBLICACION_H

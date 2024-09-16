@@ -59,6 +59,8 @@ void Admin::on_Solicitudes_boton_archivo_clicked()
         if (archivo.is_open())
         {
             lista_solicitudes->cargarRelacionesDesdeJson(filename.toStdString());
+            lista_solicitudes->agregarRelacionesAceptadasAMatriz(matrizDispersa);
+            matrizDispersa.mostrarMatriz();
             QMessageBox::information(this, "Cargar usuarios", "Usuarios cargados exitosamente.");
         }
         else
@@ -88,7 +90,6 @@ void Admin::on_Publicaciones_boton_archivo_clicked()
             try {
                 listadoblepublicacion->cargarPublicacionesDesdeJson(filename.toStdString());
                 listadoblepublicacion->mostrarTodasLasPublicaciones();
-
                 QMessageBox::information(this, "Cargar publicaciones", "Publicaciones cargadas exitosamente.");
             } catch (const std::exception& e) {
                 std::cerr << "Error al cargar las publicaciones: " << e.what() << std::endl;

@@ -16,7 +16,6 @@ private:
     NodoAVL* raiz;
     NodoAVL* balancear(NodoAVL* nodo);
 
-    // Métodos privados para el manejo del árbol AVL
     int altura(NodoAVL* nodo) const;
     int balance(NodoAVL* nodo) const;
     NodoAVL* rotarDerecha(NodoAVL* y);
@@ -41,10 +40,10 @@ public:
     bool buscarUsuarioPorCorreoyContrasena(const std::string& correo, const std::string& contrasena) const;
     bool usuarioDuplicado(const std::string &correo) const;
     Usuario mostrarDatosPorCorreo(const std::string& correo) const;
-    void preOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const; // Recorrido PreOrder
-    void inOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const;  // Recorrido InOrder
-    void postOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const; // Recorrido PostOrder
-    std::vector<Usuario> obtenerUsuariosEnOrden(const std::string& tipoOrden) const; // Obtiene los usuarios en el orden especificado
+    void preOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const;
+    void inOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const;
+    void postOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const;
+    std::vector<Usuario> obtenerUsuariosEnOrden(const std::string& tipoOrden) const;
     void generateDot(const std::string& filename) const;
 
 };

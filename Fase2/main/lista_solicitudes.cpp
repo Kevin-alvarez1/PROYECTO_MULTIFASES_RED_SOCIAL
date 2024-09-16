@@ -6,6 +6,7 @@
 #include <fstream>
 #include <unordered_set>
 
+
 // Aquí se debe tener un método para obtener la pila del receptor
 PilaReceptor& obtenerPilaReceptor(const std::string &correoReceptor);  // Debes implementar esta función
 
@@ -18,6 +19,20 @@ ListaSolicitudes::~ListaSolicitudes() {
         NodoSolicitud* temp = actual;
         actual = actual->siguiente;
         delete temp;
+    }
+}
+
+void ListaSolicitudes::agregarRelacionesAceptadasAMatriz(MatrizDispersa &matriz)
+{
+    NodoSolicitud *actual = cabeza;
+
+    while (actual)
+    {
+        if (actual->solicitud.getEstado() == "ACEPTADA")
+        {
+            matriz.insertarRelacion(actual->solicitud.getEmisor(), actual->solicitud.getReceptor());
+        }
+        actual = actual->siguiente;
     }
 }
 

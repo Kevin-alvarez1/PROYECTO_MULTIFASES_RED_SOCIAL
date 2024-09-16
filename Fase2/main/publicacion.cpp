@@ -68,11 +68,21 @@ void Publicacion::mostrarComentarios() const {
         std::cout << "No hay comentarios para esta publicación." << std::endl;
         return;
     }
+
     std::cout << "Comentarios para la publicación ID " << id_ << ":" << std::endl;
+
     while (actual != nullptr) {
+        // Verifica que el comentario esté correctamente inicializado
+        if (actual->comentario.getCorreo().empty() || actual->comentario.getFecha().empty() ||
+            actual->comentario.getHora().empty() || actual->comentario.getComentario().empty()) {
+            std::cerr << "Error: Datos del comentario no están completamente inicializados." << std::endl;
+            return;
+        }
+
         std::cout << "- Comentario de " << actual->comentario.getCorreo()
-        << " (" << actual->comentario.getFecha() << " a las " << actual->comentario.getHora() << "): "
-        << actual->comentario.getComentario() << std::endl;
+                  << " (" << actual->comentario.getFecha() << " a las " << actual->comentario.getHora() << "): "
+                  << actual->comentario.getComentario() << std::endl;
+
         actual = actual->siguiente;
     }
 }

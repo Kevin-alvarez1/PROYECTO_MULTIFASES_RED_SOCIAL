@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>4</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -361,7 +361,7 @@
         <string>RECORRIDO LIMITADO</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="aplicar_orden_publis_boton">
        <property name="geometry">
         <rect>
          <x>70</x>
@@ -424,7 +424,7 @@
         </property>
        </item>
       </widget>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="fecha_filtro_publis_boton">
        <property name="geometry">
         <rect>
          <x>60</x>
@@ -460,7 +460,7 @@
         <height>459</height>
        </rect>
       </property>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="crear_nueva_publi_boton">
        <property name="geometry">
         <rect>
          <x>20</x>

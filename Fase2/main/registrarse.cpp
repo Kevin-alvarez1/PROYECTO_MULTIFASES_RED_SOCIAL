@@ -75,3 +75,12 @@ void Registrarse::on_Registrar_boton_clicked() {
     ui->confirmacion_contrasena_txt_area->clear();
 }
 
+
+void Registrarse::on_cancelar_boton_clicked()
+{
+    if (parentWidget()) {
+        parentWidget()->show();
+    }
+    this->close();
+}
+

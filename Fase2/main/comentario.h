@@ -5,10 +5,8 @@
 
 class Comentario {
 public:
-    // Constructor
     Comentario(const std::string& correo, const std::string& comentario, const std::string& fecha, const std::string& hora);
 
-    // Getters
     std::string getCorreo() const;
     std::string getComentario() const;
     std::string getFecha() const;

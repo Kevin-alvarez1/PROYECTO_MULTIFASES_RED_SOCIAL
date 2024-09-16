@@ -269,9 +269,21 @@
 			null
 		],
 		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/arbolabb.h",
+			"MU",
+			"EWIEGA46WW/moc_arbolabb.cpp",
+			null
+		],
+		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/comentario.h",
 			"MU",
 			"EWIEGA46WW/moc_comentario.cpp",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/crearpublicacion.h",
+			"MU",
+			"EWIEGA46WW/moc_crearpublicacion.cpp",
 			null
 		],
 		[
@@ -436,6 +448,16 @@
 		],
 		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/Login.cpp",
+			"MU",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/arbolabb.cpp",
+			"MU",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/crearpublicacion.cpp",
 			"MU",
 			null
 		],

@@ -23,6 +23,8 @@ public:
 private slots:
     void on_Registrar_boton_clicked();
 
+    void on_cancelar_boton_clicked();
+
 private:
     Ui::Registrarse *ui;
     ListaUsuarios *listaUsuarios;

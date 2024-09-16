@@ -3,7 +3,10 @@
 #include "login.h"
 #include "QMessageBox"
 #include "matrizdispersa.h"
+#include "arbolabb.h"
+
 extern MatrizDispersa matrizDispersa;
+extern ArbolABB arbolABB;
 
 Usuarios::Usuarios(std::string correoUsuario, ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion, ListaSolicitudes *lista_solicitudes, QWidget *parent)
     : QDialog(parent)
@@ -13,10 +16,10 @@ Usuarios::Usuarios(std::string correoUsuario, ListaUsuarios *listaUsuarios, List
     , correoActualUsuario_(correoUsuario)
     , listadoblepublicacion(listadoblepublicacion)
     , lista_solicitudes(lista_solicitudes)
+    , CrearPublicacion(nullptr)
 {
     ui->setupUi(this);
     ui->correo_editar_txt->setText(QString::fromStdString(correoUsuario));
-
 }
 
 Usuarios::~Usuarios()
@@ -33,8 +36,6 @@ void Usuarios::on_cerrar_sesion_btn_clicked()
     this->hide();
 }
 
-
-// Usuarios.cpp
 void Usuarios::on_buscar_correo_btn_clicked()
 {
     std::string correo = ui->buscador_usuario_txt->text().toStdString();
@@ -271,13 +272,23 @@ void Usuarios::on_actualizar_tablas_clicked() {
         PilaReceptor copiaPilaReceptor = pilaReceptor; // Crear una copia de la pila
         while (!copiaPilaReceptor.estaVacia()) {
             Receptor solicitud = copiaPilaReceptor.peek();
-            // Verifica el estado de la solicitud antes de agregar a la lista
+
+            // Verifica si la solicitud está en estado "PENDIENTE"
             if (lista_solicitudes->existeSolicitudEnEstado(solicitud.getEmisor(), correoActual.toStdString(), "PENDIENTE")) {
-                solicitudesRecibidas.push_back(solicitud);
+
+                // Obtener la lista de amigos del usuario actual desde la matrizDispersa
+                std::vector<std::string> amigos = matrizDispersa.obtenerAmigos(correoActual.toStdString());
+
+                // Verificar si el emisor ya es amigo del usuario actual
+                if (std::find(amigos.begin(), amigos.end(), solicitud.getEmisor()) == amigos.end()) {
+                    // Si no son amigos, agregar la solicitud a la lista para mostrarla
+                    solicitudesRecibidas.push_back(solicitud);
+                }
             }
             copiaPilaReceptor.pop();
         }
 
+        // Ahora que tenemos la lista de solicitudes no duplicadas, construimos la tabla
         tablaSolicitudesRecibidas->setRowCount(solicitudesRecibidas.size());
         tablaSolicitudesRecibidas->setColumnCount(3);
 
@@ -306,7 +317,6 @@ void Usuarios::on_actualizar_tablas_clicked() {
         qWarning("La tabla de solicitudes recibidas no se encontró.");
     }
 }
-
 
 void Usuarios::on_btnAceptar_clicked(const std::string& correoEmisor) {
     try {
@@ -422,4 +432,35 @@ void Usuarios::on_btnRechazar_clicked(const std::string& correoEmisor) {
 }
 
 
+void Usuarios::on_fecha_filtro_publis_boton_clicked()
+{
+    if (!listadoblepublicacion) {
+        QMessageBox::critical(this, "Error", "ListaDoblePublicacion no está inicializado.");
+        return;
+    }
+
+    std::string correoUsuario = correoActualUsuario_;
+
+    // Mostrar publicaciones del usuario
+    std::cout << "Publicaciones del usuario " << correoUsuario << ":" << std::endl;
+
+    try {
+        listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, matrizDispersa);
+    } catch (const std::exception& e) {
+        std::cerr << "Error al mostrar publicaciones: " << e.what() << std::endl;
+        QMessageBox::critical(this, "Error", "Hubo un problema al mostrar las publicaciones.");
+    }
+    // Mostrar un mensaje si no hay publicaciones
+    QMessageBox::information(this, "Publicaciones", "Se han mostrado todas las publicaciones del usuario y sus amigos.");
+}
+
+void Usuarios::on_crear_nueva_publi_boton_clicked()
+{
+    if (!CrearPublicacion) {
+        CrearPublicacion = new class CrearPublicacion(correoActualUsuario_, listadoblepublicacion, this);
+    }
+
+    CrearPublicacion->show();
+    this->hide();
+}
 

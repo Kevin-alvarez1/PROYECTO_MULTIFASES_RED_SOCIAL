@@ -38,6 +38,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         pilareceptor.h pilareceptor.cpp
         matrizdispersa.h matrizdispersa.cpp
         nodomatrizdispersa.h nodomatrizdispersa.cpp
+        arbolabb.h arbolabb.cpp
+        crearpublicacion.h crearpublicacion.cpp crearpublicacion.ui
+
 
 
 

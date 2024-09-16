@@ -11,6 +11,7 @@ class Login;
 
 namespace Ui {
 class Admin;
+
 }
 
 class Admin : public QDialog

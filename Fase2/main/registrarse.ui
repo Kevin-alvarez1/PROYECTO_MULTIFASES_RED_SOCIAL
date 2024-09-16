@@ -241,6 +241,22 @@
     <string>año / mes / dia</string>
    </property>
   </widget>
+  <widget class="QCommandLinkButton" name="cancelar_boton">
+   <property name="geometry">
+    <rect>
+     <x>760</x>
+     <y>50</y>
+     <width>41</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::EditClear"/>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

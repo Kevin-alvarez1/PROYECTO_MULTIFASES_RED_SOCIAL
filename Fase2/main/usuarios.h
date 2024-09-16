@@ -6,11 +6,13 @@
 #include "listaDoblePublicacion.h"
 #include "lista_solicitudes.h"
 #include "pilareceptor.h"
+#include "crearpublicacion.h"
+class CrearPublicacion;
+
 namespace Ui {
 class Usuarios;
 }
 class Login;
-
 class Usuarios : public QDialog
 {
     Q_OBJECT
@@ -20,6 +22,7 @@ public:
     ~Usuarios();
     ListaSolicitudes& obtenerListaSolicitudesEnviadas();
     ListaSolicitudes& obtenerListaSolicitudesRecibidas();
+    std::vector<std::string> obtenerAmigos() const;
 
 private slots:
     void on_cerrar_sesion_btn_clicked();
@@ -35,6 +38,10 @@ private slots:
     void on_btnAceptar_clicked(const std::string& correo);
     void on_btnRechazar_clicked(const std::string& correo);
 
+    void on_fecha_filtro_publis_boton_clicked();
+
+    void on_crear_nueva_publi_boton_clicked();
+
 private:
     Ui::Usuarios *ui;
     Login *login;
@@ -42,7 +49,7 @@ private:
     ListaUsuarios *listaUsuarios;
     ListaDoblePublicacion *listadoblepublicacion;
     ListaSolicitudes *lista_solicitudes;
-
+    CrearPublicacion *CrearPublicacion;
 };
 
 #endif // USUARIOS_H

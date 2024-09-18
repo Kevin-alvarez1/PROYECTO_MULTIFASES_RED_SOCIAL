@@ -49,3 +49,25 @@
 187	4649	7481689604153953	CMakeFiles/main.dir/Admin.cpp.obj	14bbb3955bad877e
 189	4747	7481689604173951	CMakeFiles/main.dir/usuarios.cpp.obj	54c1d8f724fa19aa
 4747	7824	7481689649761172	main.exe	e01b7c525f14e4d5
+33	1767	7483397703662819	main_autogen/timestamp	152c56d39ba4afda
+33	1767	7483397703662819	main_autogen/mocs_compilation.cpp	152c56d39ba4afda
+33	1767	7483397703662819	C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/timestamp	152c56d39ba4afda
+33	1767	7483397703662819	C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/mocs_compilation.cpp	152c56d39ba4afda
+1768	6660	7483397704482833	CMakeFiles/main.dir/main_autogen/mocs_compilation.cpp.obj	9c26ef9eff8806da
+1772	7100	7483397704522815	CMakeFiles/main.dir/Login.cpp.obj	dd875bb9b4d972c
+1784	7293	7483397704632815	CMakeFiles/main.dir/registrarse.cpp.obj	16241200a74a8dc4
+1787	7358	7483397704672814	CMakeFiles/main.dir/crearpublicacion.cpp.obj	2d1e1b092fe88822
+1776	7810	7483397704562819	CMakeFiles/main.dir/Admin.cpp.obj	14bbb3955bad877e
+1780	7929	7483397704592820	CMakeFiles/main.dir/usuarios.cpp.obj	54c1d8f724fa19aa
+7929	11219	7483397766082815	main.exe	e01b7c525f14e4d5
+22	1356	7483400901530992	main_autogen/timestamp	152c56d39ba4afda
+22	1356	7483400901530992	main_autogen/mocs_compilation.cpp	152c56d39ba4afda
+22	1356	7483400901530992	C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/timestamp	152c56d39ba4afda
+22	1356	7483400901530992	C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/mocs_compilation.cpp	152c56d39ba4afda
+1358	5425	7483400902230978	CMakeFiles/main.dir/main_autogen/mocs_compilation.cpp.obj	9c26ef9eff8806da
+1369	5878	7483400902340985	CMakeFiles/main.dir/crearpublicacion.cpp.obj	2d1e1b092fe88822
+1366	5961	7483400902320994	CMakeFiles/main.dir/registrarse.cpp.obj	16241200a74a8dc4
+1360	5995	7483400902250990	CMakeFiles/main.dir/Login.cpp.obj	dd875bb9b4d972c
+1362	6383	7483400902280997	CMakeFiles/main.dir/Admin.cpp.obj	14bbb3955bad877e
+1364	6490	7483400902300980	CMakeFiles/main.dir/usuarios.cpp.obj	54c1d8f724fa19aa
+6490	9610	7483400953550971	main.exe	e01b7c525f14e4d5

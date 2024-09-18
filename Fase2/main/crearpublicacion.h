@@ -27,7 +27,7 @@ private:
     ListaDoblePublicacion *listaDoblePublicacion;
     std::string correoActualUsuario_;
     Usuarios *usuarioWindow;
-
+    int idPublicacionActual_;
 };
 
 #endif // CREARPUBLICACION_H

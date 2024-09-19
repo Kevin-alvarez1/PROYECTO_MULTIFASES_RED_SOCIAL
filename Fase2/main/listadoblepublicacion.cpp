@@ -4,8 +4,7 @@
 #include "json.hpp"
 #include "arbolabb.h"
 #include "matrizdispersa.h"
-extern ArbolABB arbolABB;
-extern MatrizDispersa matrizDispersa;
+
 
 ListaDoblePublicacion::ListaDoblePublicacion() : cabeza(nullptr), cola(nullptr), siguienteId(1)
 {
@@ -133,22 +132,40 @@ void ListaDoblePublicacion::crearPNG(const std::string &dotFilename, const std::
     }
 }
 
-void ListaDoblePublicacion::mostrarPublicacionesYAmigos(const std::string &correo, const MatrizDispersa &matriz)
-{
-    // Muestra las publicaciones del usuario dado
-    mostrarPublicacionesPorCorreo(correo);
+void ListaDoblePublicacion::mostrarPublicacionesYAmigos(const std::string &correo, const MatrizDispersa &matriz, ArbolABB &arbol) {
+    try {
+        arbol = ArbolABB();
 
-    // Obtiene la lista de amigos del usuario
-    std::vector<std::string> amigos = matriz.obtenerAmigos(correo);
+        // Mostrar y agregar las publicaciones del usuario dado al árbol
+        std::cout << "Publicaciones de " << correo << ":" << std::endl;
+        NodoPublicacion* actual = cabeza;
+        while (actual) {
+            if (actual->publicacion.getCorreo() == correo) {
+                mostrarPublicacion(actual->publicacion);
+                arbol.insertarPublicacion(actual->publicacion); // Insertar en el árbol
+            }
+            actual = actual->siguiente;
+        }
 
-    // Muestra las publicaciones de cada amigo
-    for (const auto &amigo : amigos)
-    {
-        std::cout << "Publicaciones de " << amigo << ":" << std::endl;
-        mostrarPublicacionesPorCorreo(amigo);
+        // Obtener la lista de amigos del usuario
+        std::vector<std::string> amigos = matriz.obtenerAmigos(correo);
+
+        // Mostrar y agregar las publicaciones de cada amigo al árbol
+        for (const auto &amigo : amigos) {
+            std::cout << "Publicaciones de " << amigo << ":" << std::endl;
+            actual = cabeza;
+            while (actual) {
+                if (actual->publicacion.getCorreo() == amigo) {
+                    mostrarPublicacion(actual->publicacion);
+                    arbol.insertarPublicacion(actual->publicacion); // Insertar en el árbol
+                }
+                actual = actual->siguiente;
+            }
+        }
+    } catch (const std::exception &e) {
+        std::cerr << "Excepción capturada: " << e.what() << std::endl;
     }
 }
-
 
 void ListaDoblePublicacion::mostrarPublicacionesPorCorreo(const std::string& correo) const
 {
@@ -174,9 +191,6 @@ void ListaDoblePublicacion::mostrarPublicacionesPorCorreo(const std::string& cor
         std::cout << "No se encontraron publicaciones para el usuario con correo: " << correo << std::endl;
     }
 }
-
-
-
 
 void ListaDoblePublicacion::mostrarPublicacion(const Publicacion& publicacion) const
 {

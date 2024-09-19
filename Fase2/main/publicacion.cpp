@@ -5,23 +5,12 @@
 Publicacion::Publicacion(int id, const std::string& correo, const std::string& contenido, const std::string& fecha, const std::string& hora)
     : id_(id), correo_(correo), contenido_(contenido), fecha_(fecha), hora_(hora), cabezaComentario_(nullptr) {}
 
-// Destructor para limpiar la memoria de la lista enlazada
+// Destructor
 Publicacion::~Publicacion() {
     limpiarComentarios();
 }
 
-void Publicacion::limpiarComentarios() {
-    NodoComentario* actual = cabezaComentario_;
-    while (actual != nullptr) {
-        NodoComentario* siguiente = actual->siguiente;
-        delete actual;
-        actual = siguiente;
-    }
-    cabezaComentario_ = nullptr;
-}
-
-
-// Getters
+// Métodos Getters
 int Publicacion::getId() const {
     return id_;
 }
@@ -42,12 +31,12 @@ std::string Publicacion::getHora() const {
     return hora_;
 }
 
-// Setters
+// Método Setter
 void Publicacion::setContenido(const std::string& nuevoContenido) {
     contenido_ = nuevoContenido;
 }
 
-// Método para agregar un comentario a la lista enlazada
+// Método para agregar un comentario
 void Publicacion::agregarComentario(const Comentario& comentario) {
     NodoComentario* nuevoNodo = new NodoComentario(comentario);
     if (cabezaComentario_ == nullptr) {
@@ -61,7 +50,7 @@ void Publicacion::agregarComentario(const Comentario& comentario) {
     }
 }
 
-// Método para mostrar todos los comentarios de la publicación
+// Método para mostrar todos los comentarios
 void Publicacion::mostrarComentarios() const {
     NodoComentario* actual = cabezaComentario_;
     if (actual == nullptr) {
@@ -72,17 +61,30 @@ void Publicacion::mostrarComentarios() const {
     std::cout << "Comentarios para la publicación ID " << id_ << ":" << std::endl;
 
     while (actual != nullptr) {
+        const Comentario& comentario = actual->comentario;
+
         // Verifica que el comentario esté correctamente inicializado
-        if (actual->comentario.getCorreo().empty() || actual->comentario.getFecha().empty() ||
-            actual->comentario.getHora().empty() || actual->comentario.getComentario().empty()) {
+        if (comentario.getCorreo().empty() || comentario.getFecha().empty() ||
+            comentario.getHora().empty() || comentario.getComentario().empty()) {
             std::cerr << "Error: Datos del comentario no están completamente inicializados." << std::endl;
             return;
         }
 
-        std::cout << "- Comentario de " << actual->comentario.getCorreo()
-                  << " (" << actual->comentario.getFecha() << " a las " << actual->comentario.getHora() << "): "
-                  << actual->comentario.getComentario() << std::endl;
+        std::cout << "- Comentario de " << comentario.getCorreo()
+                  << " (" << comentario.getFecha() << " a las " << comentario.getHora() << "): "
+                  << comentario.getComentario() << std::endl;
 
         actual = actual->siguiente;
     }
+}
+
+// Método para limpiar comentarios
+void Publicacion::limpiarComentarios() {
+    NodoComentario* actual = cabezaComentario_;
+    while (actual != nullptr) {
+        NodoComentario* siguiente = actual->siguiente;
+        delete actual;
+        actual = siguiente;
+    }
+    cabezaComentario_ = nullptr;
 }

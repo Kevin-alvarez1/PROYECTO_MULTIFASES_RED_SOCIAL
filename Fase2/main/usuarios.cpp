@@ -4,6 +4,8 @@
 #include "QMessageBox"
 #include "matrizdispersa.h"
 #include "arbolabb.h"
+#include <QDialog>
+#include <QVBoxLayout>
 
 extern MatrizDispersa matrizDispersa;
 extern ArbolABB arbolABB;
@@ -377,7 +379,7 @@ void Usuarios::on_btnAceptar_clicked(const std::string& correoEmisor) {
 
 void Usuarios::on_btnRechazar_clicked(const std::string& correoEmisor) {
     try {
-        std::string correoReceptor = correoActualUsuario_;  // Asegúrate de que `correoActualUsuario_` sea de tipo `std::string`
+        std::string correoReceptor = correoActualUsuario_;
 
         // Obtener la pila de solicitudes recibidas del usuario actual
         PilaReceptor& pilaReceptor = obtenerPilaReceptor(correoReceptor);
@@ -434,24 +436,7 @@ void Usuarios::on_btnRechazar_clicked(const std::string& correoEmisor) {
 
 void Usuarios::on_fecha_filtro_publis_boton_clicked()
 {
-    if (!listadoblepublicacion) {
-        QMessageBox::critical(this, "Error", "ListaDoblePublicacion no está inicializado.");
-        return;
-    }
 
-    std::string correoUsuario = correoActualUsuario_;
-
-    // Mostrar publicaciones del usuario
-    std::cout << "Publicaciones del usuario " << correoUsuario << ":" << std::endl;
-
-    try {
-        listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, matrizDispersa);
-    } catch (const std::exception& e) {
-        std::cerr << "Error al mostrar publicaciones: " << e.what() << std::endl;
-        QMessageBox::critical(this, "Error", "Hubo un problema al mostrar las publicaciones.");
-    }
-    // Mostrar un mensaje si no hay publicaciones
-    QMessageBox::information(this, "Publicaciones", "Se han mostrado todas las publicaciones del usuario y sus amigos.");
 }
 
 void Usuarios::on_crear_nueva_publi_boton_clicked()
@@ -464,3 +449,78 @@ void Usuarios::on_crear_nueva_publi_boton_clicked()
     this->hide();
 }
 
+
+void Usuarios::on_aplicar_orden_publis_boton_clicked()
+{
+    // Obtener el criterio de orden seleccionado
+    QString criterioOrdenQt = ui->ordenPublicaciones_comboBox->currentText();
+    std::string criterioOrden = criterioOrdenQt.toUtf8().constData();
+
+    // Verificar que listadoblepublicacion esté inicializado
+    if (!listadoblepublicacion) {
+        QMessageBox::critical(this, "Error", "ListaDoblePublicacion no está inicializado.");
+        return;
+    }
+
+    // Obtener el correo del usuario actual
+    std::string correoUsuario = correoActualUsuario_;
+
+    // Mostrar publicaciones del usuario
+    std::cout << "Publicaciones del usuario " << correoUsuario << ":" << std::endl;
+
+    try {
+        listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, matrizDispersa, arbolABB);
+    } catch (const std::exception& e) {
+        std::cerr << "Error al mostrar publicaciones: " << e.what() << std::endl;
+        QMessageBox::critical(this, "Error", "Hubo un problema al mostrar las publicaciones.");
+        return;
+    }
+
+    QMessageBox::information(this, "Publicaciones", "Se han mostrado todas las publicaciones del usuario y sus amigos.");
+}
+
+void Usuarios::on_generar_bst_reporte_boton_clicked() {
+    // Generar el archivo DOT para el árbol
+    arbolABB.generateDotFile("ArbolBB");
+
+    // Convertir el archivo DOT a una imagen PNG usando el comando dot
+    std::string comando = "dot -Tpng ArbolBB.dot -o ArbolBB.png";
+    int resultado = system(comando.c_str());
+
+    if (resultado != 0) {
+        // Manejar el error en caso de que la conversión falle
+        QMessageBox::warning(this, "Error", "No se pudo generar la imagen del árbol.");
+        return;
+    }
+
+    // Actualizar el panel con la nueva imagen
+    actualizarPanelConImagen(QString::fromStdString("ArbolBB.png"));
+}
+
+
+void Usuarios::actualizarPanelConImagen(const QString& imagePath) {
+    QLayout* existingLayout = ui->arbolBB_frame->layout();
+    if (existingLayout) {
+        QLayoutItem* item;
+        while ((item = existingLayout->takeAt(0))) {
+            delete item->widget();
+            delete item;
+        }
+        delete existingLayout;
+    }
+
+    QVBoxLayout* newLayout = new QVBoxLayout();
+    ui->arbolBB_frame->setLayout(newLayout);
+
+    QLabel* imageLabel = new QLabel();
+    QPixmap pixmap(imagePath);
+    imageLabel->setPixmap(pixmap);
+
+    imageLabel->resize(pixmap.size());
+
+    QScrollArea* scrollArea = new QScrollArea();
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setWidget(imageLabel);
+
+    newLayout->addWidget(scrollArea);
+}

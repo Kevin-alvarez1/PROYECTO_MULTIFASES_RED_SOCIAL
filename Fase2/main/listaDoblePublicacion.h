@@ -4,7 +4,9 @@
 #include "publicacion.h"
 #include <string>
 #include "matrizdispersa.h"
+#include "arbolabb.h"
 extern MatrizDispersa matrizDispersa;
+extern ArbolABB arbolABB;
 
 class ListaDoblePublicacion
 {
@@ -24,6 +26,10 @@ private:
     int siguienteId;
 
     void crearPNG(const std::string &dotFilename, const std::string &pngFilename);
+    NodoABB* raiz;
+    void preOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const;
+    void inOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const;
+    void postOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const;
 
 public:
     ListaDoblePublicacion();
@@ -35,8 +41,11 @@ public:
     void mostrarPublicacionesPorUsuario(const std::string& correo) const;
     void mostrarTodasLasPublicaciones() const;
     void mostrarPublicacionesPorCorreo(const std::string& correo) const;
-    void mostrarPublicacionesYAmigos(const std::string &correo, const MatrizDispersa &matriz);
+    void mostrarPublicacionesYAmigos(const std::string &correo, const MatrizDispersa &matriz, ArbolABB &arbol);
     int obtenerNuevoId() const;
+    void mostrarPublicacionesOrden(const std::string& correoUsuario, const MatrizDispersa& matrizDispersa, ArbolABB& arbolABB, int orden) const;
+    std::vector<Publicacion> obtenerPublicacionesEnOrden(const std::string& tipoOrden) const;
+
 };
 
 #endif // LISTADOBLEPUBLICACION_H

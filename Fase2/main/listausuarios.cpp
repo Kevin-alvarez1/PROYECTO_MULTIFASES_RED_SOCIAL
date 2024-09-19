@@ -256,6 +256,7 @@ std::vector<Usuario> ListaUsuarios::obtenerUsuariosEnOrden(const std::string& ti
 
     return usuarios;
 }
+
 void ListaUsuarios::generateDot(const std::string& filename) const {
     std::ofstream file(filename + ".dot");
 

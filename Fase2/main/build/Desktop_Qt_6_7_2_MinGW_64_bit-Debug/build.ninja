@@ -304,7 +304,7 @@ build main_autogen_timestamp_deps: phony
 #############################################
 # Utility command for main_autogen
 
-build main_autogen: phony CMakeFiles/main_autogen main_autogen/include/ui_login.h main_autogen/include/ui_Admin.h main_autogen/include/ui_usuarios.h main_autogen/include/ui_registrarse.h main_autogen/include/ui_crearpublicacion.h main_autogen/timestamp main_autogen/mocs_compilation.cpp main_autogen_timestamp_deps
+build main_autogen: phony CMakeFiles/main_autogen main_autogen/include/ui_Login.h main_autogen/include/ui_Admin.h main_autogen/include/ui_usuarios.h main_autogen/include/ui_registrarse.h main_autogen/include/ui_crearpublicacion.h main_autogen/timestamp main_autogen/mocs_compilation.cpp main_autogen_timestamp_deps
 
 
 #############################################
@@ -321,7 +321,7 @@ build main_autogen/timestamp main_autogen/mocs_compilation.cpp | ${cmake_ninja_w
 #############################################
 # Phony custom command for CMakeFiles\main_autogen
 
-build CMakeFiles/main_autogen main_autogen/include/ui_login.h main_autogen/include/ui_Admin.h main_autogen/include/ui_usuarios.h main_autogen/include/ui_registrarse.h main_autogen/include/ui_crearpublicacion.h | ${cmake_ninja_workdir}CMakeFiles/main_autogen ${cmake_ninja_workdir}main_autogen/include/ui_login.h ${cmake_ninja_workdir}main_autogen/include/ui_Admin.h ${cmake_ninja_workdir}main_autogen/include/ui_usuarios.h ${cmake_ninja_workdir}main_autogen/include/ui_registrarse.h ${cmake_ninja_workdir}main_autogen/include/ui_crearpublicacion.h: phony main_autogen/timestamp || main_autogen_timestamp_deps
+build CMakeFiles/main_autogen main_autogen/include/ui_Login.h main_autogen/include/ui_Admin.h main_autogen/include/ui_usuarios.h main_autogen/include/ui_registrarse.h main_autogen/include/ui_crearpublicacion.h | ${cmake_ninja_workdir}CMakeFiles/main_autogen ${cmake_ninja_workdir}main_autogen/include/ui_Login.h ${cmake_ninja_workdir}main_autogen/include/ui_Admin.h ${cmake_ninja_workdir}main_autogen/include/ui_usuarios.h ${cmake_ninja_workdir}main_autogen/include/ui_registrarse.h ${cmake_ninja_workdir}main_autogen/include/ui_crearpublicacion.h: phony main_autogen/timestamp || main_autogen_timestamp_deps
 
 # =============================================================================
 # Target aliases.

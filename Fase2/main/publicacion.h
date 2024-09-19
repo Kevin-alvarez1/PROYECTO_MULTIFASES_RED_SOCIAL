@@ -2,7 +2,7 @@
 #define PUBLICACION_H
 
 #include <string>
-#include "Comentario.h"
+#include "comentario.h"
 
 class Publicacion {
 public:

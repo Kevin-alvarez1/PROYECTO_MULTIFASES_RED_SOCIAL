@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -279,7 +279,7 @@
         </rect>
        </property>
       </widget>
-      <widget class="QComboBox" name="comboBox">
+      <widget class="QComboBox" name="ordenPublicaciones_comboBox">
        <property name="geometry">
         <rect>
          <x>120</x>
@@ -290,7 +290,7 @@
        </property>
        <item>
         <property name="text">
-         <string>PreOrden</string>
+         <string>PreOrder</string>
         </property>
        </item>
        <item>
@@ -300,7 +300,7 @@
        </item>
        <item>
         <property name="text">
-         <string>PostOrden</string>
+         <string>PostOrder</string>
         </property>
        </item>
       </widget>
@@ -824,7 +824,7 @@
           <height>189</height>
          </rect>
         </property>
-        <widget class="QPushButton" name="pushButton_6">
+        <widget class="QPushButton" name="generar_bst_reporte_boton">
          <property name="geometry">
           <rect>
            <x>60</x>
@@ -846,6 +846,35 @@
            <height>24</height>
           </rect>
          </property>
+        </widget>
+        <widget class="QFrame" name="arbolBB_frame">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>10</y>
+           <width>691</width>
+           <height>171</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <widget class="QLabel" name="arbolBB_label">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>691</width>
+            <height>171</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
         </widget>
        </widget>
       </widget>

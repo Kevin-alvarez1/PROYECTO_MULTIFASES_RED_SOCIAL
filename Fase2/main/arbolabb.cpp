@@ -1,8 +1,10 @@
 #include "arbolabb.h"
 #include <iostream>
 #include <algorithm>
-ArbolABB arbolABB;
+#include <fstream>
+#include <cstdlib>
 
+ArbolABB arbolABB;
 // Constructor
 ArbolABB::ArbolABB() : raiz(nullptr) {}
 
@@ -11,138 +13,126 @@ ArbolABB::~ArbolABB() {
     destruirArbol(raiz);
 }
 
-// Método para insertar una publicación
+NodoABB::NodoABB(const std::string& fecha_) : fecha(fecha_), izquierda(nullptr), derecha(nullptr) {
+}
+
+// Insertar una publicación en el ABB
 void ArbolABB::insertarPublicacion(const Publicacion& publicacion) {
     raiz = insertarNodo(raiz, publicacion);
 }
 
-// Método para mostrar publicaciones en una fecha específica
-void ArbolABB::mostrarPublicaciones(const std::string& fecha) const {
-    NodoABB* nodo = buscarNodo(raiz, fecha);
-    if (nodo) {
-        for (const auto& pub : nodo->publicaciones) {
-            std::cout << "Contenido: " << pub.getContenido() << ", Fecha: " << pub.getFecha() << std::endl;
-        }
-    } else {
-        std::cout << "No hay publicaciones para la fecha " << fecha << std::endl;
-    }
-}
-
-// Método para eliminar publicaciones en una fecha específica
-void ArbolABB::eliminarPublicaciones(const std::string& fecha) {
-    raiz = eliminarNodo(raiz, fecha);
-}
-
-void NodoABB::mostrarEnOrden(NodoABB* nodo, const std::vector<std::string>& correosPermitidos) const {
-    if (nodo == nullptr) {
-        return;
-    }
-
-    // Recorrido en orden para mostrar las publicaciones en orden cronológico
-    mostrarEnOrden(nodo->izquierda, correosPermitidos);
-
-    // Filtrar las publicaciones que son del usuario o de sus amigos
-    for (const auto& publicacion : nodo->publicaciones) {
-        // Solo mostrar las publicaciones si el correo está en correosPermitidos
-        if (std::find(correosPermitidos.begin(), correosPermitidos.end(), publicacion.getCorreo()) != correosPermitidos.end()) {
-            std::cout << "Contenido: " << publicacion.getContenido()
-            << ", Fecha: " << publicacion.getFecha()
-            << ", Correo: " << publicacion.getCorreo() << std::endl;
-        }
-    }
-
-    mostrarEnOrden(nodo->derecha, correosPermitidos);
-}
-
-void ArbolABB::mostrarPublicacionesCronologicas(const std::vector<std::string>& correosPermitidos) const {
-    if (raiz) {
-        raiz->mostrarEnOrden(raiz, correosPermitidos);
-    }
-}
-
-
-// Método privado para insertar un nodo en el árbol
+// Insertar un nodo basado en la fecha de la publicación
 NodoABB* ArbolABB::insertarNodo(NodoABB* nodo, const Publicacion& publicacion) {
+    std::string fechaConvertida = convertirFecha(publicacion.getFecha());
+
     if (!nodo) {
-        return new NodoABB(publicacion.getFecha());
+        // Si el nodo no existe, crear uno nuevo
+        NodoABB* nuevoNodo = new NodoABB(fechaConvertida);
+        nuevoNodo->publicaciones.push_back(publicacion);
+        return nuevoNodo;
     }
 
-    if (publicacion.getFecha() < nodo->fecha) {
+    // Comparar fechas para determinar la posición
+    if (fechaConvertida < nodo->fecha) {
         nodo->izquierda = insertarNodo(nodo->izquierda, publicacion);
-    } else if (publicacion.getFecha() > nodo->fecha) {
+    } else if (fechaConvertida > nodo->fecha) {
         nodo->derecha = insertarNodo(nodo->derecha, publicacion);
     } else {
-        // Fecha igual, agregar a la lista de publicaciones
+        // Si la fecha es igual, añadir la publicación a la lista
         nodo->publicaciones.push_back(publicacion);
     }
+
     return nodo;
 }
 
-// Método privado para buscar un nodo por fecha
+// Buscar un nodo por fecha
 NodoABB* ArbolABB::buscarNodo(NodoABB* nodo, const std::string& fecha) const {
-    if (!nodo || nodo->fecha == fecha) {
+    std::string fechaConvertida = convertirFecha(fecha);
+
+    if (!nodo || nodo->fecha == fechaConvertida) {
         return nodo;
     }
 
-    if (fecha < nodo->fecha) {
+    if (fechaConvertida < nodo->fecha) {
         return buscarNodo(nodo->izquierda, fecha);
     } else {
         return buscarNodo(nodo->derecha, fecha);
     }
 }
 
-// Método privado para eliminar un nodo (y las publicaciones) por fecha
-NodoABB* ArbolABB::eliminarNodo(NodoABB* nodo, const std::string& fecha) {
-    if (!nodo) {
-        return nullptr;
+// Mostrar todas las publicaciones en orden cronológico
+void ArbolABB::mostrarPublicacionesCronologicas() const {
+    std::vector<Publicacion> publicaciones;
+    inOrder(raiz, publicaciones);
+
+    for (const auto& pub : publicaciones) {
+        std::cout << "Fecha: " << pub.getFecha() << ", Contenido: " << pub.getContenido() << std::endl;
     }
-
-    if (fecha < nodo->fecha) {
-        nodo->izquierda = eliminarNodo(nodo->izquierda, fecha);
-    } else if (fecha > nodo->fecha) {
-        nodo->derecha = eliminarNodo(nodo->derecha, fecha);
-    } else {
-        // Nodo a eliminar encontrado
-        if (!nodo->izquierda) {
-            NodoABB* temp = nodo->derecha;
-            delete nodo;
-            return temp;
-        } else if (!nodo->derecha) {
-            NodoABB* temp = nodo->izquierda;
-            delete nodo;
-            return temp;
-        }
-
-        // Nodo con dos hijos: encontrar el nodo más pequeño en el subárbol derecho
-        NodoABB* temp = nodo->derecha;
-        while (temp && temp->izquierda) {
-            temp = temp->izquierda;
-        }
-
-        nodo->fecha = temp->fecha;
-        nodo->publicaciones = temp->publicaciones;
-        nodo->derecha = eliminarNodo(nodo->derecha, temp->fecha);
-    }
-    return nodo;
 }
 
-// Método privado para mostrar publicaciones de un nodo específico
-void ArbolABB::mostrarPublicacionesNodo(NodoABB* nodo, const std::string& fecha) const {
+// Recorridos en orden
+void ArbolABB::inOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const {
     if (nodo) {
-        if (fecha == nodo->fecha) {
-            for (const auto& pub : nodo->publicaciones) {
-                std::cout << "Contenido: " << pub.getContenido() << ", Fecha: " << pub.getFecha() << std::endl;
-            }
-        } else if (fecha < nodo->fecha) {
-            mostrarPublicacionesNodo(nodo->izquierda, fecha);
-        } else {
-            mostrarPublicacionesNodo(nodo->derecha, fecha);
+        inOrder(nodo->izquierda, publicaciones);
+        publicaciones.insert(publicaciones.end(), nodo->getPublicaciones().begin(), nodo->getPublicaciones().end());
+        inOrder(nodo->derecha, publicaciones);
+    }
+}
+
+void ArbolABB::generateDotFile(const std::string& filename) const {
+    std::ofstream file(filename + ".dot");
+    if (!file.is_open()) {
+        std::cerr << "No se pudo abrir el archivo DOT para escribir." << std::endl;
+        return;
+    }
+
+    file << "digraph BSTTree {\n";
+    file << "node [shape=circle];\n";
+
+    generateDot(raiz, file);
+
+    file << "}\n";
+    file.close();
+
+    // Convertir el archivo DOT a PNG usando el comando dot
+    std::string comando = "dot -Tpng " + filename + ".dot -o " + filename + ".png";
+    int resultado = std::system(comando.c_str());
+
+    if (resultado != 0) {
+        std::cerr << "Error al convertir el archivo DOT a PNG." << std::endl;
+    }
+}
+
+void ArbolABB::generateDot(NodoABB* nodo, std::ofstream& file) const {
+    if (nodo) {
+        // Asegúrate de que cada nodo esté conectado a sus nodos hijos
+        if (nodo->izquierda) {
+            file << "\"" << nodo->fecha << "\" -> \"" << nodo->izquierda->fecha << "\";\n";
+            generateDot(nodo->izquierda, file);
+        }
+        if (nodo->derecha) {
+            file << "\"" << nodo->fecha << "\" -> \"" << nodo->derecha->fecha << "\";\n";
+            generateDot(nodo->derecha, file);
         }
     }
 }
 
+// Convertir la fecha a un formato ordenado (YYYY/MM/DD)
+std::string ArbolABB::convertirFecha(const std::string& fechaStr) const {
+    int dia, mes, ano;
+    char separador;
+    std::istringstream iss(fechaStr);
+    iss >> dia >> separador >> mes >> separador >> ano;
 
-// Método privado para destruir el árbol
+    std::ostringstream oss;
+    oss << std::setw(4) << std::setfill('0') << ano << "/"
+        << std::setw(2) << std::setfill('0') << mes << "/"
+        << std::setw(2) << std::setfill('0') << dia;
+
+    return oss.str();
+}
+
+// Destruir el árbol
 void ArbolABB::destruirArbol(NodoABB* nodo) {
     if (nodo) {
         destruirArbol(nodo->izquierda);
@@ -150,7 +140,3 @@ void ArbolABB::destruirArbol(NodoABB* nodo) {
         delete nodo;
     }
 }
-
-// Constructor del NodoABB
-NodoABB::NodoABB(const std::string& fecha_)
-    : fecha(fecha_), izquierda(nullptr), derecha(nullptr) {}

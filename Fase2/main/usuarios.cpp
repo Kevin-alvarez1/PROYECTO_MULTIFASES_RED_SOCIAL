@@ -497,7 +497,6 @@ void Usuarios::on_generar_bst_reporte_boton_clicked() {
     actualizarPanelConImagen(QString::fromStdString("ArbolBB.png"));
 }
 
-
 void Usuarios::actualizarPanelConImagen(const QString& imagePath) {
     QLayout* existingLayout = ui->arbolBB_frame->layout();
     if (existingLayout) {

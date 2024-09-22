@@ -34,18 +34,21 @@ public:
     void generateDotFile(const std::string& filename) const;
     void generateDotNode(NodoABB* nodo, std::ofstream& file) const;
     void graficar(const std::string& archivoImagen) const;
+    void preOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const;
+    void inOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const;
+    void postOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const;
+    std::string inOrder(NodoABB* nodo) const;
+
+    NodoABB* getRaiz() const {
+        return raiz;
+    }
 
 private:
     NodoABB* raiz;
     NodoABB* insertarNodo(NodoABB* nodo, const Publicacion& publicacion);
     NodoABB* buscarNodo(NodoABB* nodo, const std::string& fecha) const;
     void destruirArbol(NodoABB* nodo);
-    void preOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const;
-    void inOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const;
-    void postOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const;
     std::string convertirFecha(const std::string& fechaStr) const;
     void generateDot(NodoABB* nodo, std::ofstream& file) const;
-
 };
-
 #endif // ARBOLABB_H

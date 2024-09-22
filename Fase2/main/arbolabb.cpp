@@ -70,7 +70,21 @@ void ArbolABB::mostrarPublicacionesCronologicas() const {
     }
 }
 
-// Recorridos en orden
+std::string ArbolABB::inOrder(NodoABB* nodo) const {
+    std::vector<Publicacion> publicaciones; // Vector para almacenar publicaciones
+    inOrder(nodo, publicaciones); // Llamar al método existente
+
+    // Construir el string a partir del vector
+    std::ostringstream result;
+    for (const auto& publicacion : publicaciones) {
+        result << "ID: " << publicacion.getId()
+        << ", Correo: " << publicacion.getCorreo()
+        << ", Contenido: " << publicacion.getContenido() << " - ";
+    }
+    return result.str(); // Retornar el resultado como string
+}
+
+// Mantener el método existente
 void ArbolABB::inOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const {
     if (nodo) {
         inOrder(nodo->izquierda, publicaciones);
@@ -78,6 +92,9 @@ void ArbolABB::inOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) c
         inOrder(nodo->derecha, publicaciones);
     }
 }
+
+
+
 
 void ArbolABB::generateDotFile(const std::string& filename) const {
     std::ofstream file(filename + ".dot");

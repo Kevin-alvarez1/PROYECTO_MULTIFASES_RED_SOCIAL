@@ -41,6 +41,7 @@ private slots:
     void on_aplicar_orden_publis_boton_clicked();
     void on_generar_bst_reporte_boton_clicked();
     void actualizarPanelConImagen(const QString& imagePath);
+
 private:
     Ui::Usuarios *ui;
     Login *login;
@@ -49,6 +50,7 @@ private:
     ListaDoblePublicacion *listadoblepublicacion;
     ListaSolicitudes *lista_solicitudes;
     CrearPublicacion *CrearPublicacion;
+    QFrame* publicaciones_frame;
 };
 
 #endif // USUARIOS_H

@@ -1,4 +1,5 @@
-#include "Comentario.h"
+#include "comentario.h"
+#include "comentarios.h"
 
 // Constructor
 Comentario::Comentario(const std::string& correo, const std::string& comentario, const std::string& fecha, const std::string& hora)

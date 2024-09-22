@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -471,6 +471,22 @@
        </property>
        <property name="text">
         <string>Crear nueva publicacion</string>
+       </property>
+      </widget>
+      <widget class="QFrame" name="publicaciones_frame">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>50</y>
+         <width>671</width>
+         <height>391</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Shape::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Shadow::Raised</enum>
        </property>
       </widget>
      </widget>

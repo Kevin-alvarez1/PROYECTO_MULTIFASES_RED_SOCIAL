@@ -404,6 +404,7 @@ C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/bui
   C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Publicacion.h \
   C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/arbolabb.h \
   C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/comentario.h \
+  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/comentarios.h \
   C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/json.hpp \
   C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/listaDoblePublicacion.h \
   C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/lista_solicitudes.h \

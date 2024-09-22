@@ -3,6 +3,21 @@
 
 #include <string>
 #include "comentario.h"
+#include "comentarios.h"
+
+class NodoComentario {
+public:
+    NodoComentario(const Comentario& com) : comentario(com), siguiente(nullptr) {}
+
+    Comentario comentario;
+    NodoComentario* siguiente;
+
+private:
+    NodoComentario() = delete;
+    NodoComentario(const NodoComentario&) = delete;
+    NodoComentario& operator=(const NodoComentario&) = delete;
+};
+
 
 class Publicacion {
 public:
@@ -21,6 +36,9 @@ public:
     void agregarComentario(const Comentario& comentario);
     void mostrarComentarios() const;
     void limpiarComentarios();
+    std::string toString() const {
+        return "Congenitod: " + getContenido() + "Contenido: " + getContenido() + ", Fecha: " + getFecha() + ", Hora: " + getHora();
+    }
 
 private:
     int id_;
@@ -28,20 +46,6 @@ private:
     std::string contenido_;
     std::string fecha_;
     std::string hora_;
-
-    class NodoComentario {
-    public:
-        NodoComentario(const Comentario& com) : comentario(com), siguiente(nullptr) {}
-
-        Comentario comentario;
-        NodoComentario* siguiente;
-
-    private:
-        NodoComentario() = delete;
-        NodoComentario(const NodoComentario&) = delete;
-        NodoComentario& operator=(const NodoComentario&) = delete;
-    };
-
     NodoComentario* cabezaComentario_;
 
 };

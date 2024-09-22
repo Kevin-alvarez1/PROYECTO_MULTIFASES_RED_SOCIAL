@@ -59,7 +59,6 @@ void ListaDoblePublicacion::cargarPublicacionesDesdeJson(const std::string &file
             }
 
             agregarPublicacion(nuevaPublicacion);
-            arbolABB.insertarPublicacion(nuevaPublicacion);
         }
     }
     catch (const nlohmann::json::exception& e)
@@ -132,16 +131,17 @@ void ListaDoblePublicacion::crearPNG(const std::string &dotFilename, const std::
     }
 }
 
-void ListaDoblePublicacion::mostrarPublicacionesYAmigos(const std::string &correo, const MatrizDispersa &matriz, ArbolABB &arbol) {
+std::vector<Publicacion> ListaDoblePublicacion::mostrarPublicacionesYAmigos(const std::string &correo, const MatrizDispersa &matriz, ArbolABB &arbol) {
+    std::vector<Publicacion> publicaciones_arbol; // Vector para almacenar las publicaciones
+
     try {
         arbol = ArbolABB();
 
         // Mostrar y agregar las publicaciones del usuario dado al árbol
-        std::cout << "Publicaciones de " << correo << ":" << std::endl;
         NodoPublicacion* actual = cabeza;
         while (actual) {
             if (actual->publicacion.getCorreo() == correo) {
-                mostrarPublicacion(actual->publicacion);
+                publicaciones_arbol.push_back(actual->publicacion); // Agregar publicación al vector
                 arbol.insertarPublicacion(actual->publicacion); // Insertar en el árbol
             }
             actual = actual->siguiente;
@@ -152,12 +152,11 @@ void ListaDoblePublicacion::mostrarPublicacionesYAmigos(const std::string &corre
 
         // Mostrar y agregar las publicaciones de cada amigo al árbol
         for (const auto &amigo : amigos) {
-            std::cout << "Publicaciones de " << amigo << ":" << std::endl;
-            actual = cabeza;
+            actual = cabeza;  // Reinicia el puntero para recorrer nuevamente
             while (actual) {
                 if (actual->publicacion.getCorreo() == amigo) {
-                    mostrarPublicacion(actual->publicacion);
-                    arbol.insertarPublicacion(actual->publicacion); // Insertar en el árbol
+                    publicaciones_arbol.push_back(actual->publicacion); // Agregar publicación al vector
+                    arbol.insertarPublicacion(actual->publicacion);
                 }
                 actual = actual->siguiente;
             }
@@ -165,6 +164,8 @@ void ListaDoblePublicacion::mostrarPublicacionesYAmigos(const std::string &corre
     } catch (const std::exception &e) {
         std::cerr << "Excepción capturada: " << e.what() << std::endl;
     }
+
+    return publicaciones_arbol; // Retornar las publicaciones
 }
 
 void ListaDoblePublicacion::mostrarPublicacionesPorCorreo(const std::string& correo) const

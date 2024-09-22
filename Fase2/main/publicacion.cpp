@@ -1,13 +1,14 @@
 #include "Publicacion.h"
-#include <iostream>
+#include "publicacion.h"
 
+#include <iostream>
 // Constructor
 Publicacion::Publicacion(int id, const std::string& correo, const std::string& contenido, const std::string& fecha, const std::string& hora)
     : id_(id), correo_(correo), contenido_(contenido), fecha_(fecha), hora_(hora), cabezaComentario_(nullptr) {}
 
 // Destructor
 Publicacion::~Publicacion() {
-    limpiarComentarios();
+
 }
 
 // Métodos Getters

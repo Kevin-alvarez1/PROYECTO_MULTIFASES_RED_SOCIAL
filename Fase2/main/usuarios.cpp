@@ -6,7 +6,7 @@
 #include "arbolabb.h"
 #include <QDialog>
 #include <QVBoxLayout>
-
+#include <set>
 extern MatrizDispersa matrizDispersa;
 extern ArbolABB arbolABB;
 
@@ -43,7 +43,7 @@ void Usuarios::on_buscar_correo_btn_clicked()
     std::string correo = ui->buscador_usuario_txt->text().toStdString();
     Usuario usuario = listaUsuarios->mostrarDatosPorCorreo(correo);
 
-    if (usuario.getCorreo() == correo)  // Verifica que el usuario devuelto tiene el correo buscado
+    if (usuario.getCorreo() == correo)
     {
         ui->buscador_usuario_nombre_txt->setText(QString::fromStdString(usuario.getNombre()));
         ui->buscador_usuario_apellido_txt->setText(QString::fromStdString(usuario.getApellido()));
@@ -67,11 +67,9 @@ void Usuarios::on_Eliminar_boton_clicked()
 {
     std::string correo = ui->correo_editar_txt->text().toStdString();
 
-    // Verificar si el correo ingresado es el mismo que el del usuario autenticado
     if (correo != correoActualUsuario_) {
-        // Mostrar advertencia y continuar sin cerrar el programa ni la ventana
         QMessageBox::warning(this, "Error", "Solo puedes eliminar tu propia cuenta.");
-        return;  // Termina la función para no continuar con la eliminación
+        return;
     }
 
     // Confirmar si el usuario realmente quiere borrar su cuenta
@@ -452,32 +450,80 @@ void Usuarios::on_crear_nueva_publi_boton_clicked()
 
 void Usuarios::on_aplicar_orden_publis_boton_clicked()
 {
-    // Obtener el criterio de orden seleccionado
-    QString criterioOrdenQt = ui->ordenPublicaciones_comboBox->currentText();
-    std::string criterioOrden = criterioOrdenQt.toUtf8().constData();
-
-    // Verificar que listadoblepublicacion esté inicializado
-    if (!listadoblepublicacion) {
-        QMessageBox::critical(this, "Error", "ListaDoblePublicacion no está inicializado.");
-        return;
-    }
-
-    // Obtener el correo del usuario actual
-    std::string correoUsuario = correoActualUsuario_;
-
-    // Mostrar publicaciones del usuario
-    std::cout << "Publicaciones del usuario " << correoUsuario << ":" << std::endl;
-
     try {
-        listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, matrizDispersa, arbolABB);
+        QString criterioOrdenQt = ui->ordenPublicaciones_comboBox->currentText();
+        std::string criterioOrden = criterioOrdenQt.toUtf8().constData();
+
+        // Verificar que listadoblepublicacion esté inicializado
+        if (!listadoblepublicacion) {
+            QMessageBox::critical(this, "Error", "ListaDoblePublicacion no está inicializado.");
+            return;
+        }
+
+        std::string correoUsuario = correoActualUsuario_;
+        std::cout << "Publicaciones del usuario " << correoUsuario << ":" << std::endl;
+
+        // Limpiar el layout de publicaciones anteriores
+        QLayout* layout = ui->publicaciones_frame->layout();
+        if (layout != nullptr) {
+            QLayoutItem* item;
+            while ((item = layout->takeAt(0)) != nullptr) {
+                delete item->widget();
+                delete item;
+            }
+        } else {
+            layout = new QVBoxLayout(ui->publicaciones_frame);
+            ui->publicaciones_frame->setLayout(layout);
+        }
+
+        // Obtener publicaciones en orden
+        std::vector<Publicacion> publicaciones_arbol = listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, matrizDispersa, arbolABB);
+
+        // Depuración: verificar cuántas publicaciones se encontraron
+        std::cout << "Total de publicaciones encontradas: " << publicaciones_arbol.size() << std::endl;
+
+        std::set<int> idsMostradas; // Para llevar un registro de los IDs mostrados
+
+        for (const auto& publicacion : publicaciones_arbol) {
+            // Depuración: mostrar la información de cada publicación
+            std::cout << "Publicación ID: " << publicacion.getId() << ", correo: " << publicacion.getCorreo() << std::endl;
+
+            // Verificar si el ID ya ha sido mostrado
+            if (idsMostradas.find(publicacion.getId()) == idsMostradas.end()) {
+                // Agregar el ID a la lista de mostrados
+                idsMostradas.insert(publicacion.getId());
+
+                // Crear un nuevo panel para cada publicación
+                QFrame* panel = new QFrame(ui->publicaciones_frame);
+                panel->setFrameShape(QFrame::StyledPanel);
+                panel->setFrameShadow(QFrame::Raised);
+
+                // Layout para el panel
+                QVBoxLayout* panelLayout = new QVBoxLayout(panel);
+
+                // Crear y configurar el label para mostrar el ID de la publicación
+                QLabel* label = new QLabel(QString("ID de la publicación: %1").arg(publicacion.getId()), panel);
+                panelLayout->addWidget(label);
+
+                // Añadir el panel al layout principal
+                layout->addWidget(panel);
+            }
+        }
+
+        ui->publicaciones_frame->update();
+        ui->publicaciones_frame->repaint();
+
     } catch (const std::exception& e) {
         std::cerr << "Error al mostrar publicaciones: " << e.what() << std::endl;
         QMessageBox::critical(this, "Error", "Hubo un problema al mostrar las publicaciones.");
         return;
     }
 
-    QMessageBox::information(this, "Publicaciones", "Se han mostrado todas las publicaciones del usuario y sus amigos.");
+    QMessageBox::information(this, "Publicaciones", "Se han mostrado todas las publicaciones del usuario.");
 }
+
+
+
 
 void Usuarios::on_generar_bst_reporte_boton_clicked() {
     // Generar el archivo DOT para el árbol

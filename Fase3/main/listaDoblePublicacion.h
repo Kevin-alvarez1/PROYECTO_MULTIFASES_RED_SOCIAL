@@ -44,10 +44,10 @@ public:
     void mostrarPublicacionesPorUsuario(const std::string& correo) const;
     void mostrarTodasLasPublicaciones() const;
     void mostrarPublicacionesPorCorreo(const std::string& correo) const;
-    std::vector<Publicacion> mostrarPublicacionesYAmigos(const std::string &correo, const MatrizDispersa &matriz, ArbolABB &arbol, const std::string &orden);
+    void mostrarPublicacionesYAmigos(const std::string &correo, const MatrizDispersa &matriz, ArbolABB &arbol, const std::string &orden);
     int obtenerNuevoId() const;
     void mostrarPublicacionesOrden(const std::string& correoUsuario, const MatrizDispersa& matrizDispersa, ArbolABB& arbolABB, int orden) const;
-    std::vector<Publicacion> obtenerPublicacionesEnOrden(const std::string& tipoOrden) const;
+    void obtenerPublicacionesEnOrden(const std::string& tipoOrden) const;
     void eliminarPublicacionPorId(int id);
 };
 

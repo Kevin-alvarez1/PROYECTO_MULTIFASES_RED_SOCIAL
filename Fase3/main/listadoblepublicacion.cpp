@@ -166,7 +166,7 @@ void ListaDoblePublicacion::crearPNG(const std::string &dotFilename, const std::
     }
 }
 
-std::vector<Publicacion> ListaDoblePublicacion::mostrarPublicacionesYAmigos(
+void ListaDoblePublicacion::mostrarPublicacionesYAmigos(
     const std::string &correo,
     const MatrizDispersa &matriz,
     ArbolABB &arbol,
@@ -192,20 +192,26 @@ std::vector<Publicacion> ListaDoblePublicacion::mostrarPublicacionesYAmigos(
 
         // Almacenar las publicaciones en el orden deseado
         if (orden == "PreOrder") {
-            std::vector<Publicacion> publicaciones_temp;
-            arbol.recorrerPreOrder(publicaciones_temp);
-            publicaciones_arbol.swap(publicaciones_temp);
+            int cantidad = 0; // Inicializar cantidad
+            int capacidad = 10; // Capacidad inicial
+            arbolABB.recorrerPreOrder(publicaciones_arbol, cantidad, capacidad); // Llamada al método
+            // Aquí puedes trabajar con publicaciones_arbol
+
         } else if (orden == "InOrder") {
-            std::vector<Publicacion> publicaciones_temp;
-            arbol.recorrerInOrder(publicaciones_temp);
-            publicaciones_arbol.swap(publicaciones_temp);
+            int cantidad = 0; // Inicializar cantidad
+            int capacidad = 10; // Capacidad inicial
+            arbolABB.recorrerInOrder(publicaciones_arbol, cantidad, capacidad); // Llamada al método
+            // Aquí puedes trabajar con publicaciones_arbol
+
         } else if (orden == "PostOrder") {
-            std::vector<Publicacion> publicaciones_temp;
-            arbol.recorrerPostOrder(publicaciones_temp);
-            publicaciones_arbol.swap(publicaciones_temp);
+            int cantidad = 0; // Inicializar cantidad
+            int capacidad = 10; // Capacidad inicial
+            arbolABB.recorrerPostOrder(publicaciones_arbol, cantidad, capacidad); // Llamada al método
+
         } else {
             std::cerr << "Orden no válido: " << orden << std::endl;
         }
+
     } catch (const std::exception &e) {
         std::cerr << "Excepción capturada: " << e.what() << std::endl;
     }

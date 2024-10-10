@@ -164,19 +164,23 @@ void Usuarios::on_btnEnviarSolicitud_clicked(const std::string& correoReceptor) 
 void Usuarios::on_actualizar_tablas_clicked() {
     QString correoActual = QString::fromStdString(correoActualUsuario_);
 
-    // Obtener usuarios en el orden especificado
-    QString criterioOrden = "InOrder";
-    std::vector<Usuario> usuarios = listaUsuarios->obtenerUsuariosEnOrden(criterioOrden.toStdString());
-
     // Obtener la tabla de usuarios
     QTableWidget* tablaUsuarios = findChild<QTableWidget*>("tabla_usuarios_solicitud");
     QTableWidget* tablaSolicitudesEnviadas = findChild<QTableWidget*>("solicitudes_enviadas_tabla");
     QTableWidget* tablaSolicitudesRecibidas = findChild<QTableWidget*>("solicitudes_recibidas_tabla");
 
     if (tablaUsuarios) {
-        std::vector<Usuario> usuariosFiltrados;
+        // Limpiar la tabla antes de actualizar
+        tablaUsuarios->setRowCount(0);
+        tablaUsuarios->setColumnCount(5);
+        tablaUsuarios->setHorizontalHeaderLabels(QStringList() << "Nombre" << "Apellido" << "Correo" << "Fecha de nacimiento" << " ");
 
-        for (const auto& usuario : usuarios) {
+        // Obtener el primer nodo de la lista de usuarios
+        NodoUsuario* nodoActual = listaUsuarios->obtenerPrimero();  // Asumiendo que tienes un método para obtener el primer nodo
+
+        while (nodoActual != nullptr) {
+            const Usuario& usuario = nodoActual->usuario;  // Suponiendo que cada nodo tiene un objeto Usuario
+
             // Evitar mostrar el usuario actual en la tabla
             if (usuario.getCorreo() != correoActual.toStdString()) {
                 // Verificar si ya existe una solicitud en estado PENDIENTE o ACEPTADA
@@ -185,41 +189,34 @@ void Usuarios::on_actualizar_tablas_clicked() {
                                           lista_solicitudes->existeSolicitudEnEstado(
                                               correoActual.toStdString(), usuario.getCorreo(), "ACEPTADA");
 
-                // Si no existe una solicitud en estado PENDIENTE o ACEPTADA, agregar el usuario a la lista filtrada
+                // Si no existe una solicitud en estado PENDIENTE o ACEPTADA, agregar el usuario a la tabla
                 if (!solicitudExistente) {
-                    usuariosFiltrados.push_back(usuario);
+                    int row = tablaUsuarios->rowCount();
+                    tablaUsuarios->insertRow(row);  // Insertar una nueva fila
+
+                    // Rellenar la tabla con los datos del usuario
+                    tablaUsuarios->setItem(row, 0, new QTableWidgetItem(QString::fromStdString(usuario.getNombre())));
+                    tablaUsuarios->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(usuario.getApellido())));
+                    tablaUsuarios->setItem(row, 2, new QTableWidgetItem(QString::fromStdString(usuario.getCorreo())));
+                    tablaUsuarios->setItem(row, 3, new QTableWidgetItem(QString::fromStdString(usuario.getFechaDeNacimiento())));
+
+                    // Botón para enviar solicitud de amistad
+                    QPushButton* btnEnviarSolicitud = new QPushButton("Enviar solicitud");
+                    tablaUsuarios->setCellWidget(row, 4, btnEnviarSolicitud);
+
+                    // Conectar el botón a la función de enviar solicitud
+                    connect(btnEnviarSolicitud, &QPushButton::clicked, [this, usuario]() {
+                        this->on_btnEnviarSolicitud_clicked(usuario.getCorreo());
+                    });
                 }
             }
-        }
-
-        // Configurar la tabla
-        tablaUsuarios->setRowCount(usuariosFiltrados.size());
-        tablaUsuarios->setColumnCount(5);
-
-        // Encabezados de la tabla
-        tablaUsuarios->setHorizontalHeaderLabels(QStringList() << "Nombre" << "Apellido" << "Correo" << "Fecha de nacimiento" << " ");
-
-        // Rellenar la tabla con los usuarios filtrados
-        for (size_t i = 0; i < usuariosFiltrados.size(); ++i) {
-            const Usuario& usuario = usuariosFiltrados[i];
-
-            tablaUsuarios->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(usuario.getNombre())));
-            tablaUsuarios->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(usuario.getApellido())));
-            tablaUsuarios->setItem(i, 2, new QTableWidgetItem(QString::fromStdString(usuario.getCorreo())));
-            tablaUsuarios->setItem(i, 3, new QTableWidgetItem(QString::fromStdString(usuario.getFechaDeNacimiento())));
-
-            // Botón para enviar solicitud de amistad
-            QPushButton* btnEnviarSolicitud = new QPushButton("Enviar solicitud");
-            tablaUsuarios->setCellWidget(i, 4, btnEnviarSolicitud);
-
-            // Conectar el botón a la función de enviar solicitud
-            connect(btnEnviarSolicitud, &QPushButton::clicked, [this, usuario]() {
-                this->on_btnEnviarSolicitud_clicked(usuario.getCorreo());
-            });
+            // Avanzar al siguiente nodo
+            nodoActual = nodoActual->siguiente;  // Suponiendo que cada nodo tiene un puntero al siguiente nodo
         }
     } else {
         qWarning("La tabla de usuarios no se encontró.");
     }
+
 
     // ACTUALIZAR la tabla de solicitudes enviadas en estado "PENDIENTE"
     if (tablaSolicitudesEnviadas) {

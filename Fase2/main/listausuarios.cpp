@@ -215,46 +215,62 @@ bool ListaUsuarios::buscarUsuarioPorCorreoyContrasena(const std::string& correo,
     return nodo && nodo->usuario.getContrasena() == contrasena;
 }
 
-// PreOrder
-void ListaUsuarios::preOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const {
+void ListaUsuarios::agregarUsuarioEnLista(Usuario usuario) {
+    NodoUsuario* nuevoNodo = new NodoUsuario(usuario);
+
+    if (cabeza == nullptr) {
+        // Si la lista está vacía, el nuevo nodo será la cabeza
+        cabeza = nuevoNodo;
+    } else {
+        // Si la lista no está vacía, recorrer hasta el final para agregar el nuevo nodo
+        NodoUsuario* temp = cabeza;
+        while (temp->siguiente != nullptr) {
+            temp = temp->siguiente;
+        }
+        temp->siguiente = nuevoNodo;  // Agregar el nuevo nodo al final
+    }
+}
+
+void ListaUsuarios::preOrder(NodoAVL* nodo, NodoUsuario*& lista) {
     if (nodo != nullptr) {
-        usuarios.push_back(nodo->usuario);  // Visitar el nodo
-        preOrder(nodo->izquierdo, usuarios);  // Recorrer el subárbol izquierdo
-        preOrder(nodo->derecho, usuarios);   // Recorrer el subárbol derecho
+        agregarUsuarioEnLista(nodo->usuario); // Almacena en lista enlazada
+        preOrder(nodo->izquierdo, lista);
+        preOrder(nodo->derecho, lista);
     }
 }
 
 // InOrder
-void ListaUsuarios::inOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const {
+void ListaUsuarios::inOrder(NodoAVL* nodo, NodoUsuario*& lista) {
     if (nodo != nullptr) {
-        inOrder(nodo->izquierdo, usuarios);  // Recorrer el subárbol izquierdo
-        usuarios.push_back(nodo->usuario);  // Visitar el nodo
-        inOrder(nodo->derecho, usuarios);   // Recorrer el subárbol derecho
+        inOrder(nodo->izquierdo, lista);
+        agregarUsuarioEnLista(nodo->usuario); // Almacena en lista enlazada
+        inOrder(nodo->derecho, lista);
     }
 }
 
 // PostOrder
-void ListaUsuarios::postOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const {
+void ListaUsuarios::postOrder(NodoAVL* nodo, NodoUsuario*& lista) {
     if (nodo != nullptr) {
-        postOrder(nodo->izquierdo, usuarios);  // Recorrer el subárbol izquierdo
-        postOrder(nodo->derecho, usuarios);   // Recorrer el subárbol derecho
-        usuarios.push_back(nodo->usuario);  // Visitar el nodo
+        postOrder(nodo->izquierdo, lista);
+        postOrder(nodo->derecho, lista);
+        agregarUsuarioEnLista(nodo->usuario); // Almacena en lista enlazada
     }
 }
 
-// Método para obtener usuarios en un vector según el recorrido
-std::vector<Usuario> ListaUsuarios::obtenerUsuariosEnOrden(const std::string& tipoOrden) const {
-    std::vector<Usuario> usuarios;
+// Método para obtener usuarios en un puntero a lista enlazada según el recorrido
+NodoUsuario* ListaUsuarios::obtenerUsuariosEnOrden(const std::string& tipoOrden) {
+    cabeza = nullptr; // Reiniciar la lista enlazada
+    NodoUsuario* lista = nullptr;
 
     if (tipoOrden == "PreOrder") {
-        preOrder(raiz, usuarios);
+        preOrder(raiz, lista);
     } else if (tipoOrden == "InOrder") {
-        inOrder(raiz, usuarios);
+        inOrder(raiz, lista);
     } else if (tipoOrden == "PostOrder") {
-        postOrder(raiz, usuarios);
+        postOrder(raiz, lista);
     }
 
-    return usuarios;
+    return cabeza;
 }
 
 void ListaUsuarios::generateDot(const std::string& filename) const {

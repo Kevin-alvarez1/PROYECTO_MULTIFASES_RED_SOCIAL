@@ -8,13 +8,22 @@
 #include <iostream>
 #include <fstream>
 #include "json.hpp"
-#include <vector>
+
+
+class NodoUsuario {
+public:
+    Usuario usuario;
+    NodoUsuario* siguiente;
+
+    NodoUsuario(const Usuario& user) : usuario(user), siguiente(nullptr) {}
+};
 
 class ListaUsuarios {
 private:
 
     NodoAVL* raiz;
     NodoAVL* balancear(NodoAVL* nodo);
+    NodoUsuario* cabeza;
 
     int altura(NodoAVL* nodo) const;
     int balance(NodoAVL* nodo) const;
@@ -28,6 +37,7 @@ private:
     int obtenerAltura(NodoAVL* nodo);
     int obtenerBalance(NodoAVL* nodo);
     void generateDotRec(NodoAVL* nodo, std::ofstream& file) const;
+    void agregarUsuarioEnLista(Usuario usuario);
 
 public:
     ListaUsuarios();
@@ -40,12 +50,16 @@ public:
     bool buscarUsuarioPorCorreoyContrasena(const std::string& correo, const std::string& contrasena) const;
     bool usuarioDuplicado(const std::string &correo) const;
     Usuario mostrarDatosPorCorreo(const std::string& correo) const;
-    void preOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const;
-    void inOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const;
-    void postOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const;
-    std::vector<Usuario> obtenerUsuariosEnOrden(const std::string& tipoOrden) const;
-    void generateDot(const std::string& filename) const;
+    void preOrder(NodoAVL* nodo, NodoUsuario*& lista);
+    void inOrder(NodoAVL* nodo, NodoUsuario*& lista);
+    void postOrder(NodoAVL* nodo, NodoUsuario*& lista);
+    void generarLista(NodoAVL* nodo, NodoUsuario*& lista, const std::string& tipoOrden);
 
+    NodoUsuario* obtenerUsuariosEnOrden(const std::string& tipoOrden);
+    void generateDot(const std::string& filename) const;
+    NodoUsuario* obtenerPrimero() {
+        return cabeza;
+    }
 };
 
 #endif // LISTAUSUARIOS_H

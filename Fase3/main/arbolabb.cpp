@@ -130,42 +130,83 @@ NodoABB* ArbolABB::buscarNodo(NodoABB* nodo, const std::string& fecha) const {
     }
 }
 
-void ArbolABB::recorrerPreOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const {
+void ArbolABB::agregarPublicacion(Publicacion**& publicaciones, int& cantidad, int& capacidad, const Publicacion& publicacion) const {
+    if (cantidad >= capacidad) {
+        // Duplicar la capacidad
+        capacidad *= 2;
+        Publicacion** nuevoArreglo = new Publicacion*[capacidad];
+        for (int i = 0; i < cantidad; ++i) {
+            nuevoArreglo[i] = publicaciones[i];
+        }
+        delete[] publicaciones; // Liberar el arreglo anterior
+        publicaciones = nuevoArreglo; // Asignar el nuevo arreglo
+    }
+    // Crear una copia de la publicación
+    publicaciones[cantidad] = new Publicacion(publicacion); // Asumiendo que Publicacion tiene un constructor de copia
+    cantidad++;
+}
+
+void ArbolABB::recorrerPreOrder(NodoABB* nodo, Publicacion**& publicaciones, int& cantidad, int& capacidad) const {
     if (nodo) {
-        publicaciones.insert(publicaciones.end(), nodo->publicaciones.begin(), nodo->publicaciones.end());
-        recorrerPreOrder(nodo->izquierda, publicaciones);
-        recorrerPreOrder(nodo->derecha, publicaciones);
+        // Agregar todas las publicaciones del nodo
+        for (const auto& pub : nodo->publicaciones) {
+            agregarPublicacion(publicaciones, cantidad, capacidad, pub);
+        }
+        recorrerPreOrder(nodo->izquierda, publicaciones, cantidad, capacidad);
+        recorrerPreOrder(nodo->derecha, publicaciones, cantidad, capacidad);
     }
 }
 
-void ArbolABB::recorrerInOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const {
+void ArbolABB::recorrerInOrder(NodoABB* nodo, Publicacion**& publicaciones, int& cantidad, int& capacidad) const {
     if (nodo) {
-        recorrerInOrder(nodo->izquierda, publicaciones);
-        publicaciones.insert(publicaciones.end(), nodo->publicaciones.begin(), nodo->publicaciones.end());
-        recorrerInOrder(nodo->derecha, publicaciones);
+        recorrerInOrder(nodo->izquierda, publicaciones, cantidad, capacidad);
+        // Agregar todas las publicaciones del nodo
+        for (const auto& pub : nodo->publicaciones) {
+            agregarPublicacion(publicaciones, cantidad, capacidad, pub);
+        }
+        recorrerInOrder(nodo->derecha, publicaciones, cantidad, capacidad);
     }
 }
 
-void ArbolABB::recorrerPostOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const {
+void ArbolABB::recorrerPostOrder(NodoABB* nodo, Publicacion**& publicaciones, int& cantidad, int& capacidad) const {
     if (nodo) {
-        recorrerPostOrder(nodo->izquierda, publicaciones);
-        recorrerPostOrder(nodo->derecha, publicaciones);
-        publicaciones.insert(publicaciones.end(), nodo->publicaciones.begin(), nodo->publicaciones.end());
+        recorrerPostOrder(nodo->izquierda, publicaciones, cantidad, capacidad);
+        recorrerPostOrder(nodo->derecha, publicaciones, cantidad, capacidad);
+        // Agregar todas las publicaciones del nodo
+        for (const auto& pub : nodo->publicaciones) {
+            agregarPublicacion(publicaciones, cantidad, capacidad, pub);
+        }
     }
 }
-
 
 // Métodos públicos que llaman a los métodos privados
-void ArbolABB::recorrerPreOrder(std::vector<Publicacion>& publicaciones) const {
-    recorrerPreOrder(raiz, publicaciones);
+void ArbolABB::recorrerPreOrder(Publicacion**& publicaciones, int& cantidad, int& capacidad) const {
+    cantidad = 0; // Inicializar cantidad
+    capacidad = 10; // Capacidad inicial
+    publicaciones = new Publicacion*[capacidad]; // Inicializar el arreglo
+    recorrerPreOrder(raiz, publicaciones, cantidad, capacidad);
 }
 
-void ArbolABB::recorrerInOrder(std::vector<Publicacion>& publicaciones) const {
-    recorrerInOrder(raiz, publicaciones);
+void ArbolABB::recorrerInOrder(Publicacion**& publicaciones, int& cantidad, int& capacidad) const {
+    cantidad = 0; // Inicializar cantidad
+    capacidad = 10; // Capacidad inicial
+    publicaciones = new Publicacion*[capacidad]; // Inicializar el arreglo
+    recorrerInOrder(raiz, publicaciones, cantidad, capacidad);
 }
 
-void ArbolABB::recorrerPostOrder(std::vector<Publicacion>& publicaciones) const {
-    recorrerPostOrder(raiz, publicaciones);
+void ArbolABB::recorrerPostOrder(Publicacion**& publicaciones, int& cantidad, int& capacidad) const {
+    cantidad = 0; // Inicializar cantidad
+    capacidad = 10; // Capacidad inicial
+    publicaciones = new Publicacion*[capacidad]; // Inicializar el arreglo
+    recorrerPostOrder(raiz, publicaciones, cantidad, capacidad);
+}
+
+// Liberar la memoria utilizada
+void ArbolABB::liberarPublicaciones(Publicacion** publicaciones, int cantidad) const {
+    for (int i = 0; i < cantidad; ++i) {
+        delete publicaciones[i]; // Liberar cada Publicacion
+    }
+    delete[] publicaciones; // Liberar el arreglo
 }
 
 

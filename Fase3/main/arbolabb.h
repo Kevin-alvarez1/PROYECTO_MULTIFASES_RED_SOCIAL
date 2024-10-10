@@ -4,7 +4,6 @@
 #include <string>
 #include <list>
 #include "Publicacion.h"
-#include <vector>
 #include <sstream>
 #include <iomanip>
 
@@ -37,9 +36,14 @@ public:
     void postOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const;
     std::string inOrder(NodoABB* nodo) const;
     void mostrarPublicacionesCronologicas(const std::string& orden) const;
-    void recorrerPreOrder(std::vector<Publicacion>& publicaciones) const;
-    void recorrerInOrder(std::vector<Publicacion>& publicaciones) const;
-    void recorrerPostOrder(std::vector<Publicacion>& publicaciones) const;
+    void recorrerPreOrder(NodoABB* nodo, Publicacion**& publicaciones, int& cantidad, int& capacidad) const;
+    void recorrerInOrder(NodoABB* nodo, Publicacion**& publicaciones, int& cantidad, int& capacidad) const;
+    void recorrerPostOrder(NodoABB* nodo, Publicacion**& publicaciones, int& cantidad, int& capacidad) const;
+    void liberarPublicaciones(Publicacion** publicaciones, int cantidad) const; // Liberar la memoria de las publicaciones
+    void recorrerPreOrder(Publicacion**& publicaciones, int& cantidad, int& capacidad) const;
+    void recorrerInOrder(Publicacion**& publicaciones, int& cantidad, int& capacidad) const;
+    void recorrerPostOrder(Publicacion**& publicaciones, int& cantidad, int& capacidad) const;
+
     NodoABB* getRaiz() const {
         return raiz;
     }
@@ -58,9 +62,9 @@ private:
     NodoABB* buscarMinimo(NodoABB* nodo) const;
     std::string convertirFecha(const std::string& fechaStr) const;
     void generateDot(NodoABB* nodo, std::ofstream& file) const;
-    void recorrerPreOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const;
-    void recorrerInOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const;
-    void recorrerPostOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const;
+
+    void agregarPublicacion(Publicacion**& publicaciones, int& cantidad, int& capacidad, const Publicacion& publicacion) const;
+
 };
 
 #endif // ARBOLABB_H

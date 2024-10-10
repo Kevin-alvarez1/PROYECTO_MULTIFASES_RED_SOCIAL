@@ -479,21 +479,23 @@ void Usuarios::mostrarPublicacionesFiltradasPorFecha(const QString& fechaSelecci
         publicacionesFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
         // Obtener todas las publicaciones y amigos
-        std::vector<Publicacion> publicaciones_arbol = listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, matrizDispersa, arbolABB, "InOrder");
-        std::cout << "Total de publicaciones encontradas: " << publicaciones_arbol.size() << std::endl;
+        ListaPublicaciones publicaciones_arbol = listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, matrizDispersa, arbolABB, "InOrder");
+
         // Llenar el ComboBox con las fechas disponibles en el BST
         llenarComboBoxFechas_BST();
-        std::vector<Publicacion> publicacionesFiltradas;
+
+        ListaPublicaciones publicacionesFiltradas;
 
         // Filtrar publicaciones por fecha seleccionada
         if (fechaSeleccionada != "Todos") {
-            for (const auto& publicacion : publicaciones_arbol) {
+            for (size_t i = 0; i < publicaciones_arbol.size(); ++i) {
+                const Publicacion& publicacion = publicaciones_arbol[i];
                 if (QString::fromStdString(publicacion.getFecha()) == fechaSeleccionada) {
-                    publicacionesFiltradas.push_back(publicacion);
+                    publicacionesFiltradas.agregarPublicacion(publicacion);
                 }
             }
         } else {
-            publicacionesFiltradas = publicaciones_arbol; // Si se selecciona "Todos"
+            publicacionesFiltradas.copiarDesde(publicaciones_arbol); // Si se selecciona "Todos"
         }
 
         // Mostrar publicaciones filtradas
@@ -708,20 +710,23 @@ void Usuarios::on_aplicar_orden_publis_boton_clicked()
         layout->setContentsMargins(10, 10, 10, 10);
         publicacionesFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-        std::vector<Publicacion> publicaciones_arbol = listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, matrizDispersa, arbolABB, criterioOrden);
+        ListaPublicaciones publicaciones_arbol = listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, matrizDispersa, arbolABB, criterioOrden);
+
         std::cout << "Total de publicaciones encontradas: " << publicaciones_arbol.size() << std::endl;
 
         connect(ui->fecha_filtro_publis_boton, &QPushButton::clicked, this, &Usuarios::llenarComboBoxFechas);
         llenarComboBoxFechas_BST();
         QString fechaSeleccionada = ui->fechas_filtro_publicaciones_comboBox->currentText();
-        std::vector<Publicacion> publicacionesFiltradas;
+
+        ListaPublicaciones publicacionesFiltradas;
 
         if (fechaSeleccionada == "Todos") {
-            publicacionesFiltradas = publicaciones_arbol;
+            publicacionesFiltradas.copiarDesde(publicaciones_arbol);
         } else {
-            for (const auto& publicacion : publicaciones_arbol) {
+            for (size_t i = 0; i < publicaciones_arbol.size(); ++i) {
+                const Publicacion& publicacion = publicaciones_arbol[i];
                 if (QString::fromStdString(publicacion.getFecha()) == fechaSeleccionada) {
-                    publicacionesFiltradas.push_back(publicacion);
+                    publicacionesFiltradas.agregarPublicacion(publicacion);
                 }
             }
         }
@@ -950,60 +955,96 @@ void Usuarios::mostrarComentariosDePublicacion(const Publicacion& publicacion) {
 
 void Usuarios::llenarComboBoxFechas()
 {
-    std::set<QString> fechasUnicas;
-    std::vector<Publicacion> publicaciones = listadoblepublicacion->mostrarPublicacionesYAmigos(correoActualUsuario_, matrizDispersa, arbolABB, "InOrder");
+    ListaPublicaciones publicaciones = listadoblepublicacion->mostrarPublicacionesYAmigos(correoActualUsuario_, matrizDispersa, arbolABB, "InOrder");
 
-    for (const auto& publicacion : publicaciones) {
-        fechasUnicas.insert(QString::fromStdString(publicacion.getFecha()));
+    QString fechasUnicas[100];  // Ajusta el tamaño según sea necesario
+    int contador = 0;
+
+    // Recorre la lista de publicaciones
+    for (size_t i = 0; i < publicaciones.size(); ++i) {
+        const Publicacion& publicacion = publicaciones[i];
+        QString fecha = QString::fromStdString(publicacion.getFecha());
+
+        // Verificamos si la fecha ya está en el arreglo
+        bool existe = false;
+        for (int j = 0; j < contador; ++j) {
+            if (fechasUnicas[j] == fecha) {
+                existe = true;
+                break;
+            }
+        }
+
+        // Si no existe, la agregamos
+        if (!existe) {
+            fechasUnicas[contador++] = fecha;
+        }
     }
-    fechasUnicas.insert("Todos");
 
+    // Agregar "Todos" al arreglo de fechas
+    fechasUnicas[contador++] = "Todos";
+
+    // Limpiar el ComboBox antes de llenarlo
     ui->fechas_filtro_publicaciones_comboBox->clear();
-    for (const auto& fecha : fechasUnicas) {
-        ui->fechas_filtro_publicaciones_comboBox->addItem(fecha);
+
+    // Agregar las fechas al ComboBox
+    for (int i = 0; i < contador; ++i) {
+        ui->fechas_filtro_publicaciones_comboBox->addItem(fechasUnicas[i]);
     }
 }
 
 void Usuarios::llenarComboBoxFechas_BST()
 {
-    std::set<QString> fechasUnicas;
-    std::vector<Publicacion> publicaciones = listadoblepublicacion->mostrarPublicacionesYAmigos(correoActualUsuario_, matrizDispersa, arbolABB, "InOrder");
+    ListaPublicaciones publicaciones = listadoblepublicacion->mostrarPublicacionesYAmigos(correoActualUsuario_, matrizDispersa, arbolABB, "InOrder");
 
-    for (const auto& publicacion : publicaciones) {
-        // Obtener la fecha de la publicación y convertirla al formato año/mes/día
+    // Estructura para almacenar fechas únicas (puedes definirla como un arreglo si es necesario)
+    QString fechasUnicas[100];  // Ajusta el tamaño según sea necesario
+    int contador = 0;
+
+    // Recorre la lista de publicaciones
+    for (size_t i = 0; i < publicaciones.size(); ++i) {
+        const Publicacion& publicacion = publicaciones[i];
         std::string fechaOriginal = publicacion.getFecha();
 
-        // Suponiendo que la fecha original está en formato "día/mes/año", lo convertimos a "año/mes/día"
-        QString fechaFormateada;
+        // Convertir la fecha original de "día/mes/año" a "año/mes/día"
         QStringList partesFecha = QString::fromStdString(fechaOriginal).split('/');
 
+        QString fechaFormateada;
         if (partesFecha.size() == 3) {
             QString dia = partesFecha[0];
             QString mes = partesFecha[1];
             QString anio = partesFecha[2];
-
-            // Convertimos al formato año/mes/día
             fechaFormateada = anio + "/" + mes + "/" + dia;
         } else {
-            // Si el formato no es válido, usamos la fecha original sin cambios
-            fechaFormateada = QString::fromStdString(fechaOriginal);
+            fechaFormateada = QString::fromStdString(fechaOriginal);  // Fecha original si no es válida
         }
 
-        // Insertamos la fecha formateada en el set de fechas únicas
-        fechasUnicas.insert(fechaFormateada);
+        // Verificamos si la fecha ya está en el arreglo
+        bool existe = false;
+        for (int j = 0; j < contador; ++j) {
+            if (fechasUnicas[j] == fechaFormateada) {
+                existe = true;
+                break;
+            }
+        }
+
+        // Si no existe, la agregamos
+        if (!existe) {
+            fechasUnicas[contador++] = fechaFormateada;
+        }
     }
 
-    // Agregamos la opción para "Todos"
-    fechasUnicas.insert("Todos");
+    // Agregar "Todos" al arreglo de fechas
+    fechasUnicas[contador++] = "Todos";
 
     // Limpiar el ComboBox antes de llenarlo
     ui->bst_mostrar_publi_comboBox->clear();
 
     // Agregar las fechas al ComboBox
-    for (const auto& fecha : fechasUnicas) {
-        ui->bst_mostrar_publi_comboBox->addItem(fecha);
+    for (int i = 0; i < contador; ++i) {
+        ui->bst_mostrar_publi_comboBox->addItem(fechasUnicas[i]);
     }
 }
+
 
 void Usuarios::on_generar_bst_reporte_boton_clicked() {
 

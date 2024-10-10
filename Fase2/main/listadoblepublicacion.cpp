@@ -166,16 +166,15 @@ void ListaDoblePublicacion::crearPNG(const std::string &dotFilename, const std::
     }
 }
 
-std::vector<Publicacion> ListaDoblePublicacion::mostrarPublicacionesYAmigos(
+ListaPublicaciones ListaDoblePublicacion::mostrarPublicacionesYAmigos(
     const std::string &correo,
     const MatrizDispersa &matriz,
     ArbolABB &arbol,
     const std::string &orden) {
 
-    std::vector<Publicacion> publicaciones_arbol; // Vector para almacenar las publicaciones
-    publicaciones_arbol.clear();
+    ListaPublicaciones publicaciones_arbol; // Lista para almacenar las publicaciones
     try {
-        arbol = ArbolABB();
+        arbol = ArbolABB(); // Reiniciar el árbol para una nueva inserción
 
         // Obtener la lista de amigos del usuario
         std::vector<std::string> amigos = matriz.obtenerAmigos(correo);
@@ -192,17 +191,11 @@ std::vector<Publicacion> ListaDoblePublicacion::mostrarPublicacionesYAmigos(
 
         // Almacenar las publicaciones en el orden deseado
         if (orden == "PreOrder") {
-            std::vector<Publicacion> publicaciones_temp;
-            arbol.recorrerPreOrder(publicaciones_temp);
-            publicaciones_arbol.swap(publicaciones_temp);
+            arbol.recorrerPreOrder(publicaciones_arbol);
         } else if (orden == "InOrder") {
-            std::vector<Publicacion> publicaciones_temp;
-            arbol.recorrerInOrder(publicaciones_temp);
-            publicaciones_arbol.swap(publicaciones_temp);
+            arbol.recorrerInOrder(publicaciones_arbol);
         } else if (orden == "PostOrder") {
-            std::vector<Publicacion> publicaciones_temp;
-            arbol.recorrerPostOrder(publicaciones_temp);
-            publicaciones_arbol.swap(publicaciones_temp);
+            arbol.recorrerPostOrder(publicaciones_arbol);
         } else {
             std::cerr << "Orden no válido: " << orden << std::endl;
         }
@@ -210,8 +203,9 @@ std::vector<Publicacion> ListaDoblePublicacion::mostrarPublicacionesYAmigos(
         std::cerr << "Excepción capturada: " << e.what() << std::endl;
     }
 
-    return publicaciones_arbol;
+    return publicaciones_arbol; // Devolver la lista de publicaciones
 }
+
 
 void ListaDoblePublicacion::mostrarPublicacionesPorCorreo(const std::string& correo) const
 {

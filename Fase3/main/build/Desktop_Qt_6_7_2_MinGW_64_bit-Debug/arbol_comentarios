@@ -1,4 +1,8 @@
 digraph G {
 node [shape=record];
-node0 [label="{<f4> 13/08/2024 09:34 | <f5> 13/08/2024 09:33 | <f6> 13/08/2024 09:32 | <f7> 13/08/2024 09:31 | <f8> 13/08/2024 09:30}"];
+node0 [label="{}"];
+node1 [label="{<f8> 12/12/2292 12:12}"];
+node0 -> node1;
+node2 [label="{}"];
+node0 -> node2;
 }

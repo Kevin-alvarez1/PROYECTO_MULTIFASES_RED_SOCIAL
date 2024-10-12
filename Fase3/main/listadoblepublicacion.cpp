@@ -172,8 +172,10 @@ void ListaDoblePublicacion::mostrarPublicacionesYAmigos(
     ArbolABB &arbol,
     const std::string &orden) {
 
-    std::vector<Publicacion> publicaciones_arbol; // Vector para almacenar las publicaciones
-    publicaciones_arbol.clear();
+    Publicacion** publicaciones_arbol = nullptr;  // Arreglo dinámico para almacenar las publicaciones
+    int cantidad = 0;  // Número de publicaciones almacenadas
+    int capacidad = 10;  // Capacidad inicial del arreglo
+
     try {
         arbol = ArbolABB();
 
@@ -190,34 +192,32 @@ void ListaDoblePublicacion::mostrarPublicacionesYAmigos(
             actual = actual->siguiente;
         }
 
+        // Reservar espacio para el arreglo de publicaciones
+        publicaciones_arbol = new Publicacion*[capacidad];
+
         // Almacenar las publicaciones en el orden deseado
         if (orden == "PreOrder") {
-            int cantidad = 0; // Inicializar cantidad
-            int capacidad = 10; // Capacidad inicial
-            arbolABB.recorrerPreOrder(publicaciones_arbol, cantidad, capacidad); // Llamada al método
-            // Aquí puedes trabajar con publicaciones_arbol
+            arbol.recorrerPreOrder(arbol.getRaiz(), publicaciones_arbol, cantidad, capacidad);
 
         } else if (orden == "InOrder") {
-            int cantidad = 0; // Inicializar cantidad
-            int capacidad = 10; // Capacidad inicial
-            arbolABB.recorrerInOrder(publicaciones_arbol, cantidad, capacidad); // Llamada al método
-            // Aquí puedes trabajar con publicaciones_arbol
+            arbol.recorrerInOrder(arbol.getRaiz(), publicaciones_arbol, cantidad, capacidad);
 
         } else if (orden == "PostOrder") {
-            int cantidad = 0; // Inicializar cantidad
-            int capacidad = 10; // Capacidad inicial
-            arbolABB.recorrerPostOrder(publicaciones_arbol, cantidad, capacidad); // Llamada al método
+            arbol.recorrerPostOrder(arbol.getRaiz(), publicaciones_arbol, cantidad, capacidad);
 
         } else {
             std::cerr << "Orden no válido: " << orden << std::endl;
         }
 
+
     } catch (const std::exception &e) {
         std::cerr << "Excepción capturada: " << e.what() << std::endl;
     }
 
-    return publicaciones_arbol;
+    // Liberar la memoria del arreglo dinámico
+    delete[] publicaciones_arbol;
 }
+
 
 void ListaDoblePublicacion::mostrarPublicacionesPorCorreo(const std::string& correo) const
 {

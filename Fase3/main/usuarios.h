@@ -49,7 +49,7 @@ private slots:
     void llenarComboBoxFechas();
     void llenarComboBoxFechas_BST();
     void mostrarComentariosDePublicacion(const Publicacion& publicacion);
-
+    std::string convertirFormatoFecha(const QString& fechaSeleccionada) ;
 private:
     Ui::Usuarios *ui;
     Login *login;

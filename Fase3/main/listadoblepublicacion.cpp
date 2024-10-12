@@ -172,13 +172,9 @@ void ListaDoblePublicacion::mostrarPublicacionesYAmigos(
     ArbolABB &arbol,
     const std::string &orden) {
 
-    Publicacion** publicaciones_arbol = nullptr;  // Arreglo dinámico para almacenar las publicaciones
-    int cantidad = 0;  // Número de publicaciones almacenadas
-    int capacidad = 10;  // Capacidad inicial del arreglo
-
     try {
-        arbol = ArbolABB();
 
+        ListaPublicaciones publicaciones;
         // Obtener la lista de amigos del usuario
         std::vector<std::string> amigos = matriz.obtenerAmigos(correo);
         amigos.push_back(correo); // Agregar el correo del usuario a la lista de amigos
@@ -192,32 +188,22 @@ void ListaDoblePublicacion::mostrarPublicacionesYAmigos(
             actual = actual->siguiente;
         }
 
-        // Reservar espacio para el arreglo de publicaciones
-        publicaciones_arbol = new Publicacion*[capacidad];
 
-        // Almacenar las publicaciones en el orden deseado
+        // Mostrar las publicaciones en el orden deseado
         if (orden == "PreOrder") {
-            arbol.recorrerPreOrder(arbol.getRaiz(), publicaciones_arbol, cantidad, capacidad);
-
+            arbol.recorrerPreOrder(publicaciones);
         } else if (orden == "InOrder") {
-            arbol.recorrerInOrder(arbol.getRaiz(), publicaciones_arbol, cantidad, capacidad);
-
+            arbol.recorrerInOrder(publicaciones);
         } else if (orden == "PostOrder") {
-            arbol.recorrerPostOrder(arbol.getRaiz(), publicaciones_arbol, cantidad, capacidad);
-
+            arbol.recorrerPostOrder (publicaciones);
         } else {
             std::cerr << "Orden no válido: " << orden << std::endl;
         }
 
-
     } catch (const std::exception &e) {
         std::cerr << "Excepción capturada: " << e.what() << std::endl;
     }
-
-    // Liberar la memoria del arreglo dinámico
-    delete[] publicaciones_arbol;
 }
-
 
 void ListaDoblePublicacion::mostrarPublicacionesPorCorreo(const std::string& correo) const
 {

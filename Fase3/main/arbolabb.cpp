@@ -161,30 +161,59 @@ void ArbolABB::agregarPublicacion(Publicacion**& publicaciones, int& cantidad, i
     cantidad++;
 }
 
-void ArbolABB::recorrerPreOrder(NodoABB* nodo, Publicacion**& publicaciones, int& cantidad, int& capacidad) const {
+// Recorrido en preorden que agrega publicaciones a la lista
+void ArbolABB::recorrerPreOrder(NodoABB* nodo, ListaPublicaciones& publicaciones) const {
     if (nodo) {
-        // Agregar todas las publicaciones del nodo
-        NodoPublicacion* actual = nodo->publicaciones; // Empezar en el primer nodo de la lista
-        while (actual) {
-            agregarPublicacion(publicaciones, cantidad, capacidad, actual->publicacion);
-            actual = actual->siguiente; // Mover al siguiente nodo
+        // Agregar las publicaciones del nodo actual a la lista
+        for (NodoPublicacion* actual = nodo->publicaciones; actual; actual = actual->siguiente) {
+            publicaciones.agregarPublicacion(actual->publicacion);
         }
-        recorrerPreOrder(nodo->izquierda, publicaciones, cantidad, capacidad);
-        recorrerPreOrder(nodo->derecha, publicaciones, cantidad, capacidad);
+        // Recorrer el subárbol izquierdo
+        recorrerPreOrder(nodo->izquierda, publicaciones);
+        // Recorrer el subárbol derecho
+        recorrerPreOrder(nodo->derecha, publicaciones);
     }
 }
 
-void ArbolABB::recorrerInOrder(NodoABB* nodo, Publicacion**& publicaciones, int& cantidad, int& capacidad) const {
+// Recorrido en orden que agrega publicaciones a la lista
+void ArbolABB::recorrerInOrder(NodoABB* nodo, ListaPublicaciones& publicaciones) const {
     if (nodo) {
-        recorrerInOrder(nodo->izquierda, publicaciones, cantidad, capacidad);
-        // Agregar todas las publicaciones del nodo
-        NodoPublicacion* actual = nodo->publicaciones; // Empezar en el primer nodo de la lista
-        while (actual) {
-            agregarPublicacion(publicaciones, cantidad, capacidad, actual->publicacion);
-            actual = actual->siguiente; // Mover al siguiente nodo
+        // Recorrer el subárbol izquierdo
+        recorrerInOrder(nodo->izquierda, publicaciones);
+        // Agregar las publicaciones del nodo actual a la lista
+        for (NodoPublicacion* actual = nodo->publicaciones; actual; actual = actual->siguiente) {
+            publicaciones.agregarPublicacion(actual->publicacion);
         }
-        recorrerInOrder(nodo->derecha, publicaciones, cantidad, capacidad);
+        // Recorrer el subárbol derecho
+        recorrerInOrder(nodo->derecha, publicaciones);
     }
+}
+
+// Recorrido postorden que agrega publicaciones a la lista
+void ArbolABB::recorrerPostOrder(NodoABB* nodo, ListaPublicaciones& publicaciones) const {
+    if (nodo) {
+        // Recorrer el subárbol izquierdo
+        recorrerPostOrder(nodo->izquierda, publicaciones);
+        // Recorrer el subárbol derecho
+        recorrerPostOrder(nodo->derecha, publicaciones);
+        // Agregar las publicaciones del nodo actual a la lista
+        for (NodoPublicacion* actual = nodo->publicaciones; actual; actual = actual->siguiente) {
+            publicaciones.agregarPublicacion(actual->publicacion);
+        }
+    }
+}
+
+// Métodos públicos que llaman a los recorridos con la lista de publicaciones
+void ArbolABB::recorrerPreOrder(ListaPublicaciones& publicaciones) const {
+    recorrerPreOrder(raiz, publicaciones);
+}
+
+void ArbolABB::recorrerInOrder(ListaPublicaciones& publicaciones) const {
+    recorrerInOrder(raiz, publicaciones);
+}
+
+void ArbolABB::recorrerPostOrder(ListaPublicaciones& publicaciones) const {
+    recorrerPostOrder(raiz, publicaciones);
 }
 
 void ArbolABB::recorrerInOrder(NodoABB* nodo, ListaFechas& fechas) const {
@@ -200,41 +229,6 @@ void ArbolABB::recorrerInOrder(NodoABB* nodo, ListaFechas& fechas) const {
     }
 }
 
-
-void ArbolABB::recorrerPostOrder(NodoABB* nodo, Publicacion**& publicaciones, int& cantidad, int& capacidad) const {
-    if (nodo) {
-        recorrerPostOrder(nodo->izquierda, publicaciones, cantidad, capacidad);
-        recorrerPostOrder(nodo->derecha, publicaciones, cantidad, capacidad);
-        // Agregar todas las publicaciones del nodo
-        NodoPublicacion* actual = nodo->publicaciones; // Empezar en el primer nodo de la lista
-        while (actual) {
-            agregarPublicacion(publicaciones, cantidad, capacidad, actual->publicacion);
-            actual = actual->siguiente; // Mover al siguiente nodo
-        }
-    }
-}
-
-// Métodos públicos que llaman a los métodos privados
-void ArbolABB::recorrerPreOrder(Publicacion**& publicaciones, int& cantidad, int& capacidad) const {
-    cantidad = 0; // Inicializar cantidad
-    capacidad = 10; // Capacidad inicial
-    publicaciones = new Publicacion*[capacidad]; // Inicializar el arreglo
-    recorrerPreOrder(raiz, publicaciones, cantidad, capacidad);
-}
-
-void ArbolABB::recorrerInOrder(Publicacion**& publicaciones, int& cantidad, int& capacidad) const {
-    cantidad = 0; // Inicializar cantidad
-    capacidad = 10; // Capacidad inicial
-    publicaciones = new Publicacion*[capacidad]; // Inicializar el arreglo
-    recorrerInOrder(raiz, publicaciones, cantidad, capacidad);
-}
-
-void ArbolABB::recorrerPostOrder(Publicacion**& publicaciones, int& cantidad, int& capacidad) const {
-    cantidad = 0; // Inicializar cantidad
-    capacidad = 10; // Capacidad inicial
-    publicaciones = new Publicacion*[capacidad]; // Inicializar el arreglo
-    recorrerPostOrder(raiz, publicaciones, cantidad, capacidad);
-}
 
 // Liberar la memoria utilizada
 void ArbolABB::liberarPublicaciones(Publicacion** publicaciones, int cantidad) const {

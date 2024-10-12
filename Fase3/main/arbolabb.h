@@ -2,7 +2,6 @@
 #define ARBOLABB_H
 
 #include <string>
-#include <list>
 #include "Publicacion.h"
 #include <sstream>
 #include <iomanip>
@@ -18,8 +17,30 @@ public:
 class ListaPublicaciones {
 public:
     NodoPublicacion* cabeza; // Puntero al primer nodo de la lista
-
+    void agregarPublicacion(const Publicacion& publicacion) {
+        NodoPublicacion* nuevoNodo = new NodoPublicacion(publicacion);
+        nuevoNodo->siguiente = cabeza;
+        cabeza = nuevoNodo;
+    }
     ListaPublicaciones() : cabeza(nullptr) {}
+
+    NodoPublicacion* getCabeza() const {
+        return cabeza;
+    }
+
+    Publicacion* obtenerPublicacion(int index) {
+        if (index < 0 || index >= contar()) { // Cambiar size() a contar()
+            return nullptr; // O lanzar una excepción.
+        }
+        NodoPublicacion* actual = cabeza;
+        for (int i = 0; i < index; ++i) {
+            if (actual != nullptr) {
+                actual = actual->siguiente;
+            }
+        }
+        return (actual != nullptr) ? &actual->publicacion : nullptr; // Retorna el puntero a la publicación
+    }
+
 
     void agregar(const Publicacion& pub) {
         NodoPublicacion* nuevoNodo = new NodoPublicacion(pub);
@@ -74,6 +95,10 @@ public:
             delete temp;
         }
     }
+
+    NodoFecha* getPrimero() {
+        return cabeza;
+    }
 };
 
 class NodoABB {
@@ -103,14 +128,17 @@ public:
     void generateDot(NodoABB* nodo, std::ofstream& file, const std::string& fechaBuscada) const;
     void graficar(const std::string& archivoImagen) const;
     std::string inOrder(NodoABB* nodo) const;
+
+
     void mostrarPublicacionesCronologicas(const std::string& orden) const;
-    void recorrerPreOrder(NodoABB* nodo, Publicacion**& publicaciones, int& cantidad, int& capacidad) const;
-    void recorrerInOrder(NodoABB* nodo, Publicacion**& publicaciones, int& cantidad, int& capacidad) const;
-    void recorrerPostOrder(NodoABB* nodo, Publicacion**& publicaciones, int& cantidad, int& capacidad) const;
     void liberarPublicaciones(Publicacion** publicaciones, int cantidad) const; // Liberar la memoria de las publicaciones
-    void recorrerPreOrder(Publicacion**& publicaciones, int& cantidad, int& capacidad) const;
-    void recorrerInOrder(Publicacion**& publicaciones, int& cantidad, int& capacidad) const;
-    void recorrerPostOrder(Publicacion**& publicaciones, int& cantidad, int& capacidad) const;
+
+
+
+    void recorrerPreOrder(ListaPublicaciones& publicaciones) const;
+    void recorrerInOrder(ListaPublicaciones& publicaciones) const;
+    void recorrerPostOrder(ListaPublicaciones& publicaciones) const ;
+    void recorrerInOrder(NodoABB* nodo, ListaFechas& fechas) const;
 
     NodoABB* getRaiz() const {
         return raiz;
@@ -124,7 +152,6 @@ public:
     void obtenerTodasLasPublicaciones(ListaPublicaciones& publicaciones) {
         obtenerTodasLasPublicacionesRecursivo(raiz, publicaciones);
     }
-    void recorrerInOrder(NodoABB* nodo, ListaFechas& fechas) const;
 
 
 private:
@@ -141,6 +168,10 @@ private:
     NodoABB* buscarMinimo(NodoABB* nodo) const;
     std::string convertirFecha(const std::string& fechaStr) const;
     void generateDot(NodoABB* nodo, std::ofstream& file) const;
+
+    void recorrerPreOrder(NodoABB* nodo, ListaPublicaciones& publicaciones) const;
+    void recorrerInOrder(NodoABB* nodo, ListaPublicaciones& publicaciones) const;
+    void recorrerPostOrder(NodoABB* nodo, ListaPublicaciones& publicaciones) const;
 
     void agregarPublicacion(Publicacion**& publicaciones, int& cantidad, int& capacidad, const Publicacion& publicacion) const;
     int contarNodos(NodoABB* nodo) {

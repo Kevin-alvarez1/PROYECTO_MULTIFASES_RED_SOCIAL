@@ -9,8 +9,6 @@ extern ArbolBComentario arbolComentarios_;
 class Publicacion {
 public:
     // Constructor
-    Publicacion() : id_(0), correo_(""), contenido_(""), fecha_(""), hora_("") {}
-
     Publicacion(int id, const std::string& correo, const std::string& contenido, const std::string& fecha, const std::string& hora);
 
     // Destructor

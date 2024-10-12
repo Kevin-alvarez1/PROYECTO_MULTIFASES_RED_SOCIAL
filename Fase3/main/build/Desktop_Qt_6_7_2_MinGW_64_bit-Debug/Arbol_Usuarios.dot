@@ -3,9 +3,8 @@ digraph AVLTree {
     "jm@example.com" -> "cg@example.com";
     "jm@example.com" -> "lr@example.com";
     "cg@example.com" -> "ah@example.com";
-    "cg@example.com" -> "f2@gmail.com";
-    "f2@gmail.com" -> "et@example.com";
-    "f2@gmail.com" -> "jg@example.com";
+    "cg@example.com" -> "jg@example.com";
+    "jg@example.com" -> "et@example.com";
     "lr@example.com" -> "lp@example.com";
     "lr@example.com" -> "mr@example.com";
     "mr@example.com" -> "ml@example.com";

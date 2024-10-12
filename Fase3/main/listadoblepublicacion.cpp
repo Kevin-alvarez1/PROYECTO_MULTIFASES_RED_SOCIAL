@@ -166,15 +166,17 @@ void ListaDoblePublicacion::crearPNG(const std::string &dotFilename, const std::
     }
 }
 
-void ListaDoblePublicacion::mostrarPublicacionesYAmigos(
+std::vector<Publicacion> ListaDoblePublicacion::mostrarPublicacionesYAmigos(
     const std::string &correo,
     const MatrizDispersa &matriz,
     ArbolABB &arbol,
     const std::string &orden) {
 
+    std::vector<Publicacion> publicaciones_arbol; // Vector para almacenar las publicaciones
+    publicaciones_arbol.clear();
     try {
+        arbol = ArbolABB();
 
-        ListaPublicaciones publicaciones;
         // Obtener la lista de amigos del usuario
         std::vector<std::string> amigos = matriz.obtenerAmigos(correo);
         amigos.push_back(correo); // Agregar el correo del usuario a la lista de amigos
@@ -188,21 +190,27 @@ void ListaDoblePublicacion::mostrarPublicacionesYAmigos(
             actual = actual->siguiente;
         }
 
-
-        // Mostrar las publicaciones en el orden deseado
+        // Almacenar las publicaciones en el orden deseado
         if (orden == "PreOrder") {
-            arbol.recorrerPreOrder(publicaciones);
+            std::vector<Publicacion> publicaciones_temp;
+            arbol.recorrerPreOrder(publicaciones_temp);
+            publicaciones_arbol.swap(publicaciones_temp);
         } else if (orden == "InOrder") {
-            arbol.recorrerInOrder(publicaciones);
+            std::vector<Publicacion> publicaciones_temp;
+            arbol.recorrerInOrder(publicaciones_temp);
+            publicaciones_arbol.swap(publicaciones_temp);
         } else if (orden == "PostOrder") {
-            arbol.recorrerPostOrder (publicaciones);
+            std::vector<Publicacion> publicaciones_temp;
+            arbol.recorrerPostOrder(publicaciones_temp);
+            publicaciones_arbol.swap(publicaciones_temp);
         } else {
             std::cerr << "Orden no válido: " << orden << std::endl;
         }
-
     } catch (const std::exception &e) {
         std::cerr << "Excepción capturada: " << e.what() << std::endl;
     }
+
+    return publicaciones_arbol;
 }
 
 void ListaDoblePublicacion::mostrarPublicacionesPorCorreo(const std::string& correo) const

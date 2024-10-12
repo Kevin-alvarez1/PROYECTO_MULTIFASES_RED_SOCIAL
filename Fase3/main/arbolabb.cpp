@@ -12,22 +12,10 @@ ArbolABB::ArbolABB() : raiz(nullptr) {}
 ArbolABB::~ArbolABB() {
 }
 
-NodoPublicacion::NodoPublicacion(const Publicacion& pub)
-    : publicacion(pub), siguiente(nullptr) {}
-
+// En arbolabb.cpp
 NodoABB::NodoABB(int id_, const std::string& fecha_)
-    : id(id_), fecha(fecha_), publicaciones(nullptr), izquierda(nullptr), derecha(nullptr), altura(1) {}
+    : id(id_), fecha(fecha_), izquierda(nullptr), derecha(nullptr), altura(1) {} // Inicializar altura a 1
 
-NodoABB::~NodoABB() {
-    // Liberar la memoria de la lista de publicaciones si es necesario
-    NodoPublicacion* actual = publicaciones;
-    while (actual) {
-        NodoPublicacion* temp = actual;
-        actual = actual->siguiente; // Mover al siguiente nodo
-        delete temp; // Liberar la memoria del nodo actual
-    }
-    // No es necesario liberar 'izquierda' y 'derecha' aquí, ya que son gestionados por el árbol
-}
 // Insertar una publicación en el ABB
 void ArbolABB::insertarPublicacion(const Publicacion& publicacion) {
     raiz = insertarNodo(raiz, publicacion);
@@ -39,7 +27,7 @@ NodoABB* ArbolABB::insertarNodo(NodoABB* nodo, const Publicacion& publicacion) {
     if (!nodo) {
         int nuevoId = publicacion.getId();
         NodoABB* nuevoNodo = new NodoABB(nuevoId, fechaConvertida);
-        nuevoNodo->publicaciones = new NodoPublicacion(publicacion); // Crear un nuevo nodo de publicación
+        nuevoNodo->publicaciones.push_back(publicacion);
         return nuevoNodo;
     }
 
@@ -48,10 +36,7 @@ NodoABB* ArbolABB::insertarNodo(NodoABB* nodo, const Publicacion& publicacion) {
     } else if (fechaConvertida > nodo->fecha) {
         nodo->derecha = insertarNodo(nodo->derecha, publicacion);
     } else {
-        // Agregar la nueva publicación a la lista enlazada
-        NodoPublicacion* nuevoNodo = new NodoPublicacion(publicacion);
-        nuevoNodo->siguiente = nodo->publicaciones; // Insertar al inicio
-        nodo->publicaciones = nuevoNodo;
+        nodo->publicaciones.push_back(publicacion);
     }
 
     // Actualizar la altura del nodo
@@ -145,97 +130,42 @@ NodoABB* ArbolABB::buscarNodo(NodoABB* nodo, const std::string& fecha) const {
     }
 }
 
-void ArbolABB::agregarPublicacion(Publicacion**& publicaciones, int& cantidad, int& capacidad, const Publicacion& publicacion) const {
-    if (cantidad >= capacidad) {
-        // Duplicar la capacidad
-        capacidad *= 2;
-        Publicacion** nuevoArreglo = new Publicacion*[capacidad];
-        for (int i = 0; i < cantidad; ++i) {
-            nuevoArreglo[i] = publicaciones[i];
-        }
-        delete[] publicaciones; // Liberar el arreglo anterior
-        publicaciones = nuevoArreglo; // Asignar el nuevo arreglo
-    }
-    // Crear una copia de la publicación
-    publicaciones[cantidad] = new Publicacion(publicacion); // Asumiendo que Publicacion tiene un constructor de copia
-    cantidad++;
-}
-
-// Recorrido en preorden que agrega publicaciones a la lista
-void ArbolABB::recorrerPreOrder(NodoABB* nodo, ListaPublicaciones& publicaciones) const {
+void ArbolABB::recorrerPreOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const {
     if (nodo) {
-        // Agregar las publicaciones del nodo actual a la lista
-        for (NodoPublicacion* actual = nodo->publicaciones; actual; actual = actual->siguiente) {
-            publicaciones.agregarPublicacion(actual->publicacion);
-        }
-        // Recorrer el subárbol izquierdo
+        publicaciones.insert(publicaciones.end(), nodo->publicaciones.begin(), nodo->publicaciones.end());
         recorrerPreOrder(nodo->izquierda, publicaciones);
-        // Recorrer el subárbol derecho
         recorrerPreOrder(nodo->derecha, publicaciones);
     }
 }
 
-// Recorrido en orden que agrega publicaciones a la lista
-void ArbolABB::recorrerInOrder(NodoABB* nodo, ListaPublicaciones& publicaciones) const {
+void ArbolABB::recorrerInOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const {
     if (nodo) {
-        // Recorrer el subárbol izquierdo
         recorrerInOrder(nodo->izquierda, publicaciones);
-        // Agregar las publicaciones del nodo actual a la lista
-        for (NodoPublicacion* actual = nodo->publicaciones; actual; actual = actual->siguiente) {
-            publicaciones.agregarPublicacion(actual->publicacion);
-        }
-        // Recorrer el subárbol derecho
+        publicaciones.insert(publicaciones.end(), nodo->publicaciones.begin(), nodo->publicaciones.end());
         recorrerInOrder(nodo->derecha, publicaciones);
     }
 }
 
-// Recorrido postorden que agrega publicaciones a la lista
-void ArbolABB::recorrerPostOrder(NodoABB* nodo, ListaPublicaciones& publicaciones) const {
+void ArbolABB::recorrerPostOrder(NodoABB* nodo, std::vector<Publicacion>& publicaciones) const {
     if (nodo) {
-        // Recorrer el subárbol izquierdo
         recorrerPostOrder(nodo->izquierda, publicaciones);
-        // Recorrer el subárbol derecho
         recorrerPostOrder(nodo->derecha, publicaciones);
-        // Agregar las publicaciones del nodo actual a la lista
-        for (NodoPublicacion* actual = nodo->publicaciones; actual; actual = actual->siguiente) {
-            publicaciones.agregarPublicacion(actual->publicacion);
-        }
+        publicaciones.insert(publicaciones.end(), nodo->publicaciones.begin(), nodo->publicaciones.end());
     }
 }
 
-// Métodos públicos que llaman a los recorridos con la lista de publicaciones
-void ArbolABB::recorrerPreOrder(ListaPublicaciones& publicaciones) const {
+
+// Métodos públicos que llaman a los métodos privados
+void ArbolABB::recorrerPreOrder(std::vector<Publicacion>& publicaciones) const {
     recorrerPreOrder(raiz, publicaciones);
 }
 
-void ArbolABB::recorrerInOrder(ListaPublicaciones& publicaciones) const {
+void ArbolABB::recorrerInOrder(std::vector<Publicacion>& publicaciones) const {
     recorrerInOrder(raiz, publicaciones);
 }
 
-void ArbolABB::recorrerPostOrder(ListaPublicaciones& publicaciones) const {
+void ArbolABB::recorrerPostOrder(std::vector<Publicacion>& publicaciones) const {
     recorrerPostOrder(raiz, publicaciones);
-}
-
-void ArbolABB::recorrerInOrder(NodoABB* nodo, ListaFechas& fechas) const {
-    if (nodo) {
-        // Recorrer el subárbol izquierdo
-        recorrerInOrder(nodo->izquierda, fechas);
-
-        // Agregar la fecha del nodo actual a la lista de fechas
-        fechas.agregarFecha(nodo->fecha); // Asumiendo que hay un método agregarFecha en ListaFechas
-
-        // Recorrer el subárbol derecho
-        recorrerInOrder(nodo->derecha, fechas);
-    }
-}
-
-
-// Liberar la memoria utilizada
-void ArbolABB::liberarPublicaciones(Publicacion** publicaciones, int cantidad) const {
-    for (int i = 0; i < cantidad; ++i) {
-        delete publicaciones[i]; // Liberar cada Publicacion
-    }
-    delete[] publicaciones; // Liberar el arreglo
 }
 
 
@@ -277,22 +207,19 @@ void ArbolABB::generateDot(NodoABB* nodo, std::ofstream& file, const std::string
 
         // Verificar si la fecha del nodo coincide con la fecha buscada
         if (nodo->fecha == fechaBuscada) {
-            // Iterar sobre todas las publicaciones del nodo
-            NodoPublicacion* actual = nodo->publicaciones; // Empezar en el primer nodo de la lista
-            while (actual) {
-                std::string idNodo = "pub_" + std::to_string(actual->publicacion.getId());  // Generar un ID único para el nodo de la publicación
+            // Iterar sobre todas las publicaciones del nodo y crear un nodo diferente para cada publicación
+            for (const auto& publicacion : nodo->publicaciones) {
+                std::string idNodo = "pub_" + std::to_string(publicacion.getId());  // Generar un ID único para el nodo de la publicación
 
                 // Crear un nodo para la publicación con su información
-                file << "\"" << idNodo << "\" [label=\"ID: " << actual->publicacion.getId()
-                     << "\\nFecha: " << actual->publicacion.getFecha()
-                     << "\\nHora: " << actual->publicacion.getHora()
-                     << "\\nCorreo: " << actual->publicacion.getCorreo()
-                     << "\\nContenido: " << actual->publicacion.getContenido() << "\"];\n";
+                file << "\"" << idNodo << "\" [label=\"ID: " << publicacion.getId()
+                     << "\\nFecha: " << publicacion.getFecha()
+                     << "\\nHora: " << publicacion.getHora()
+                     << "\\nCorreo: " << publicacion.getCorreo()
+                     << "\\nContenido: " << publicacion.getContenido() << "\"];\n";
 
                 // Conectar el nodo de la fecha con cada publicación
                 file << "\"" << nodo->fecha << "\" -> \"" << idNodo << "\";\n";
-
-                actual = actual->siguiente; // Mover al siguiente nodo en la lista de publicaciones
             }
         }
     }

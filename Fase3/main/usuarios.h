@@ -29,7 +29,6 @@ public:
     ListaSolicitudes& obtenerListaSolicitudesEnviadas();
     ListaSolicitudes& obtenerListaSolicitudesRecibidas();
     std::vector<std::string> obtenerAmigos() const;
-    void obtenerFechasDesdeArbol(ListaFechas& fechas);
 private slots:
     void on_cerrar_sesion_btn_clicked();
     void on_buscar_correo_btn_clicked();
@@ -49,7 +48,7 @@ private slots:
     void llenarComboBoxFechas();
     void llenarComboBoxFechas_BST();
     void mostrarComentariosDePublicacion(const Publicacion& publicacion);
-    std::string convertirFormatoFecha(const QString& fechaSeleccionada) ;
+
 private:
     Ui::Usuarios *ui;
     Login *login;

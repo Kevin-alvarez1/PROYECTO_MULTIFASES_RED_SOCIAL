@@ -44,12 +44,11 @@ public:
     void mostrarPublicacionesPorUsuario(const std::string& correo) const;
     void mostrarTodasLasPublicaciones() const;
     void mostrarPublicacionesPorCorreo(const std::string& correo) const;
-    void mostrarPublicacionesYAmigos(const std::string &correo, const MatrizDispersa &matriz, ArbolABB &arbol, const std::string &orden);
+    std::vector<Publicacion> mostrarPublicacionesYAmigos(const std::string &correo, const MatrizDispersa &matriz, ArbolABB &arbol, const std::string &orden);
     int obtenerNuevoId() const;
     void mostrarPublicacionesOrden(const std::string& correoUsuario, const MatrizDispersa& matrizDispersa, ArbolABB& arbolABB, int orden) const;
-    void obtenerPublicacionesEnOrden(const std::string& tipoOrden) const;
+    std::vector<Publicacion> obtenerPublicacionesEnOrden(const std::string& tipoOrden) const;
     void eliminarPublicacionPorId(int id);
-
 };
 
 #endif // LISTADOBLEPUBLICACION_H

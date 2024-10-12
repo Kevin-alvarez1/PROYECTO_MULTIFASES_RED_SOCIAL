@@ -456,35 +456,9 @@ void Usuarios::on_fecha_filtro_publis_boton_clicked()
     mostrarPublicacionesFiltradasPorFecha(fechaSeleccionada);
 }
 
-
-// Método para convertir el formato de fecha
-std::string Usuarios::convertirFormatoFecha(const QString& fechaSeleccionada) {
-    QStringList partesFecha = fechaSeleccionada.split("/");
-    if (partesFecha.size() == 3) {
-        // Suponiendo que el formato en el ComboBox es "año/mes/día"
-        return partesFecha[2].toStdString() + "/" + partesFecha[1].toStdString() + "/" + partesFecha[0].toStdString(); // "día/mes/año"
-    }
-    return ""; // Retornar vacío si no hay un formato correcto
-}
-
 void Usuarios::mostrarPublicacionesFiltradasPorFecha(const QString& fechaSeleccionada)
 {
     try {
-
-        QString criterioOrdenQt = ui->ordenPublicaciones_comboBox->currentText();
-        std::string criterioOrden = criterioOrdenQt.toUtf8().constData();
-
-        int cantidadAMostrar = ui->cantidad_a_mostrar_publis_txt->text().toInt();
-        if (cantidadAMostrar <= 0) {
-            QMessageBox::warning(this, "Advertencia", "La cantidad debe ser un número positivo.");
-            return;
-        }
-
-        if (!listadoblepublicacion) {
-            QMessageBox::critical(this, "Error", "ListaDoblePublicacion no está inicializado.");
-            return;
-        }
-
         std::string correoUsuario = correoActualUsuario_;
         std::cout << "Publicaciones del usuario " << correoUsuario << ":" << std::endl;
 
@@ -508,31 +482,29 @@ void Usuarios::mostrarPublicacionesFiltradasPorFecha(const QString& fechaSelecci
         publicacionesFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
         // Obtener todas las publicaciones y amigos
-        listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, matrizDispersa, arbolABB, "InOrder");
-        std::cout << "Total de publicaciones encontradas: " << arbolABB.size() << std::endl;
-
+        std::vector<Publicacion> publicaciones_arbol = listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, matrizDispersa, arbolABB, "InOrder");
+        std::cout << "Total de publicaciones encontradas: " << publicaciones_arbol.size() << std::endl;
         // Llenar el ComboBox con las fechas disponibles en el BST
         llenarComboBoxFechas_BST();
+        std::vector<Publicacion> publicacionesFiltradas;
 
-        // Usar el parámetro directamente
-        ListaPublicaciones publicacionesFiltradas; // Usar la lista enlazada personalizada
-
-        // Filtrar publicaciones por fecha
-        if (fechaSeleccionada == "Todos") {
-            arbolABB.obtenerTodasLasPublicaciones(publicacionesFiltradas);
+        // Filtrar publicaciones por fecha seleccionada
+        if (fechaSeleccionada != "Todos") {
+            for (const auto& publicacion : publicaciones_arbol) {
+                if (QString::fromStdString(publicacion.getFecha()) == fechaSeleccionada) {
+                    publicacionesFiltradas.push_back(publicacion);
+                }
+            }
         } else {
-            std::string fechaConvertida = convertirFormatoFecha(fechaSeleccionada);
-            arbolABB.obtenerPublicacionesPorFecha(fechaConvertida, publicacionesFiltradas);
+            publicacionesFiltradas = publicaciones_arbol; // Si se selecciona "Todos"
         }
 
         // Mostrar publicaciones filtradas
-        int cantidadFiltradas = publicacionesFiltradas.contar(); // Usa el método contar() para obtener el número de publicaciones
-        int publicacionesAmostrar = std::min(cantidadAMostrar, cantidadFiltradas);
+        int cantidadAMostrar = ui->cantidad_a_mostrar_publis_txt->text().toInt();
+        int publicacionesAmostrar = std::min(cantidadAMostrar, static_cast<int>(publicacionesFiltradas.size()));
 
-    NodoPublicacion* actual = publicacionesFiltradas.cabeza; // Suponiendo que tienes acceso a la cabeza de la lista
-
-    for (int i = 0; i < publicacionesFiltradas.contar(); ++i) {
-        Publicacion* publicacion = publicacionesFiltradas.obtenerPublicacion(i);
+        for (int i = 0; i < publicacionesAmostrar; ++i) {
+            const auto& publicacion = publicacionesFiltradas[i];
 
             QFrame* panel = new QFrame(publicacionesFrame);
             panel->setFrameShape(QFrame::StyledPanel);
@@ -542,20 +514,20 @@ void Usuarios::mostrarPublicacionesFiltradasPorFecha(const QString& fechaSelecci
             QVBoxLayout* panelLayout = new QVBoxLayout(panel);
             panel->setLayout(panelLayout);
 
-            QLabel* correoLabel = new QLabel(QString("Correo: %1").arg(QString::fromStdString(publicacion->getCorreo())), panel);  // Usar '->'
+            QLabel* correoLabel = new QLabel(QString("Correo: %1").arg(QString::fromStdString(publicacion.getCorreo())), panel);
             panelLayout->addWidget(correoLabel);
 
-            QLabel* fechaLabel = new QLabel(QString("Fecha: %1").arg(QString::fromStdString(publicacion->getFecha())), panel);  // Usar '->'
+            QLabel* fechaLabel = new QLabel(QString("Fecha: %1").arg(QString::fromStdString(publicacion.getFecha())), panel);
             panelLayout->addWidget(fechaLabel);
 
-            QLabel* contenidoLabel = new QLabel(QString("Contenido: %1").arg(QString::fromStdString(publicacion->getContenido())), panel);  // Usar '->'
+            QLabel* contenidoLabel = new QLabel(QString("Contenido: %1").arg(QString::fromStdString(publicacion.getContenido())), panel);
             panelLayout->addWidget(contenidoLabel);
 
             QLabel* imagenLabel = new QLabel(panel);
             imagenLabel->setFixedSize(500, 181);
             imagenLabel->setScaledContents(true);
 
-            QString baseRutaImagen = QString("C:\\Users\\Player\\Desktop\\Carpeta de EDD\\-EDD-Proyecto1_202203038\\Fase2\\main\\build\\Desktop_Qt_6_7_2_MinGW_64_bit-Debug\\Imagenes\\") + QString::fromStdString(std::to_string(publicacion->getId()));  // Usar '->'
+            QString baseRutaImagen = QString("C:\\Users\\Player\\Desktop\\Carpeta de EDD\\-EDD-Proyecto1_202203038\\Fase2\\main\\build\\Desktop_Qt_6_7_2_MinGW_64_bit-Debug\\Imagenes\\") + QString::fromStdString(std::to_string(publicacion.getId()));
             QStringList extensiones = QStringList() << ".png" << ".jpg" << ".jpeg" << ".bmp" << ".gif";
 
             bool imagenCargada = false;
@@ -622,7 +594,7 @@ void Usuarios::mostrarPublicacionesFiltradasPorFecha(const QString& fechaSelecci
                     QString comentarioCorreo = QString::fromStdString(correoActualUsuario_); // Correo del usuario actual
 
                     // Crear un nuevo comentario
-                    Comentario nuevoComentario(textoComentario.toStdString(), publicacion->getId(),
+                    Comentario nuevoComentario(textoComentario.toStdString(), publicacion.getId(),
                                                comentarioCorreo.toStdString(),
                                                comentarioFecha.toStdString(),
                                                comentarioHora.toStdString());
@@ -642,7 +614,7 @@ void Usuarios::mostrarPublicacionesFiltradasPorFecha(const QString& fechaSelecci
             QPushButton* verComentariosButton = new QPushButton("Ver Comentarios", panel);
             botonesLayout->addWidget(verComentariosButton);
             connect(verComentariosButton, &QPushButton::clicked, this, [this, publicacion] {
-                mostrarComentariosDePublicacion(*publicacion);
+                mostrarComentariosDePublicacion(publicacion);
             });
 
             QPushButton* verArbolComentariosButton = new QPushButton("Ver Árbol de Comentarios", panel);
@@ -650,7 +622,7 @@ void Usuarios::mostrarPublicacionesFiltradasPorFecha(const QString& fechaSelecci
             connect(verArbolComentariosButton, &QPushButton::clicked, this, [this, publicacion] {
                 // Generar el archivo DOT para el árbol de comentarios
                 std::string filename = "arbol_comentarios";
-                arbolComentarios_.graficarArbolB(filename, publicacion->getId());
+                arbolComentarios_.graficarArbolB(filename, publicacion.getId());
 
                 // Crear el comando para ejecutar Graphviz y generar el gráfico
                 std::string command = "dot -Tpng " + filename + " -o arbol_comentarios.png";
@@ -672,14 +644,14 @@ void Usuarios::mostrarPublicacionesFiltradasPorFecha(const QString& fechaSelecci
                                               QMessageBox::Yes | QMessageBox::No);
 
                 // Verificar si el usuario actual es el dueño de la publicación
-                if (publicacion->getCorreo() != correoActualUsuario_) {
+                if (publicacion.getCorreo() != correoActualUsuario_) {
                     QMessageBox::warning(this, "Error de Eliminación", "No tienes permiso para eliminar esta publicación.");
                     return; // Salir de la función si el usuario no es el dueño
                 }
 
                 if (reply == QMessageBox::Yes) {
-                    arbolABB.eliminarPublicacion(publicacion->getId());
-                    listadoblepublicacion->eliminarPublicacionPorId(publicacion->getId());
+                    arbolABB.eliminarPublicacion(publicacion.getId());
+                    listadoblepublicacion->eliminarPublicacionPorId(publicacion.getId());
                     // Informar al usuario sobre la eliminación
                     QMessageBox::information(this, "Publicación Eliminada", "La publicación ha sido eliminada exitosamente.");
                 }
@@ -687,9 +659,7 @@ void Usuarios::mostrarPublicacionesFiltradasPorFecha(const QString& fechaSelecci
 
 
             layout->addWidget(panel);
-            actual = actual->siguiente;
         }
-
 
         publicacionesFrame->setMinimumHeight(layout->count() * 500);
         ui->scrollArea_2->update();
@@ -741,38 +711,29 @@ void Usuarios::on_aplicar_orden_publis_boton_clicked()
         layout->setContentsMargins(10, 10, 10, 10);
         publicacionesFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-        listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, matrizDispersa, arbolABB, "InOrder");
-        std::cout << "Total de publicaciones encontradas: " << arbolABB.size() << std::endl;
+        std::vector<Publicacion> publicaciones_arbol = listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, matrizDispersa, arbolABB, criterioOrden);
+        std::cout << "Total de publicaciones encontradas: " << publicaciones_arbol.size() << std::endl;
 
-        // Conexión del botón y llenado del combo box
         connect(ui->fecha_filtro_publis_boton, &QPushButton::clicked, this, &Usuarios::llenarComboBoxFechas);
         llenarComboBoxFechas_BST();
         QString fechaSeleccionada = ui->fechas_filtro_publicaciones_comboBox->currentText();
-        ListaPublicaciones publicacionesFiltradas;
+        std::vector<Publicacion> publicacionesFiltradas;
 
-        // Filtrar publicaciones
         if (fechaSeleccionada == "Todos") {
-            arbolABB.obtenerTodasLasPublicaciones(publicacionesFiltradas);
+            publicacionesFiltradas = publicaciones_arbol;
         } else {
-            std::string fecha = fechaSeleccionada.toStdString();
-            arbolABB.obtenerPublicacionesPorFecha(fecha, publicacionesFiltradas);
+            for (const auto& publicacion : publicaciones_arbol) {
+                if (QString::fromStdString(publicacion.getFecha()) == fechaSeleccionada) {
+                    publicacionesFiltradas.push_back(publicacion);
+                }
+            }
         }
 
-        // Determina cuántas publicaciones mostrar
-        int publicacionesAmostrar = std::min(cantidadAMostrar, publicacionesFiltradas.contar());
 
-        // Arreglo para rastrear los IDs mostrados
-        int idsMostrados[100]; // Supongamos un máximo de 100 publicaciones
-        int contadorIdsMostrados = 0;
+        int publicacionesAmostrar = std::min(cantidadAMostrar, static_cast<int>(publicaciones_arbol.size()));
 
-        // Muestra las publicaciones filtradas
-        NodoPublicacion* actual = publicacionesFiltradas.cabeza; // Suponiendo que tienes acceso a la cabeza de la lista
-        for (int i = 0; i < publicacionesAmostrar && actual != nullptr; ++i) {
-            const Publicacion& publicacion = actual->publicacion; // Accede a la publicación en el nodo actual
-
-            // Mostrar la publicación (puedes personalizar esta parte según tu interfaz)
-            std::cout << "ID: " << publicacion.getId() << " - Contenido: " << publicacion.getContenido() << std::endl;
-
+        for (int i = 0; i < publicacionesAmostrar; ++i) {
+            const auto& publicacion = publicaciones_arbol[i];
 
             QFrame* panel = new QFrame(publicacionesFrame);
             panel->setFrameShape(QFrame::StyledPanel);
@@ -795,7 +756,6 @@ void Usuarios::on_aplicar_orden_publis_boton_clicked()
             imagenLabel->setFixedSize(500, 181);
             imagenLabel->setScaledContents(true);
 
-            // Construcción de la ruta de la imagen
             QString baseRutaImagen = QString("C:\\Users\\Player\\Desktop\\Carpeta de EDD\\-EDD-Proyecto1_202203038\\Fase2\\main\\build\\Desktop_Qt_6_7_2_MinGW_64_bit-Debug\\Imagenes\\") + QString::fromStdString(std::to_string(publicacion.getId()));
             QStringList extensiones = QStringList() << ".png" << ".jpg" << ".jpeg" << ".bmp" << ".gif";
 
@@ -931,8 +891,6 @@ void Usuarios::on_aplicar_orden_publis_boton_clicked()
             });
 
             layout->addWidget(panel);
-            actual = actual->siguiente;
-
         }
 
         publicacionesFrame->setMinimumHeight(layout->count() * 500);
@@ -992,52 +950,62 @@ void Usuarios::mostrarComentariosDePublicacion(const Publicacion& publicacion) {
     delete dialog;  // Eliminar el diálogo después de cerrarlo
 }
 
+
 void Usuarios::llenarComboBoxFechas()
 {
-    ListaFechas fechas; // Usar la lista enlazada para almacenar fechas
-    obtenerFechasDesdeArbol(fechas); // Llamada a la función que obtiene las fechas
+    std::set<QString> fechasUnicas;
+    std::vector<Publicacion> publicaciones = listadoblepublicacion->mostrarPublicacionesYAmigos(correoActualUsuario_, matrizDispersa, arbolABB, "InOrder");
 
-    // Limpiar las fechas anteriores en el ComboBox
-    ui->fechas_filtro_publicaciones_comboBox->clear();
-
-    // Recorrer la lista de fechas y agregar cada una al ComboBox
-    NodoFecha* actual = fechas.getPrimero(); // Asumiendo que tienes un método para obtener la cabeza de la lista
-    while (actual != nullptr) {
-        QString fechaQString = QString::fromStdString(actual->fecha);
-        ui->fechas_filtro_publicaciones_comboBox->addItem(fechaQString); // Añadir cada fecha al ComboBox
-        actual = actual->siguiente;
+    for (const auto& publicacion : publicaciones) {
+        fechasUnicas.insert(QString::fromStdString(publicacion.getFecha()));
     }
+    fechasUnicas.insert("Todos");
 
-    // Agregar una opción para seleccionar todas las fechas
-    ui->fechas_filtro_publicaciones_comboBox->insertItem(0, "Todos"); // Opción para mostrar todas las publicaciones
-    ui->fechas_filtro_publicaciones_comboBox->setCurrentIndex(0); // Establecer la opción "Todos" como predeterminada
-}
-
-
-void Usuarios::obtenerFechasDesdeArbol(ListaFechas& fechas) {
-    // Recorre el árbol en in-order y obtiene las fechas
-    arbolABB.recorrerInOrder(arbolABB.getRaiz(), fechas);
+    ui->fechas_filtro_publicaciones_comboBox->clear();
+    for (const auto& fecha : fechasUnicas) {
+        ui->fechas_filtro_publicaciones_comboBox->addItem(fecha);
+    }
 }
 
 void Usuarios::llenarComboBoxFechas_BST()
 {
-    ListaFechas fechas; // Usar la lista enlazada para almacenar fechas
-    obtenerFechasDesdeArbol(fechas); // Llamada a la función que obtiene las fechas
+    std::set<QString> fechasUnicas;
+    std::vector<Publicacion> publicaciones = listadoblepublicacion->mostrarPublicacionesYAmigos(correoActualUsuario_, matrizDispersa, arbolABB, "InOrder");
 
-    // Limpiar las fechas anteriores en el ComboBox
-    ui->bst_mostrar_publi_comboBox->clear();
+    for (const auto& publicacion : publicaciones) {
+        // Obtener la fecha de la publicación y convertirla al formato año/mes/día
+        std::string fechaOriginal = publicacion.getFecha();
 
-    // Recorrer la lista de fechas y agregar cada una al ComboBox
-    NodoFecha* actual = fechas.getPrimero(); // Asumiendo que tienes un método para obtener la cabeza de la lista
-    while (actual != nullptr) {
-        QString fechaQString = QString::fromStdString(actual->fecha);
-        ui->bst_mostrar_publi_comboBox->addItem(fechaQString); // Añadir cada fecha al ComboBox
-        actual = actual->siguiente;
+        // Suponiendo que la fecha original está en formato "día/mes/año", lo convertimos a "año/mes/día"
+        QString fechaFormateada;
+        QStringList partesFecha = QString::fromStdString(fechaOriginal).split('/');
+
+        if (partesFecha.size() == 3) {
+            QString dia = partesFecha[0];
+            QString mes = partesFecha[1];
+            QString anio = partesFecha[2];
+
+            // Convertimos al formato año/mes/día
+            fechaFormateada = anio + "/" + mes + "/" + dia;
+        } else {
+            // Si el formato no es válido, usamos la fecha original sin cambios
+            fechaFormateada = QString::fromStdString(fechaOriginal);
+        }
+
+        // Insertamos la fecha formateada en el set de fechas únicas
+        fechasUnicas.insert(fechaFormateada);
     }
 
-    // Agregar una opción para seleccionar todas las fechas
-    ui->bst_mostrar_publi_comboBox->insertItem(0, "Todos"); // Opción para mostrar todas las publicaciones
-    ui->bst_mostrar_publi_comboBox->setCurrentIndex(0); // Establecer la opción "Todos" como predeterminada
+    // Agregamos la opción para "Todos"
+    fechasUnicas.insert("Todos");
+
+    // Limpiar el ComboBox antes de llenarlo
+    ui->bst_mostrar_publi_comboBox->clear();
+
+    // Agregar las fechas al ComboBox
+    for (const auto& fecha : fechasUnicas) {
+        ui->bst_mostrar_publi_comboBox->addItem(fecha);
+    }
 }
 
 void Usuarios::on_generar_bst_reporte_boton_clicked() {

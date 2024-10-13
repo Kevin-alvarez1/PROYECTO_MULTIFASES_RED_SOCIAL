@@ -4,6 +4,7 @@ C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Des
   C:/Qt/6.7.2/mingw_64/include/QtCore/q20memory.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/q20type_traits.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/q23utility.h \
+  C:/Qt/6.7.2/mingw_64/include/QtCore/qabstractitemmodel.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qalgorithms.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qanystringview.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qarraydata.h \
@@ -44,12 +45,14 @@ C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Des
   C:/Qt/6.7.2/mingw_64/include/QtCore/qglobalstatic.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qhash.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qhashfunctions.h \
+  C:/Qt/6.7.2/mingw_64/include/QtCore/qiodevice.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qiodevicebase.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qiterable.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qiterator.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qlatin1stringview.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qline.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qlist.h \
+  C:/Qt/6.7.2/mingw_64/include/QtCore/qlocale.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qlogging.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qmalloc.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qmap.h \
@@ -70,6 +73,7 @@ C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Des
   C:/Qt/6.7.2/mingw_64/include/QtCore/qprocessordetection.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qrect.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qrefcount.h \
+  C:/Qt/6.7.2/mingw_64/include/QtCore/qregularexpression.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qscopedpointer.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qscopeguard.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qset.h \
@@ -111,6 +115,7 @@ C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Des
   C:/Qt/6.7.2/mingw_64/include/QtCore/qtversionchecks.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qtypeinfo.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qtypes.h \
+  C:/Qt/6.7.2/mingw_64/include/QtCore/qurl.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qutf8stringview.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qvariant.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/qvarlengtharray.h \
@@ -130,21 +135,43 @@ C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Des
   C:/Qt/6.7.2/mingw_64/include/QtGui/qkeysequence.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qpaintdevice.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qpalette.h \
+  C:/Qt/6.7.2/mingw_64/include/QtGui/qpicture.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qpixelformat.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qpixmap.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qpolygon.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qregion.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qrgb.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qrgba64.h \
+  C:/Qt/6.7.2/mingw_64/include/QtGui/qtextdocument.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qtgui-config.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qtguiexports.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qtguiglobal.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qtransform.h \
+  C:/Qt/6.7.2/mingw_64/include/QtGui/qvalidator.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qwindowdefs.h \
   C:/Qt/6.7.2/mingw_64/include/QtGui/qwindowdefs_win.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/QComboBox \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/QDialog \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/QLabel \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/QVBoxLayout \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qabstractitemdelegate.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qabstractslider.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qabstractspinbox.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qboxlayout.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qcombobox.h \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/qdialog.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qframe.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qgridlayout.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qlabel.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qlayout.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qlayoutitem.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qrubberband.h \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/qsizepolicy.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qslider.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qstyle.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qstyleoption.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qtabbar.h \
+  C:/Qt/6.7.2/mingw_64/include/QtWidgets/qtabwidget.h \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/qtwidgets-config.h \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/qtwidgetsexports.h \
   C:/Qt/6.7.2/mingw_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -254,6 +281,7 @@ C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Des
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/uniform_int_dist.h \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/unique_ptr.h \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/unordered_map.h \
+  C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/unordered_set.h \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/uses_allocator.h \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/valarray_after.h \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/valarray_array.h \
@@ -333,6 +361,7 @@ C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Des
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/type_traits \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/typeinfo \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/unordered_map \
+  C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/unordered_set \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/utility \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/valarray \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/variant \
@@ -392,6 +421,21 @@ C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Des
   C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/vadefs.h \
   C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/wchar.h \
   C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/wctype.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Comentario.h \
   C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/ListaUsuarios.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/NodoAVL.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Publicacion.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/arbolabb.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/arbolbcomentario.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/comentario.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/crearpublicacion.h \
   C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/json.hpp \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/listaDoblePublicacion.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/lista_solicitudes.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/matrizdispersa.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/nodomatrizdispersa.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/pilareceptor.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/publicacion.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/receptor.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/solicitud.h \
   C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase2/main/usuario.h

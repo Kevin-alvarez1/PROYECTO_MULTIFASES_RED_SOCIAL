@@ -104,6 +104,34 @@ void ListaDoblePublicacion::eliminarPublicacionPorId(int id) {
     std::cout << "No se encontró publicación con ID: " << id << std::endl; // Mensaje si no se encuentra el ID
 }
 
+void ListaDoblePublicacion::eliminarPublicacionesPorCorreo(const std::string& correo) {
+    NodoPublicacion* actual = cabeza; // Comenzamos desde la cabeza de la lista
+
+    while (actual != nullptr) {
+        if (actual->publicacion.getCorreo() == correo) {
+            NodoPublicacion* nodoAEliminar = actual;
+
+            if (nodoAEliminar->anterior != nullptr) {
+                nodoAEliminar->anterior->siguiente = nodoAEliminar->siguiente;
+            } else {
+                cabeza = nodoAEliminar->siguiente;
+            }
+
+            if (nodoAEliminar->siguiente != nullptr) {
+                nodoAEliminar->siguiente->anterior = nodoAEliminar->anterior;
+            } else {
+                cola = nodoAEliminar->anterior;
+            }
+
+            actual = nodoAEliminar->siguiente;
+
+            std::cout << "Depuración: Eliminando publicación con ID: " << nodoAEliminar->publicacion.getId() << " y correo: " << nodoAEliminar->publicacion.getCorreo() << std::endl;
+            delete nodoAEliminar;
+        } else {
+            actual = actual->siguiente;
+        }
+    }
+}
 
 
 int ListaDoblePublicacion::obtenerNuevoId() const
@@ -166,15 +194,16 @@ void ListaDoblePublicacion::crearPNG(const std::string &dotFilename, const std::
     }
 }
 
-ListaPublicaciones ListaDoblePublicacion::mostrarPublicacionesYAmigos(
+std::vector<Publicacion> ListaDoblePublicacion::mostrarPublicacionesYAmigos(
     const std::string &correo,
     const MatrizDispersa &matriz,
     ArbolABB &arbol,
     const std::string &orden) {
 
-    ListaPublicaciones publicaciones_arbol; // Lista para almacenar las publicaciones
+    std::vector<Publicacion> publicaciones_arbol; // Vector para almacenar las publicaciones
+    publicaciones_arbol.clear();
     try {
-        arbol = ArbolABB(); // Reiniciar el árbol para una nueva inserción
+        arbol = ArbolABB();
 
         // Obtener la lista de amigos del usuario
         std::vector<std::string> amigos = matriz.obtenerAmigos(correo);
@@ -191,11 +220,17 @@ ListaPublicaciones ListaDoblePublicacion::mostrarPublicacionesYAmigos(
 
         // Almacenar las publicaciones en el orden deseado
         if (orden == "PreOrder") {
-            arbol.recorrerPreOrder(publicaciones_arbol);
+            std::vector<Publicacion> publicaciones_temp;
+            arbol.recorrerPreOrder(publicaciones_temp);
+            publicaciones_arbol.swap(publicaciones_temp);
         } else if (orden == "InOrder") {
-            arbol.recorrerInOrder(publicaciones_arbol);
+            std::vector<Publicacion> publicaciones_temp;
+            arbol.recorrerInOrder(publicaciones_temp);
+            publicaciones_arbol.swap(publicaciones_temp);
         } else if (orden == "PostOrder") {
-            arbol.recorrerPostOrder(publicaciones_arbol);
+            std::vector<Publicacion> publicaciones_temp;
+            arbol.recorrerPostOrder(publicaciones_temp);
+            publicaciones_arbol.swap(publicaciones_temp);
         } else {
             std::cerr << "Orden no válido: " << orden << std::endl;
         }
@@ -203,9 +238,8 @@ ListaPublicaciones ListaDoblePublicacion::mostrarPublicacionesYAmigos(
         std::cerr << "Excepción capturada: " << e.what() << std::endl;
     }
 
-    return publicaciones_arbol; // Devolver la lista de publicaciones
+    return publicaciones_arbol;
 }
-
 
 void ListaDoblePublicacion::mostrarPublicacionesPorCorreo(const std::string& correo) const
 {

@@ -48,7 +48,10 @@ private slots:
     void llenarComboBoxFechas();
     void llenarComboBoxFechas_BST();
     void mostrarComentariosDePublicacion(const Publicacion& publicacion);
-
+    void llenarFechasCantidad(NodoABB* nodo, std::vector<std::pair<std::string, int>>& fechasCantidad);
+    void obtenerCantidadComentariosDePublicaciones(NodoABB* nodo, std::vector<std::pair<int, int>>& publisConMasComentarios);
+    void on_generar_reportes_usuario_boton_clicked();
+    void obtenerDetallesComentariosDePublicaciones(NodoABB* nodo, std::vector<std::tuple<std::string, std::string, int>>& publisConMasComentarios);
 private:
     Ui::Usuarios *ui;
     Login *login;

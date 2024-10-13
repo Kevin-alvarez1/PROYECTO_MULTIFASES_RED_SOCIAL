@@ -1,32 +1,54 @@
 # ninja log v6
-183	3067	7476274129018729	CMakeFiles/main.dir/admin.cpp.obj	3aacafd1b46bfd9
-16	189	7502941442636994	main_autogen/timestamp	152c56d39ba4afda
-2600	8676	7502941355621512	CMakeFiles/main.dir/main.cpp.obj	99a8a9a2bf157227
-1427	6121	7480449813205274	CMakeFiles/main.dir/login.cpp.obj	e8ccf069b9e536ce
-16	189	7502941442636994	main_autogen/mocs_compilation.cpp	152c56d39ba4afda
-203	4846	7502941444516641	CMakeFiles/main.dir/usuarios.cpp.obj	54c1d8f724fa19aa
-4846	8051	7502941490952250	main.exe	b356b592c448e06f
-2592	8313	7502941355541516	CMakeFiles/main.dir/main_autogen/mocs_compilation.cpp.obj	9c26ef9eff8806da
+2335	8930	7492518675643892	CMakeFiles/main.dir/main.cpp.obj	99a8a9a2bf157227
+19	253	7505491107709446	main_autogen/timestamp	152c56d39ba4afda
+301	7950	7505491110529445	CMakeFiles/main.dir/usuarios.cpp.obj	54c1d8f724fa19aa
+8147	12003	7505491188989432	main.exe	b356b592c448e06f
+19	253	7505491107709446	main_autogen/mocs_compilation.cpp	152c56d39ba4afda
+19	253	7505491107709446	C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/timestamp	152c56d39ba4afda
+254	5971	7505491110049448	CMakeFiles/main.dir/main_autogen/mocs_compilation.cpp.obj	9c26ef9eff8806da
 1587	2054	7486819456040805	CMakeFiles/main.dir/nodoavl.cpp.obj	afa6d706764651fa
-16	189	7502941442636994	C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/timestamp	152c56d39ba4afda
-16	189	7502941442636994	C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/mocs_compilation.cpp	152c56d39ba4afda
 1579	5391	7486819455960806	CMakeFiles/main.dir/usuario.cpp.obj	d2e27cbcf4f78d5b
-221	3849	7502907399988766	CMakeFiles/main.dir/listausuarios.cpp.obj	8dcc5e92f24308e2
-211	4091	7502941444596644	CMakeFiles/main.dir/registrarse.cpp.obj	16241200a74a8dc4
-1858	5841	7490094168615784	CMakeFiles/main.dir/publicacion.cpp.obj	f40768c4831b5d9
-195	4406	7502941444436635	CMakeFiles/main.dir/Admin.cpp.obj	14bbb3955bad877e
-189	4107	7502941444376996	CMakeFiles/main.dir/Login.cpp.obj	dd875bb9b4d972c
-2647	7112	7502941356091501	CMakeFiles/main.dir/listadoblepublicacion.cpp.obj	78e1c51aa0c864e4
-200	3806	7478090295964611	CMakeFiles/main.dir/listaDoblePublicacion.cpp.obj	8282899258ecfc6d
-238	4145	7502941444866649	CMakeFiles/main.dir/crearpublicacion.cpp.obj	2d1e1b092fe88822
-1682	2153	7490070063867652	CMakeFiles/main.dir/Comentario.cpp.obj	fb33fe93fea50cb0
-9	979	7503975898625909	build.ninja	9137b03860b7e59c
-1932	2811	7478103137922889	CMakeFiles/main.dir/comentario.cpp.obj	194e221344bea077
+19	253	7505491107709446	C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/mocs_compilation.cpp	152c56d39ba4afda
+282	5648	7505491110339448	CMakeFiles/main.dir/listausuarios.cpp.obj	8dcc5e92f24308e2
+2346	3300	7492518675763893	CMakeFiles/main.dir/publicacion.cpp.obj	f40768c4831b5d9
+313	6148	7505491110649459	CMakeFiles/main.dir/registrarse.cpp.obj	16241200a74a8dc4
+272	6231	7505491110229450	CMakeFiles/main.dir/Admin.cpp.obj	14bbb3955bad877e
+331	5682	7505491110829456	CMakeFiles/main.dir/listadoblepublicacion.cpp.obj	78e1c51aa0c864e4
+262	6152	7505491110139436	CMakeFiles/main.dir/Login.cpp.obj	dd875bb9b4d972c
+3232	8147	7505491139839456	CMakeFiles/main.dir/crearpublicacion.cpp.obj	2d1e1b092fe88822
+321	1241	7505491110729455	CMakeFiles/main.dir/Comentario.cpp.obj	fb33fe93fea50cb0
+9	979	7505492232182412	build.ninja	9137b03860b7e59c
 5397	6281	7486819494145938	CMakeFiles/main.dir/solicitud.cpp.obj	3400147842b8ca4e
-2662	8338	7502941356241504	CMakeFiles/main.dir/lista_solicitudes.cpp.obj	5e79debd9889f996
+342	6235	7505491110929451	CMakeFiles/main.dir/lista_solicitudes.cpp.obj	5e79debd9889f996
 6142	6715	7486819501595915	CMakeFiles/main.dir/receptor.cpp.obj	330a9a421d4e8982
-6190	7147	7486819502065929	CMakeFiles/main.dir/pilareceptor.cpp.obj	6f76cf3310ecc977
+351	1674	7505491111019446	CMakeFiles/main.dir/pilareceptor.cpp.obj	6f76cf3310ecc977
 6411	6945	7486819504275935	CMakeFiles/main.dir/nodomatrizdispersa.cpp.obj	6deac30c3447b24d
-6281	7343	7486819502975924	CMakeFiles/main.dir/matrizdispersa.cpp.obj	abebf9d977f41d93
-226	1081	7502941444736641	CMakeFiles/main.dir/arbolabb.cpp.obj	c2eac437cbd58348
-233	1138	7490110613413986	CMakeFiles/main.dir/arbolbcomentario.cpp.obj	cbc537153f759444
+1241	3232	7505491119919458	CMakeFiles/main.dir/matrizdispersa.cpp.obj	abebf9d977f41d93
+1674	3625	7505491124259452	CMakeFiles/main.dir/arbolabb.cpp.obj	c2eac437cbd58348
+3625	5981	7505491143769442	CMakeFiles/main.dir/arbolbcomentario.cpp.obj	cbc537153f759444
+15	1456	7505492380084233	main_autogen/timestamp	152c56d39ba4afda
+15	1456	7505492380084233	main_autogen/mocs_compilation.cpp	152c56d39ba4afda
+15	1456	7505492380084233	C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/timestamp	152c56d39ba4afda
+15	1456	7505492380084233	C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/mocs_compilation.cpp	152c56d39ba4afda
+1522	1957	7505492381354238	CMakeFiles/main.dir/nodoavl.cpp.obj	afa6d706764651fa
+1494	2045	7505492381074236	CMakeFiles/main.dir/usuario.cpp.obj	d2e27cbcf4f78d5b
+1533	2342	7505492381464243	CMakeFiles/main.dir/publicacion.cpp.obj	f40768c4831b5d9
+1957	2532	7505492385704269	CMakeFiles/main.dir/Comentario.cpp.obj	fb33fe93fea50cb0
+2533	3287	7505492391464262	CMakeFiles/main.dir/solicitud.cpp.obj	3400147842b8ca4e
+3287	3965	7505492399004245	CMakeFiles/main.dir/receptor.cpp.obj	330a9a421d4e8982
+3965	5237	7505492405784270	CMakeFiles/main.dir/pilareceptor.cpp.obj	6f76cf3310ecc977
+1486	5652	7505492380994238	CMakeFiles/main.dir/listausuarios.cpp.obj	8dcc5e92f24308e2
+1471	6046	7505492380844232	CMakeFiles/main.dir/Login.cpp.obj	dd875bb9b4d972c
+1510	6053	7505492381244251	CMakeFiles/main.dir/registrarse.cpp.obj	16241200a74a8dc4
+5653	6573	7505492422664267	CMakeFiles/main.dir/nodomatrizdispersa.cpp.obj	6deac30c3447b24d
+1478	6596	7505492380914234	CMakeFiles/main.dir/Admin.cpp.obj	14bbb3955bad877e
+5238	6714	7505492418514248	CMakeFiles/main.dir/matrizdispersa.cpp.obj	abebf9d977f41d93
+1457	6839	7505492380704230	CMakeFiles/main.dir/main_autogen/mocs_compilation.cpp.obj	9c26ef9eff8806da
+2046	7169	7505492386594262	CMakeFiles/main.dir/listadoblepublicacion.cpp.obj	78e1c51aa0c864e4
+6046	7332	7505492426594258	CMakeFiles/main.dir/arbolabb.cpp.obj	c2eac437cbd58348
+2343	7474	7505492389564249	CMakeFiles/main.dir/lista_solicitudes.cpp.obj	5e79debd9889f996
+1463	7598	7505492380764231	CMakeFiles/main.dir/main.cpp.obj	99a8a9a2bf157227
+6574	7669	7505492431874255	CMakeFiles/main.dir/arbolbcomentario.cpp.obj	cbc537153f759444
+1504	8551	7505492381174239	CMakeFiles/main.dir/usuarios.cpp.obj	54c1d8f724fa19aa
+6053	9779	7505492426664262	CMakeFiles/main.dir/crearpublicacion.cpp.obj	2d1e1b092fe88822
+9779	13522	7505492463934239	main.exe	b356b592c448e06f

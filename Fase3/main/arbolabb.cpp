@@ -202,28 +202,42 @@ void ArbolABB::generateDot(NodoABB* nodo, std::ofstream& file, const std::string
         }
         if (nodo->derecha) {
             file << "\"" << nodo->fecha << "\" -> \"" << nodo->derecha->fecha << "\";\n";
+
             generateDot(nodo->derecha, file, fechaBuscada);
         }
 
         // Verificar si la fecha del nodo coincide con la fecha buscada
         if (nodo->fecha == fechaBuscada) {
+            file << "\"" << nodo->fecha << "\" [style=filled, fillcolor=green];\n";
+
+            std::string previousNodeId = ""; // Mantendrá el ID del nodo de la publicación anterior
+
             // Iterar sobre todas las publicaciones del nodo y crear un nodo diferente para cada publicación
             for (const auto& publicacion : nodo->publicaciones) {
-                std::string idNodo = "pub_" + std::to_string(publicacion.getId());  // Generar un ID único para el nodo de la publicación
+                std::string currentNodeId = "pub_" + std::to_string(publicacion.getId());  // Generar un ID único para el nodo de la publicación
 
                 // Crear un nodo para la publicación con su información
-                file << "\"" << idNodo << "\" [label=\"ID: " << publicacion.getId()
+                file << "\"" << currentNodeId << "\" [shape=rectangle, label=\"ID: " << publicacion.getId()
                      << "\\nFecha: " << publicacion.getFecha()
                      << "\\nHora: " << publicacion.getHora()
                      << "\\nCorreo: " << publicacion.getCorreo()
                      << "\\nContenido: " << publicacion.getContenido() << "\"];\n";
 
-                // Conectar el nodo de la fecha con cada publicación
-                file << "\"" << nodo->fecha << "\" -> \"" << idNodo << "\";\n";
+                // Si es la primera publicación, conectarla al nodo de la fecha
+                if (previousNodeId.empty()) {
+                    file << "\"" << nodo->fecha << "\" -> \"" << currentNodeId << "\";\n";
+                } else {
+                    // Conectar la publicación actual a la publicación anterior
+                    file << "\"" << previousNodeId << "\" -> \"" << currentNodeId << "\";\n";
+                }
+
+                // Actualizar el nodo anterior para la próxima iteración
+                previousNodeId = currentNodeId;
             }
         }
     }
 }
+
 
 
 void ArbolABB::eliminarPublicacion(int id) {

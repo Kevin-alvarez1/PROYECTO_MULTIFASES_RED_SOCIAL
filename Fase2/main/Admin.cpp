@@ -5,6 +5,9 @@
 #include <fstream>
 #include "login.h"
 #include <QInputDialog>
+#include <QRegularExpression>
+#include "arbolbcomentario.h"
+extern ArbolBComentario arbolComentarios_;
 
 Admin::Admin(ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion,  ListaSolicitudes *lista_solicitudes, QWidget *parent)
     : QDialog(parent),
@@ -326,7 +329,8 @@ void Admin::on_eliminar_usuario_clicked(const std::string& correo)
 {
 
     listaUsuarios->borrarUsuarioPorCorreo(correo);
-
+    listadoblepublicacion->eliminarPublicacionesPorCorreo(correo);
+    arbolComentarios_.eliminarComentariosPorCorreo(correo);
     // Eliminar la fila correspondiente de la tabla
     for (int i = 0; i < ui->tabla_buscar_admin->rowCount(); ++i) {
         QTableWidgetItem* item = ui->tabla_buscar_admin->item(i, 2);
@@ -343,23 +347,22 @@ void Admin::on_aplicar_orden_comboBox_orden_tabla_usuario_clicked()
     // Obtener el texto seleccionado en el combo box
     QString criterioOrden = ui->comboBox_orden_tabla_usuario->currentText();
 
-    // Obtener el primer nodo de usuarios ordenados
-    NodoUsuario* usuarioActual = listaUsuarios->obtenerUsuariosEnOrden(criterioOrden.toStdString());
+    // Obtener el vector de usuarios en el orden seleccionado
+    std::vector<Usuario> usuariosOrdenados = listaUsuarios->obtenerUsuariosEnOrden(criterioOrden.toStdString());
 
     // Limpiar la tabla actual antes de actualizarla
     ui->tabla_buscar_admin->setRowCount(0);  // Resetear las filas de la tabla
 
     // Actualizar la tabla con los usuarios ordenados
-    while (usuarioActual != nullptr) {
+    for (const Usuario& usuario : usuariosOrdenados) {
         int row = ui->tabla_buscar_admin->rowCount();  // Obtener el número de filas actuales
         ui->tabla_buscar_admin->insertRow(row);  // Insertar una nueva fila
 
         // Insertar los datos del usuario en las columnas correspondientes
-        ui->tabla_buscar_admin->setItem(row, 0, new QTableWidgetItem(QString::fromStdString(usuarioActual->usuario.getNombre())));
-        ui->tabla_buscar_admin->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(usuarioActual->usuario.getApellido())));
-        ui->tabla_buscar_admin->setItem(row, 2, new QTableWidgetItem(QString::fromStdString(usuarioActual->usuario.getCorreo())));
-        ui->tabla_buscar_admin->setItem(row, 3, new QTableWidgetItem(QString::fromStdString(usuarioActual->usuario.getFechaDeNacimiento())));
-
+        ui->tabla_buscar_admin->setItem(row, 0, new QTableWidgetItem(QString::fromStdString(usuario.getNombre())));
+        ui->tabla_buscar_admin->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(usuario.getApellido())));
+        ui->tabla_buscar_admin->setItem(row, 2, new QTableWidgetItem(QString::fromStdString(usuario.getCorreo())));
+        ui->tabla_buscar_admin->setItem(row, 3, new QTableWidgetItem(QString::fromStdString(usuario.getFechaDeNacimiento())));
         // Crear botones de Modificar y Eliminar
         QPushButton* btnModificar = new QPushButton("Modificar");
         QPushButton* btnEliminar = new QPushButton("Eliminar");
@@ -369,15 +372,12 @@ void Admin::on_aplicar_orden_comboBox_orden_tabla_usuario_clicked()
         ui->tabla_buscar_admin->setCellWidget(row, 5, btnEliminar);
 
         // Conectar los botones a sus respectivos slots
-        connect(btnModificar, &QPushButton::clicked, [this, usuarioActual, row]() {
-            this->on_modificar_usuario_clicked(usuarioActual->usuario.getCorreo(), row);
+        connect(btnModificar, &QPushButton::clicked, [this, usuario, row]() {
+            this->on_modificar_usuario_clicked(usuario.getCorreo(), row);
         });
-        connect(btnEliminar, &QPushButton::clicked, [this, usuarioActual]() {
-            this->on_eliminar_usuario_clicked(usuarioActual->usuario.getCorreo());
+        connect(btnEliminar, &QPushButton::clicked, [this, usuario]() {
+            this->on_eliminar_usuario_clicked(usuario.getCorreo());
         });
-
-        // Avanzar al siguiente nodo
-        usuarioActual = usuarioActual->siguiente;  // Asumiendo que 'siguiente' es el puntero al siguiente nodo
     }
 }
 

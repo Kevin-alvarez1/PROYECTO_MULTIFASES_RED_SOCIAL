@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>4</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -789,7 +789,7 @@
           <height>209</height>
          </rect>
         </property>
-        <widget class="QTableWidget" name="tableWidget_5">
+        <widget class="QTableWidget" name="publis_con_mas_comentarios_tabla">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -894,7 +894,7 @@
         </widget>
        </widget>
       </widget>
-      <widget class="QPushButton" name="pushButton_5">
+      <widget class="QPushButton" name="generar_reportes_usuario_boton">
        <property name="geometry">
         <rect>
          <x>450</x>
@@ -928,7 +928,7 @@
           <height>209</height>
          </rect>
         </property>
-        <widget class="QTableWidget" name="tableWidget_4">
+        <widget class="QTableWidget" name="fechas_con_mas_publis_tabla">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -1008,6 +1008,44 @@
        </property>
        <property name="text">
         <string>BST</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_24">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>0</y>
+         <width>41</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Top 3</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_25">
+       <property name="geometry">
+        <rect>
+         <x>540</x>
+         <y>0</y>
+         <width>41</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Top 3</string>
        </property>
       </widget>
      </widget>

@@ -81,6 +81,8 @@ void Usuarios::on_Eliminar_boton_clicked()
     if (result == QMessageBox::Yes) {
         // Si el usuario confirma, eliminamos la cuenta
         listaUsuarios->borrarUsuarioPorCorreo(correo);
+        listadoblepublicacion->eliminarPublicacionesPorCorreo(correo);
+        arbolComentarios_.eliminarComentariosPorCorreo(correo);
         QMessageBox::information(this, "Cuenta Eliminada", "Tu cuenta ha sido eliminada correctamente.");
 
         // Mostrar la ventana de inicio de sesión después de la eliminación
@@ -527,7 +529,7 @@ void Usuarios::mostrarPublicacionesFiltradasPorFecha(const QString& fechaSelecci
             imagenLabel->setFixedSize(500, 181);
             imagenLabel->setScaledContents(true);
 
-            QString baseRutaImagen = QString("C:\\Users\\Player\\Desktop\\Carpeta de EDD\\-EDD-Proyecto1_202203038\\Fase2\\main\\build\\Desktop_Qt_6_7_2_MinGW_64_bit-Debug\\Imagenes\\") + QString::fromStdString(std::to_string(publicacion.getId()));
+            QString baseRutaImagen = QString("C:\\Users\\Cito\\Desktop\\carpeta EDD\\-EDD-Proyecto1_202203038\\Fase2\\main\\build\\Desktop_Qt_6_7_2_MinGW_64_bit-Profile\\Imagenes\\") + QString::fromStdString(std::to_string(publicacion.getId()));
             QStringList extensiones = QStringList() << ".png" << ".jpg" << ".jpeg" << ".bmp" << ".gif";
 
             bool imagenCargada = false;
@@ -545,7 +547,7 @@ void Usuarios::mostrarPublicacionesFiltradasPorFecha(const QString& fechaSelecci
 
             if (!imagenCargada) {
                 // Placeholder visible
-                QPixmap placeholder("ruta/a/tu/placeholder.png"); // Cambia a una ruta válida
+                QPixmap placeholder("");
                 QPixmap scaledPlaceholder = placeholder.scaled(imagenLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
                 imagenLabel->setPixmap(scaledPlaceholder);
             }
@@ -756,13 +758,14 @@ void Usuarios::on_aplicar_orden_publis_boton_clicked()
             imagenLabel->setFixedSize(500, 181);
             imagenLabel->setScaledContents(true);
 
-            QString baseRutaImagen = QString("C:\\Users\\Player\\Desktop\\Carpeta de EDD\\-EDD-Proyecto1_202203038\\Fase2\\main\\build\\Desktop_Qt_6_7_2_MinGW_64_bit-Debug\\Imagenes\\") + QString::fromStdString(std::to_string(publicacion.getId()));
+            QString baseRutaImagen = QString("C:\\Users\\Cito\\Desktop\\carpeta EDD\\-EDD-Proyecto1_202203038\\Fase2\\main\\build\\Desktop_Qt_6_7_2_MinGW_64_bit-Profile\\Imagenes\\") + QString::fromStdString(std::to_string(publicacion.getId()));
             QStringList extensiones = QStringList() << ".png" << ".jpg" << ".jpeg" << ".bmp" << ".gif";
 
             bool imagenCargada = false;
 
             for (const QString& ext : extensiones) {
                 QString rutaImagen = baseRutaImagen + ext;
+                std::cout << "ruta: " << rutaImagen.toStdString() << std::endl;
                 QPixmap pixmap(rutaImagen);
                 if (!pixmap.isNull()) {
                     QPixmap scaledPixmap = pixmap.scaled(imagenLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -774,7 +777,7 @@ void Usuarios::on_aplicar_orden_publis_boton_clicked()
 
             if (!imagenCargada) {
                 // Placeholder visible
-                QPixmap placeholder(""); // Cambia a una ruta válida
+                QPixmap placeholder("");
                 QPixmap scaledPlaceholder = placeholder.scaled(imagenLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
                 imagenLabel->setPixmap(scaledPlaceholder);
             }
@@ -1066,3 +1069,127 @@ void Usuarios::actualizarPanelConImagen(const QString& imagePath) {
 
     newLayout->addWidget(scrollArea);
 }
+
+void Usuarios::on_generar_reportes_usuario_boton_clicked()
+{
+
+    // Limpiar la tabla antes de agregar nuevos datos
+    ui->fechas_con_mas_publis_tabla->clearContents();
+    ui->fechas_con_mas_publis_tabla->setRowCount(0);
+
+    // Crear una lista para almacenar las fechas y sus respectivas cantidades de publicaciones
+    std::vector<std::pair<std::string, int>> fechasCantidad;
+
+    // Llenar el vector con las fechas y la cantidad de publicaciones
+    llenarFechasCantidad(arbolABB.getRaiz(), fechasCantidad);
+
+    // Ordenar las fechas por la cantidad de publicaciones en orden descendente
+    std::sort(fechasCantidad.begin(), fechasCantidad.end(), [](const auto& a, const auto& b) {
+        return b.second < a.second;
+    });
+
+    // Llenar la tabla con las fechas y la cantidad de publicaciones (Top 3)
+    for (size_t i = 0; i < std::min(fechasCantidad.size(), size_t(3)); ++i) {
+        ui->fechas_con_mas_publis_tabla->insertRow(i);
+
+        // Insertar la fecha en la primera columna
+        QTableWidgetItem* fechaItem = new QTableWidgetItem(QString::fromStdString(fechasCantidad[i].first));
+        ui->fechas_con_mas_publis_tabla->setItem(i, 0, fechaItem);
+
+        // Insertar la cantidad de publicaciones en la segunda columna
+        QTableWidgetItem* cantidadItem = new QTableWidgetItem(QString::number(fechasCantidad[i].second));
+        ui->fechas_con_mas_publis_tabla->setItem(i, 1, cantidadItem);
+    }
+
+    // Limpiar la tabla antes de agregar nuevos datos
+    ui->publis_con_mas_comentarios_tabla->clearContents();
+    ui->publis_con_mas_comentarios_tabla->setRowCount(0);
+
+    // Crear una lista para almacenar los detalles de cada publicación (Fecha, Correo, Número de comentarios)
+    std::vector<std::tuple<std::string, std::string, int>> publisConMasComentarios;  // (Fecha, Correo, Numero de comentarios)
+
+    // Llenar el vector con las publicaciones y la cantidad de comentarios
+    obtenerDetallesComentariosDePublicaciones(arbolABB.getRaiz(), publisConMasComentarios);
+
+    // Ordenar las publicaciones por la cantidad de comentarios en orden descendente
+    std::sort(publisConMasComentarios.begin(), publisConMasComentarios.end(), [](const auto& a, const auto& b) {
+        return std::get<2>(a) > std::get<2>(b);  // Ordenar por el número de comentarios
+    });
+
+    // Llenar la tabla con los detalles (Top 3)
+    for (size_t i = 0; i < std::min(publisConMasComentarios.size(), size_t(3)); ++i) {
+        ui->publis_con_mas_comentarios_tabla->insertRow(i);
+
+        // Insertar la fecha en la primera columna
+        QTableWidgetItem* fechaItem = new QTableWidgetItem(QString::fromStdString(std::get<0>(publisConMasComentarios[i])));
+        ui->publis_con_mas_comentarios_tabla->setItem(i, 0, fechaItem);
+
+        // Insertar el correo en la segunda columna
+        QTableWidgetItem* correoItem = new QTableWidgetItem(QString::fromStdString(std::get<1>(publisConMasComentarios[i])));
+        ui->publis_con_mas_comentarios_tabla->setItem(i, 1, correoItem);
+
+        // Insertar la cantidad de comentarios en la tercera columna
+        QTableWidgetItem* cantidadComentariosItem = new QTableWidgetItem(QString::number(std::get<2>(publisConMasComentarios[i])));
+        ui->publis_con_mas_comentarios_tabla->setItem(i, 2, cantidadComentariosItem);
+    }
+}
+
+// **Función para obtener los detalles de las publicaciones con más comentarios**
+void Usuarios::obtenerDetallesComentariosDePublicaciones(NodoABB* nodo, std::vector<std::tuple<std::string, std::string, int>>& publisConMasComentarios)
+{
+    if (nodo) {
+        // Recorrer el subárbol izquierdo
+        obtenerDetallesComentariosDePublicaciones(nodo->izquierda, publisConMasComentarios);
+
+        // Obtener los detalles para cada publicación en el nodo actual
+        for (const auto& publicacion : nodo->publicaciones) {
+            int idPublicacion = publicacion.getId();
+            std::string fecha = publicacion.getFecha();
+            std::string correo = publicacion.getCorreo();
+            int cantidadComentarios = arbolComentarios_.getComentariosDePublicacion(idPublicacion).size();
+
+            // Añadir los detalles (Fecha, Correo, Número de comentarios) al vector
+            publisConMasComentarios.push_back(std::make_tuple(fecha, correo, cantidadComentarios));
+        }
+
+        // Recorrer el subárbol derecho
+        obtenerDetallesComentariosDePublicaciones(nodo->derecha, publisConMasComentarios);
+    }
+}
+
+// **Función para llenar las fechas y cantidad de publicaciones**
+void Usuarios::llenarFechasCantidad(NodoABB* nodo, std::vector<std::pair<std::string, int>>& fechasCantidad)
+{
+    if (nodo) {
+        // Recorrer el subárbol izquierdo
+        llenarFechasCantidad(nodo->izquierda, fechasCantidad);
+
+        // Añadir la fecha actual y la cantidad de publicaciones
+        fechasCantidad.push_back({nodo->fecha, static_cast<int>(nodo->publicaciones.size())});
+
+        // Recorrer el subárbol derecho
+        llenarFechasCantidad(nodo->derecha, fechasCantidad);
+    }
+}
+
+// **Función para obtener la cantidad de comentarios por publicación**
+void Usuarios::obtenerCantidadComentariosDePublicaciones(NodoABB* nodo, std::vector<std::pair<int, int>>& publisConMasComentarios)
+{
+    if (nodo) {
+        // Recorrer el subárbol izquierdo
+        obtenerCantidadComentariosDePublicaciones(nodo->izquierda, publisConMasComentarios);
+
+        // Obtener la cantidad de comentarios para cada publicación en el nodo actual
+        for (const auto& publicacion : nodo->publicaciones) {
+            int idPublicacion = publicacion.getId();
+            int cantidadComentarios = arbolComentarios_.getComentariosDePublicacion(idPublicacion).size();
+
+            // Añadir el ID de la publicación y la cantidad de comentarios al vector
+            publisConMasComentarios.push_back({idPublicacion, cantidadComentarios});
+        }
+
+        // Recorrer el subárbol derecho
+        obtenerCantidadComentariosDePublicaciones(nodo->derecha, publisConMasComentarios);
+    }
+}
+

@@ -246,7 +246,6 @@ C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase3/main/bui
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/uniform_int_dist.h \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/unique_ptr.h \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/unordered_map.h \
-  C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/unordered_set.h \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/uses_allocator.h \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/vector.tcc \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/cctype \
@@ -320,7 +319,6 @@ C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase3/main/bui
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/type_traits \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/typeinfo \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/unordered_map \
-  C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/unordered_set \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/utility \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/variant \
   C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/vector \
@@ -384,7 +382,6 @@ C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase3/main/bui
   C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/arbolabb.h \
   C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/arbolbcomentario.h \
   C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/comentario.h \
+  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/grafo_no_dirigido.h \
   C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/listaDoblePublicacion.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/matrizdispersa.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/nodomatrizdispersa.h \
   C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/publicacion.h

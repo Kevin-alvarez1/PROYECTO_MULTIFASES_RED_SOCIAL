@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1239</width>
-    <height>505</height>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -496,6 +496,147 @@
        </property>
       </widget>
      </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_4">
+    <attribute name="title">
+     <string>Reportes Nuevo</string>
+    </attribute>
+    <widget class="QFrame" name="frame_8">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>471</width>
+       <height>411</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
+     </property>
+     <widget class="QScrollArea" name="scrollArea_3">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>471</width>
+        <height>411</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_3">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>469</width>
+         <height>409</height>
+        </rect>
+       </property>
+       <widget class="QLabel" name="ListaAdyacencia_label">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>471</width>
+          <height>411</height>
+         </rect>
+        </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::ContextMenuPolicy::DefaultContextMenu</enum>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QFrame" name="frame_9">
+     <property name="geometry">
+      <rect>
+       <x>490</x>
+       <y>10</y>
+       <width>471</width>
+       <height>411</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
+     </property>
+     <widget class="QScrollArea" name="scrollArea_4">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>471</width>
+        <height>411</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_4">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>469</width>
+         <height>409</height>
+        </rect>
+       </property>
+       <widget class="QLabel" name="Grafo_amistades_label">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>471</width>
+          <height>411</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QPushButton" name="listaAdyacencia_y_grafo_boton">
+     <property name="geometry">
+      <rect>
+       <x>980</x>
+       <y>150</y>
+       <width>231</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Lista de adyacencia y Grafo de amistades</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="blockChain_y_arbolMerkle">
+     <property name="geometry">
+      <rect>
+       <x>980</x>
+       <y>210</y>
+       <width>231</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Blockchain y arbol de merkle</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_3">

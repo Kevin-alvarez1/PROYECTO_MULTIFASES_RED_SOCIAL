@@ -1205,3 +1205,77 @@ void Usuarios::obtenerCantidadComentariosDePublicaciones(NodoABB* nodo, std::vec
     }
 }
 
+void Usuarios::on_actualizarTablaRecomendados_boton_clicked()
+{   try{
+    // Limpiar la tabla antes de agregar los datos nuevos
+    ui->tablaRecomendados->setRowCount(0);
+
+    // Suponiendo que ya tienes un método para obtener el correo o nombre de usuario actual
+    std::string correoActual = correoActualUsuario_; // Asegúrate de que este valor sea correcto
+
+    if (correoActual.empty()) {
+        std::cout << "Correo actual está vacío." << std::endl;
+        return;
+    }
+
+    std::cout << "Correo actual: " << correoActual << std::endl;
+
+    // Variable para almacenar la cantidad de recomendaciones
+    int cantidadRecomendaciones = 0;
+
+    // Llamar al método recomendarAmigos del grafo
+    std::string* recomendaciones = grafoNoDirigido.recomendarAmigos(correoActual, cantidadRecomendaciones);
+
+    if (recomendaciones == nullptr || cantidadRecomendaciones == 0) {
+        // No hay recomendaciones, tal vez mostrar un mensaje
+        std::cout << "No se encontraron recomendaciones." << std::endl;
+        return;
+    }
+
+    std::cout << "Cantidad de recomendaciones: " << cantidadRecomendaciones << std::endl;
+
+    // Asegurarse de que la tabla tiene 4 columnas para nombre, apellido, correo, amigos en común
+    if (ui->tablaRecomendados->columnCount() != 4) {
+        ui->tablaRecomendados->setColumnCount(4);  // Asegúrate de que la tabla tenga 4 columnas
+    }
+
+    // Iterar sobre las recomendaciones y agregarlas a la tabla
+    for (int i = 0; i < cantidadRecomendaciones; ++i) {
+        std::cout << "Procesando recomendación: " << recomendaciones[i] << std::endl;
+
+        // Buscar el usuario recomendado en el árbol AVL
+        Usuario* usuarioRecomendado = listaUsuarios->buscarUsuarioPorCorreo(recomendaciones[i]);
+
+        if (usuarioRecomendado == nullptr) {
+            std::cout << "Usuario recomendado no encontrado: " << recomendaciones[i] << std::endl;
+            continue;
+        }
+
+        std::cout << "Usuario encontrado: " << usuarioRecomendado->getNombre() << std::endl;
+
+        // Obtener el número de amigos en común
+        int amigosEnComun = grafoNoDirigido.obtenerAmigosEnComun(correoActual, recomendaciones[i]);
+        std::cout << "Amigos en común: " << amigosEnComun << std::endl;
+
+        // Insertar una nueva fila en la tabla
+        int filaActual = ui->tablaRecomendados->rowCount();
+        ui->tablaRecomendados->insertRow(filaActual);
+
+        // Rellenar las columnas de la tabla
+        ui->tablaRecomendados->setItem(filaActual, 0, new QTableWidgetItem(QString::fromStdString(usuarioRecomendado->getNombre())));
+        ui->tablaRecomendados->setItem(filaActual, 1, new QTableWidgetItem(QString::fromStdString(usuarioRecomendado->getApellido())));
+        ui->tablaRecomendados->setItem(filaActual, 2, new QTableWidgetItem(QString::fromStdString(recomendaciones[i]))); // El correo o nombre de usuario
+        ui->tablaRecomendados->setItem(filaActual, 3, new QTableWidgetItem(QString::number(amigosEnComun)));
+    }
+
+    // Liberar la memoria de las recomendaciones
+    delete[] recomendaciones;
+    } catch (const std::exception& e) {
+        std::cerr << "Error al mostrar publicaciones: " << e.what() << std::endl;
+        QMessageBox::critical(this, "Error", "Hubo un problema al mostrar las publicaciones.");
+        return;
+    }
+
+}
+
+

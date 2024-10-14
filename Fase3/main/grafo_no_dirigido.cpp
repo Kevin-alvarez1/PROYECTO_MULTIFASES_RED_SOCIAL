@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <cstring>
+#include <algorithm>
 
 GrafoNoDirigido grafoNoDirigido;
 
@@ -18,6 +19,100 @@ Nodo::Nodo(const std::string& nombre) : nombre(nombre), numVecinos(0), capacidad
 Nodo::~Nodo() {
     delete[] vecinos;  // Liberar memoria de los vecinos
 }
+
+std::string* GrafoNoDirigido::recomendarAmigos(const std::string& nombre, int& cantidadRecomendaciones) const {
+    Nodo* nodo = encontrarNodo(nombre);
+    if (!nodo) {
+        cantidadRecomendaciones = 0;
+        return nullptr; // Usuario no encontrado
+    }
+
+    // Mapa para contar cuántos amigos en común tiene cada sugerencia
+    class Recomendacion {
+    public:
+        Nodo* nodo;
+        int amigosEnComun;
+    };
+
+    Recomendacion* recomendaciones = new Recomendacion[capacidadNodos]; // Arreglo dinámico para almacenar sugerencias
+    int numRecomendaciones = 0;
+
+    // Obtener los amigos del usuario actual
+    for (int i = 0; i < nodo->numVecinos; ++i) {
+        Nodo* amigo = nodo->vecinos[i];
+
+        // Obtener los amigos de los amigos (a dos saltos)
+        for (int j = 0; j < amigo->numVecinos; ++j) {
+            Nodo* amigoDeAmigo = amigo->vecinos[j];
+
+            // Evitar recomendar al mismo usuario o sus amigos directos
+            if (amigoDeAmigo == nodo || nodo->tieneVecino(amigoDeAmigo)) {
+                continue;
+            }
+
+            // Verificar si ya hemos contado a este nodo como recomendación
+            bool encontrado = false;
+            for (int k = 0; k < numRecomendaciones; ++k) {
+                if (recomendaciones[k].nodo == amigoDeAmigo) {
+                    recomendaciones[k].amigosEnComun++; // Incrementar el número de amigos en común
+                    encontrado = true;
+                    break;
+                }
+            }
+
+            // Si no está en las recomendaciones, agregarlo
+            if (!encontrado) {
+                recomendaciones[numRecomendaciones].nodo = amigoDeAmigo;
+                recomendaciones[numRecomendaciones].amigosEnComun = 1;
+                numRecomendaciones++;
+            }
+        }
+    }
+
+    // Ordenar las recomendaciones por la cantidad de amigos en común (de mayor a menor)
+    std::sort(recomendaciones, recomendaciones + numRecomendaciones, [](const Recomendacion& a, const Recomendacion& b) {
+        return a.amigosEnComun > b.amigosEnComun;
+    });
+
+    // Crear un arreglo dinámico para almacenar los nombres de los recomendados
+    std::string* recomendados = new std::string[numRecomendaciones];
+    for (int i = 0; i < numRecomendaciones; ++i) {
+        recomendados[i] = recomendaciones[i].nodo->nombre;
+    }
+
+    cantidadRecomendaciones = numRecomendaciones;
+
+    // Liberar la memoria del arreglo temporal
+    delete[] recomendaciones;
+
+    return recomendados;
+}
+
+int GrafoNoDirigido::obtenerAmigosEnComun(const std::string& usuario1, const std::string& usuario2) const {
+    // Encontrar los nodos correspondientes a usuario1 y usuario2
+    Nodo* nodo1 = encontrarNodo(usuario1);
+    Nodo* nodo2 = encontrarNodo(usuario2);
+
+    // Si alguno de los usuarios no existe en el grafo, no tienen amigos en común
+    if (!nodo1 || !nodo2) {
+        return 0;
+    }
+
+    // Obtener los amigos (vecinos) de ambos usuarios
+    int amigosEnComun = 0;
+
+    for (int i = 0; i < nodo1->numVecinos; ++i) {
+        for (int j = 0; j < nodo2->numVecinos; ++j) {
+            if (nodo1->vecinos[i]->nombre == nodo2->vecinos[j]->nombre) {
+                // Encontramos un amigo en común
+                amigosEnComun++;
+            }
+        }
+    }
+
+    return amigosEnComun;
+}
+
 
 // Agregar vecino, redimensionando si es necesario
 void Nodo::agregarVecino(Nodo* vecino) {

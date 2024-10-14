@@ -52,6 +52,8 @@ private slots:
     void obtenerCantidadComentariosDePublicaciones(NodoABB* nodo, std::vector<std::pair<int, int>>& publisConMasComentarios);
     void on_generar_reportes_usuario_boton_clicked();
     void obtenerDetallesComentariosDePublicaciones(NodoABB* nodo, std::vector<std::tuple<std::string, std::string, int>>& publisConMasComentarios);
+    void on_actualizarTablaRecomendados_boton_clicked();
+
 private:
     Ui::Usuarios *ui;
     Login *login;

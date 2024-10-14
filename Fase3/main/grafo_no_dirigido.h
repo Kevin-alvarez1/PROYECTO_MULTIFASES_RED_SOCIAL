@@ -40,6 +40,11 @@ public:
     std::string* obtenerAmigos(const std::string& nombre, int& cantidadAmigos) const;
     void mostrarGrafo() const;
     void generarPNG(const std::string& nombreArchivo) const;
+
+    // Nuevo método para recomendar amigos
+    std::string* recomendarAmigos(const std::string& nombre, int& cantidadRecomendaciones) const;
+
+    int obtenerAmigosEnComun(const std::string& usuario1, const std::string& usuario2) const;
 };
 
 #endif // GRAFO_NO_DIRIGIDO_H

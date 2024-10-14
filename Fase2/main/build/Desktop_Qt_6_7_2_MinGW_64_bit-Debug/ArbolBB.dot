@@ -1,12 +1,16 @@
 digraph BSTTree {
 node [shape=circle];
-"2024/08/19" -> "2024/08/11";
+"2024/08/15" -> "2024/08/11";
 "2024/08/11" -> "2024/08/10";
-"2024/08/10" [style=filled, fillcolor=green];
-"pub_3" [shape=rectangle, label="ID: 3\nFecha: 10/08/2024\nHora: 07:30\nCorreo: jm@example.com\nContenido: El café de la mañana nunca decepciona, ¡energía pura para el día!"];
-"2024/08/10" -> "pub_3";
-"2024/08/11" -> "2024/08/18";
-"2024/08/18" -> "2024/08/15";
+"2024/08/11" -> "2024/08/12";
+"2024/08/12" -> "2024/08/14";
+"2024/08/14" [style=filled, fillcolor=green];
+"pub_13" [shape=rectangle, label="ID: 13\nFecha: 14/08/2024\nHora: 06:15\nCorreo: lp@example.com\nContenido: El ejercicio diario es clave para una vida saludable, nunca lo dudes."];
+"2024/08/14" -> "pub_13";
+"2024/08/15" -> "2024/08/19";
+"2024/08/19" -> "2024/08/17";
+"2024/08/17" -> "2024/08/16";
+"2024/08/17" -> "2024/08/18";
 "2024/08/19" -> "2024/08/21";
 "2024/08/21" -> "2024/08/20";
 "2024/08/21" -> "2024/08/22";

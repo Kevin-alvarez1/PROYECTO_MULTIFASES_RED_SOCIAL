@@ -2,14 +2,14 @@
 #include "ui_usuarios.h"
 #include "login.h"
 #include "QMessageBox"
-#include "grafo_no_dirigido.h"
+#include "matrizdispersa.h"
 #include "arbolabb.h"
 #include <QDialog>
 #include <QVBoxLayout>
 #include <set>
 #include "arbolabb.h"
 #include <QInputDialog>
-extern GrafoNoDirigido grafoNoDirigido;
+extern MatrizDispersa matrizDispersa;
 extern ArbolABB arbolABB;
 extern ArbolBComentario arbolComentarios_;
 
@@ -282,26 +282,14 @@ void Usuarios::on_actualizar_tablas_clicked() {
             // Verifica si la solicitud está en estado "PENDIENTE"
             if (lista_solicitudes->existeSolicitudEnEstado(solicitud.getEmisor(), correoActual.toStdString(), "PENDIENTE")) {
 
-                // Obtener la lista de amigos del usuario actual desde la matriz dispersa
-                int cantidadAmigos;
-                std::string* amigos = grafoNoDirigido.obtenerAmigos(correoActual.toStdString(), cantidadAmigos);
+                // Obtener la lista de amigos del usuario actual desde la matrizDispersa
+                std::vector<std::string> amigos = matrizDispersa.obtenerAmigos(correoActual.toStdString());
 
                 // Verificar si el emisor ya es amigo del usuario actual
-                bool esAmigo = false;
-                for (int i = 0; i < cantidadAmigos; i++) {
-                    if (amigos[i] == solicitud.getEmisor()) {
-                        esAmigo = true;
-                        break; // Salir del bucle si ya son amigos
-                    }
-                }
-
-                // Si no son amigos, agregar la solicitud a la lista para mostrarla
-                if (!esAmigo) {
+                if (std::find(amigos.begin(), amigos.end(), solicitud.getEmisor()) == amigos.end()) {
+                    // Si no son amigos, agregar la solicitud a la lista para mostrarla
                     solicitudesRecibidas.push_back(solicitud);
                 }
-
-                // Liberar la memoria del arreglo de amigos
-                delete[] amigos; // Asegúrate de liberar la memoria después de su uso
             }
             copiaPilaReceptor.pop();
         }
@@ -365,13 +353,13 @@ void Usuarios::on_btnAceptar_clicked(const std::string& correoEmisor) {
                 // Actualizar el estado de la solicitud en lista_solicitudes
                 if (lista_solicitudes->actualizarEstadoSolicitud(correoEmisor, correoReceptor, "ACEPTADA")) {
                     // Insertar en la matriz dispersa la nueva relación de amistad
-                    grafoNoDirigido.insertarRelacion(correoEmisor, correoReceptor);
+                    matrizDispersa.insertarRelacion(correoEmisor, correoReceptor);
 
                     // Mostrar un mensaje de confirmación
                     QMessageBox::information(this, "Solicitud Aceptada",
                                              "La solicitud de " + QString::fromStdString(correoEmisor) + " ha sido aceptada.");
 
-                    grafoNoDirigido.mostrarGrafo();
+                    matrizDispersa.mostrarMatriz();
                     // Eliminar el nodo de la memoria
                     delete actual;
                     return;
@@ -496,7 +484,7 @@ void Usuarios::mostrarPublicacionesFiltradasPorFecha(const QString& fechaSelecci
         publicacionesFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
         // Obtener todas las publicaciones y amigos
-        std::vector<Publicacion> publicaciones_arbol = listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, grafoNoDirigido, arbolABB, "InOrder");
+        std::vector<Publicacion> publicaciones_arbol = listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, matrizDispersa, arbolABB, "InOrder");
         std::cout << "Total de publicaciones encontradas: " << publicaciones_arbol.size() << std::endl;
         // Llenar el ComboBox con las fechas disponibles en el BST
         llenarComboBoxFechas_BST();
@@ -725,7 +713,7 @@ void Usuarios::on_aplicar_orden_publis_boton_clicked()
         layout->setContentsMargins(10, 10, 10, 10);
         publicacionesFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-        std::vector<Publicacion> publicaciones_arbol = listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, grafoNoDirigido, arbolABB, criterioOrden);
+        std::vector<Publicacion> publicaciones_arbol = listadoblepublicacion->mostrarPublicacionesYAmigos(correoUsuario, matrizDispersa, arbolABB, criterioOrden);
         std::cout << "Total de publicaciones encontradas: " << publicaciones_arbol.size() << std::endl;
 
         connect(ui->fecha_filtro_publis_boton, &QPushButton::clicked, this, &Usuarios::llenarComboBoxFechas);
@@ -969,7 +957,7 @@ void Usuarios::mostrarComentariosDePublicacion(const Publicacion& publicacion) {
 void Usuarios::llenarComboBoxFechas()
 {
     std::set<QString> fechasUnicas;
-    std::vector<Publicacion> publicaciones = listadoblepublicacion->mostrarPublicacionesYAmigos(correoActualUsuario_, grafoNoDirigido, arbolABB, "InOrder");
+    std::vector<Publicacion> publicaciones = listadoblepublicacion->mostrarPublicacionesYAmigos(correoActualUsuario_, matrizDispersa, arbolABB, "InOrder");
 
     for (const auto& publicacion : publicaciones) {
         fechasUnicas.insert(QString::fromStdString(publicacion.getFecha()));
@@ -985,7 +973,7 @@ void Usuarios::llenarComboBoxFechas()
 void Usuarios::llenarComboBoxFechas_BST()
 {
     std::set<QString> fechasUnicas;
-    std::vector<Publicacion> publicaciones = listadoblepublicacion->mostrarPublicacionesYAmigos(correoActualUsuario_, grafoNoDirigido, arbolABB, "InOrder");
+    std::vector<Publicacion> publicaciones = listadoblepublicacion->mostrarPublicacionesYAmigos(correoActualUsuario_, matrizDispersa, arbolABB, "InOrder");
 
     for (const auto& publicacion : publicaciones) {
         // Obtener la fecha de la publicación y convertirla al formato año/mes/día

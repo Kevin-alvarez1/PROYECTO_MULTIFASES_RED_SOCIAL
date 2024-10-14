@@ -75,13 +75,13 @@
 			{
 				"command" : 4,
 				"file" : 1,
-				"line" : 92,
+				"line" : 93,
 				"parent" : 0
 			},
 			{
 				"command" : 5,
 				"file" : 1,
-				"line" : 75,
+				"line" : 76,
 				"parent" : 0
 			},
 			{
@@ -322,7 +322,7 @@
 			[
 				{
 					"backtrace" : 0,
-					"path" : "C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/include"
+					"path" : "C:/Users/Cito/Desktop/carpeta EDD/-EDD-Proyecto1_202203038/Fase3/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/include"
 				},
 				{
 					"backtrace" : 14,
@@ -380,20 +380,19 @@
 				33,
 				35,
 				37,
-				39,
-				41,
-				44
+				40,
+				42
 			]
 		}
 	],
 	"dependencies" : 
 	[
 		{
-			"backtrace" : 0,
-			"id" : "main_autogen::@6890427a1f51a3e7e1df"
+			"id" : "main_autogen_timestamp_deps::@6890427a1f51a3e7e1df"
 		},
 		{
-			"id" : "main_autogen_timestamp_deps::@6890427a1f51a3e7e1df"
+			"backtrace" : 0,
+			"id" : "main_autogen::@6890427a1f51a3e7e1df"
 		}
 	],
 	"id" : "main::@6890427a1f51a3e7e1df",
@@ -521,9 +520,8 @@
 				33,
 				35,
 				37,
-				39,
-				41,
-				44
+				40,
+				42
 			]
 		},
 		{
@@ -546,14 +544,13 @@
 				32,
 				34,
 				36,
-				38,
-				40,
+				39,
+				41,
 				43,
+				44,
 				45,
 				46,
-				47,
-				48,
-				49
+				47
 			]
 		},
 		{
@@ -564,15 +561,15 @@
 				7,
 				14,
 				17,
-				42,
-				50
+				38,
+				48
 			]
 		},
 		{
 			"name" : "CMake Rules",
 			"sourceIndexes" : 
 			[
-				51
+				49
 			]
 		}
 	],
@@ -767,28 +764,6 @@
 		},
 		{
 			"backtrace" : 4,
-			"path" : "matrizdispersa.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 4,
-			"compileGroupIndex" : 0,
-			"path" : "matrizdispersa.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 4,
-			"path" : "nodomatrizdispersa.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 4,
-			"compileGroupIndex" : 0,
-			"path" : "nodomatrizdispersa.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 4,
 			"path" : "arbolabb.h",
 			"sourceGroupIndex" : 1
 		},
@@ -823,6 +798,17 @@
 			"backtrace" : 4,
 			"compileGroupIndex" : 0,
 			"path" : "arbolbcomentario.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 4,
+			"path" : "grafo_no_dirigido.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 4,
+			"compileGroupIndex" : 0,
+			"path" : "grafo_no_dirigido.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{

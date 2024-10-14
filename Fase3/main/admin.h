@@ -39,6 +39,8 @@ private slots:
 
     void on_Generar_reporte_btn_clicked();
 
+    void on_listaAdyacencia_y_grafo_boton_clicked();
+
 private:
     Ui::Admin *ui;
     ListaUsuarios *listaUsuarios;

@@ -1,5 +1,5 @@
-C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase3/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/EWIEGA46WW/moc_Login.cpp: C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Login.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase3/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/moc_predefs.h \
+C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/EWIEGA46WW/moc_Login.cpp: C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/Login.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/moc_predefs.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/q20functional.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/q20memory.h \
   C:/Qt/6.7.2/mingw_64/include/QtCore/q20type_traits.h \
@@ -393,17 +393,17 @@ C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase3/main/bui
   C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/vadefs.h \
   C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/wchar.h \
   C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include/wctype.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Comentario.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/ListaUsuarios.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/NodoAVL.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/Publicacion.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/arbolabb.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/arbolbcomentario.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/comentario.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/grafo_no_dirigido.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/json.hpp \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/listaDoblePublicacion.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/lista_solicitudes.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/publicacion.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/solicitud.h \
-  C:/Users/Player/Desktop/Carpeta\ de\ EDD/-EDD-Proyecto1_202203038/Fase2/main/usuario.h
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/Comentario.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/ListaUsuarios.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/NodoAVL.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/Publicacion.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/arbolabb.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/arbolbcomentario.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/comentario.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/grafo_no_dirigido.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/json.hpp \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/listaDoblePublicacion.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/lista_solicitudes.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/publicacion.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/solicitud.h \
+  C:/Users/Cito/Desktop/carpeta\ EDD/-EDD-Proyecto1_202203038/Fase3/main/usuario.h

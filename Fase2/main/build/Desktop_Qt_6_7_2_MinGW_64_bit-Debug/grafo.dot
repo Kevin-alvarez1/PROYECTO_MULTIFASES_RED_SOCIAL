@@ -1,0 +1,9 @@
+graph G {
+    "f2@gmail.com" -- "mr@example.com";
+    "f2@gmail.com" -- "sg@example.com";
+    "f2@gmail.com" -- "jg@example.com";
+    "f2@gmail.com" -- "jm@example.com";
+    "f2@gmail.com" -- "lp@example.com";
+    "f2@gmail.com" -- "ml@example.com";
+    "cg@example.com" -- "f2@gmail.com";
+}

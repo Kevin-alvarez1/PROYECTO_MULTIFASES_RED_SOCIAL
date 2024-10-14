@@ -61,8 +61,8 @@ void Admin::on_Solicitudes_boton_archivo_clicked()
         if (archivo.is_open())
         {
             lista_solicitudes->cargarRelacionesDesdeJson(filename.toStdString());
-            lista_solicitudes->agregarRelacionesAceptadasAMatriz(grafoNoDirigido);
-            grafoNoDirigido.mostrarGrafo();
+            lista_solicitudes->agregarRelacionesAceptadasAMatriz(matrizDispersa);
+            matrizDispersa.mostrarMatriz();
             QMessageBox::information(this, "Cargar usuarios", "Usuarios cargados exitosamente.");
         }
         else
@@ -447,53 +447,6 @@ void Admin::actualizarPanelConImagen_publis(const QString& imagePathP) {
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(imageLabel);
 
-    newLayout->addWidget(scrollArea);
-}
-
-
-void Admin::on_listaAdyacencia_y_grafo_boton_clicked()
-{
-    // Generar el archivo PNG del grafo
-    std::string nombreArchivoPNG = "grafo";
-    grafoNoDirigido.generarPNG(nombreArchivoPNG);
-
-    // Convertir el nombre del archivo a QString
-    QString imagePath = QString::fromStdString(nombreArchivoPNG + ".png");
-
-    // Verificar si existe un layout anterior en el frame y eliminarlo
-    QLayout* existingLayout = ui->ListaAdyacencia_label->layout(); // Usa el layout correspondiente (puede ser scrollArea_3 o tu frame)
-    if (existingLayout) {
-        QLayoutItem* item;
-        while ((item = existingLayout->takeAt(0))) {
-            delete item->widget(); // Eliminar el widget asociado
-            delete item;
-        }
-        delete existingLayout;
-    }
-
-    // Crear un nuevo layout para la imagen
-    QVBoxLayout* newLayout = new QVBoxLayout();
-    ui->ListaAdyacencia_label->setLayout(newLayout); // Si es otro frame o widget, cámbialo aquí.
-
-    // Crear un QLabel para mostrar la imagen
-    QLabel* imageLabel = new QLabel();
-    QPixmap pixmap(imagePath);
-
-    if (pixmap.isNull()) {
-        qDebug() << "Error: No se pudo cargar la imagen" << imagePath;
-        return;
-    }
-
-    // Ajustar el QLabel con el pixmap y redimensionar al tamaño de la imagen
-    imageLabel->setPixmap(pixmap);
-    imageLabel->resize(pixmap.size());
-
-    // Crear un QScrollArea para la imagen
-    QScrollArea* scrollArea = new QScrollArea();
-    scrollArea->setWidgetResizable(true);  // Hacer que el contenido se ajuste con desplazamiento si es necesario
-    scrollArea->setWidget(imageLabel);     // Establecer QLabel como el contenido de QScrollArea
-
-    // Añadir el QScrollArea al layout
     newLayout->addWidget(scrollArea);
 }
 

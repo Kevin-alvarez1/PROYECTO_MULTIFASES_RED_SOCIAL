@@ -135,18 +135,39 @@ void GrafoNoDirigido::mostrarGrafo() const {
     }
 }
 
-// Generar un archivo DOT para visualizar el grafo
 void GrafoNoDirigido::generarArchivoDOT(const std::string& nombreArchivo) const {
     std::ofstream archivo(nombreArchivo);
     if (archivo.is_open()) {
-        archivo << "graph G {\n";
+        archivo << "digraph G {\n";
+
+        // Arreglo para rastrear los nodos escritos
+        std::string nodosEscritos[100]; // Asumimos un máximo de 100 nodos
+        int contadorNodos = 0;
+
         for (int i = 0; i < numNodos; i++) {
+            // Verificar si el nodo ya fue escrito
+            bool yaEscrito = false;
+            for (int k = 0; k < contadorNodos; k++) {
+                if (nodosEscritos[k] == nodos[i]->nombre) {
+                    yaEscrito = true;
+                    break;
+                }
+            }
+
+            // Si no fue escrito, añadirlo
+            if (!yaEscrito) {
+                archivo << "\"" << nodos[i]->nombre << "\"[label=\"" << nodos[i]->nombre << "\"];\n";  // Comillas alrededor
+                nodosEscritos[contadorNodos++] = nodos[i]->nombre; // Añadir a los nodos escritos
+            }
+
+            // Añadir los arcos
             for (int j = 0; j < nodos[i]->numVecinos; j++) {
                 if (nodos[i]->nombre < nodos[i]->vecinos[j]->nombre) {  // Evitar duplicados
-                    archivo << "    \"" << nodos[i]->nombre << "\" -- \"" << nodos[i]->vecinos[j]->nombre << "\";\n";
+                    archivo << "\"" << nodos[i]->nombre << "\" -> \"" << nodos[i]->vecinos[j]->nombre << "\"[dir=none];\n";  // Comillas alrededor
                 }
             }
         }
+
         archivo << "}\n";
         archivo.close();
     }

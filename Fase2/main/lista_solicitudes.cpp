@@ -22,7 +22,7 @@ ListaSolicitudes::~ListaSolicitudes() {
     }
 }
 
-void ListaSolicitudes::agregarRelacionesAceptadasAMatriz(GrafoNoDirigido &grafoNoDirigido)
+void ListaSolicitudes::agregarRelacionesAceptadasAMatriz(MatrizDispersa &matriz)
 {
     NodoSolicitud *actual = cabeza;
 
@@ -30,7 +30,7 @@ void ListaSolicitudes::agregarRelacionesAceptadasAMatriz(GrafoNoDirigido &grafoN
     {
         if (actual->solicitud.getEstado() == "ACEPTADA")
         {
-            grafoNoDirigido.insertarRelacion(actual->solicitud.getEmisor(), actual->solicitud.getReceptor());
+            matriz.insertarRelacion(actual->solicitud.getEmisor(), actual->solicitud.getReceptor());
         }
         actual = actual->siguiente;
     }

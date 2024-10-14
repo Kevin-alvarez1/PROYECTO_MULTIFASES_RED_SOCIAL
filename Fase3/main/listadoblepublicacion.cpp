@@ -3,7 +3,7 @@
 #include <fstream>
 #include "json.hpp"
 #include "arbolabb.h"
-#include "matrizdispersa.h"
+#include "grafo_no_dirigido.h"
 
 
 ListaDoblePublicacion::ListaDoblePublicacion() : cabeza(nullptr), cola(nullptr), siguienteId(1)
@@ -196,24 +196,36 @@ void ListaDoblePublicacion::crearPNG(const std::string &dotFilename, const std::
 
 std::vector<Publicacion> ListaDoblePublicacion::mostrarPublicacionesYAmigos(
     const std::string &correo,
-    const MatrizDispersa &matriz,
+    const GrafoNoDirigido &grafoNoDirigido,
     ArbolABB &arbol,
     const std::string &orden) {
 
     std::vector<Publicacion> publicaciones_arbol; // Vector para almacenar las publicaciones
     publicaciones_arbol.clear();
+
     try {
         arbol = ArbolABB();
 
         // Obtener la lista de amigos del usuario
-        std::vector<std::string> amigos = matriz.obtenerAmigos(correo);
-        amigos.push_back(correo); // Agregar el correo del usuario a la lista de amigos
+        int cantidadAmigos;
+        std::string* amigos = grafoNoDirigido.obtenerAmigos(correo, cantidadAmigos);
+        // Crear un arreglo dinámico para incluir el propio correo del usuario
+        std::string* amigosConUsuario = new std::string[cantidadAmigos + 1];
+
+        // Copiar amigos al nuevo arreglo y agregar el correo del usuario
+        for (int i = 0; i < cantidadAmigos; i++) {
+            amigosConUsuario[i] = amigos[i];
+        }
+        amigosConUsuario[cantidadAmigos] = correo; // Agregar el correo del usuario a la lista de amigos
 
         NodoPublicacion* actual = cabeza;
         while (actual) {
             // Comprobar si la publicación es del usuario o de un amigo
-            if (std::find(amigos.begin(), amigos.end(), actual->publicacion.getCorreo()) != amigos.end()) {
-                arbol.insertarPublicacion(actual->publicacion);
+            for (int i = 0; i <= cantidadAmigos; i++) {
+                if (actual->publicacion.getCorreo() == amigosConUsuario[i]) {
+                    arbol.insertarPublicacion(actual->publicacion);
+                    break; // Salir del bucle una vez que se encuentra una coincidencia
+                }
             }
             actual = actual->siguiente;
         }
@@ -234,12 +246,17 @@ std::vector<Publicacion> ListaDoblePublicacion::mostrarPublicacionesYAmigos(
         } else {
             std::cerr << "Orden no válido: " << orden << std::endl;
         }
+
+        // Liberar la memoria del arreglo de amigos
+        delete[] amigos; // Liberar el arreglo devuelto por obtenerAmigos
+        delete[] amigosConUsuario; // Liberar el arreglo creado localmente
     } catch (const std::exception &e) {
         std::cerr << "Excepción capturada: " << e.what() << std::endl;
     }
 
     return publicaciones_arbol;
 }
+
 
 void ListaDoblePublicacion::mostrarPublicacionesPorCorreo(const std::string& correo) const
 {

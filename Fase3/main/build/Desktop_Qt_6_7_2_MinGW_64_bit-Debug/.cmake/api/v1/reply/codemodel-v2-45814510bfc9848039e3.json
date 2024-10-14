@@ -7,7 +7,7 @@
 				{
 					"build" : ".",
 					"hasInstallRule" : true,
-					"jsonFile" : "directory-.-Debug-491fa6baaa4692c67b4d.json",
+					"jsonFile" : "directory-.-Debug-039652846f5cda62742e.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.16"
@@ -44,7 +44,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "main::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-main-Debug-c672888c39833d5b69d7.json",
+					"jsonFile" : "target-main-Debug-81169dcf9f9527cc116e.json",
 					"name" : "main",
 					"projectIndex" : 0
 				},
@@ -68,8 +68,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug",
-		"source" : "C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase2/main"
+		"build" : "C:/Users/Cito/Desktop/carpeta EDD/-EDD-Proyecto1_202203038/Fase3/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug",
+		"source" : "C:/Users/Cito/Desktop/carpeta EDD/-EDD-Proyecto1_202203038/Fase3/main"
 	},
 	"version" : 
 	{

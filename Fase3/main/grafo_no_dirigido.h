@@ -44,6 +44,8 @@ public:
     std::string* recomendarAmigos(const std::string& nombre, int& cantidadRecomendaciones) const;
 
     int obtenerAmigosEnComun(const std::string& usuario1, const std::string& usuario2) const;
+    void generarArchivoDOTListaAdyacencia(const std::string& nombreArchivo) const;
+    void generarPNG_ListaAdyacencia(const std::string& nombreArchivo) const;
 };
 
 #endif // GRAFO_NO_DIRIGIDO_H

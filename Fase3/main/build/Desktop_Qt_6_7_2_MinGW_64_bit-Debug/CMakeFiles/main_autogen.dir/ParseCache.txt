@@ -415,8 +415,8 @@ C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/admin
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/solicitud.h
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/usuario.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/arbolabb.h
-C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/arbolbcomentario.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/grafo_no_dirigido.h
+C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/arbolbcomentario.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/comentario.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/usuarios.cpp
  uic:ui_usuarios.h
@@ -811,10 +811,10 @@ C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/crear
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/publicacion.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/listaDoblePublicacion.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/lista_solicitudes.h
-C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/listausuarios.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/registrarse.cpp
  uic:./ui_usuarios.h
  uic:ui_registrarse.h
+C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/listausuarios.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/login.h
  mmc:Q_OBJECT
  mdp:C:/Qt/6.7.2/mingw_64/include/QtCore/q20functional.h
@@ -1227,17 +1227,17 @@ C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/login
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/solicitud.h
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/usuario.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/nodoavl.h
-C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/pilareceptor.h
-C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/Comentario.cpp
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/main.cpp
-C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/publicacion.h
+C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/Comentario.cpp
+C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/pilareceptor.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/usuario.cpp
-C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/receptor.h
+C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/publicacion.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/login.cpp
  uic:./ui_Admin.h
  uic:./ui_login.h
  uic:./ui_registrarse.h
  uic:./ui_usuarios.h
+C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/receptor.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/registrarse.h
  mmc:Q_OBJECT
  mdp:C:/Qt/6.7.2/mingw_64/include/QtCore/q20functional.h
@@ -1648,9 +1648,10 @@ C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/regis
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/registrarse.h
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/solicitud.h
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/usuario.h
-C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/solicitud.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/nodoavl.cpp
+C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/solicitud.h
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/usuario.h
+C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/pilareceptor.cpp
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/usuarios.h
  mmc:Q_OBJECT
  mdp:C:/Qt/6.7.2/mingw_64/include/QtCore/q20functional.h
@@ -2091,10 +2092,9 @@ C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/usuar
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/solicitud.h
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/usuario.h
  mdp:C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/usuarios.h
-C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/pilareceptor.cpp
+C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/arbolabb.cpp
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/admin.cpp
  uic:./ui_Admin.h
-C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/arbolabb.cpp
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/arbolbcomentario.cpp
 C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/crearpublicacion.cpp
  uic:ui_crearpublicacion.h

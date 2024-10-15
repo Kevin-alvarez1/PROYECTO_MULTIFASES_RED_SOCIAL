@@ -1,0 +1,27 @@
+digraph G {
+rankdir=LR;
+"ana.hernandez@example.com";
+"ana.hernandez@example.com" -> "juan.martinez@example.com";
+"juan.martinez@example.com";
+"juan.martinez@example.com" -> "ana.hernandez@example.com";
+"juan.martinez@example.com" -> "maria.lopez@example.com";
+"juan.martinez@example.com" -> "elena.torres@example.com";
+"miguel.rodriguez@example.com";
+"miguel.rodriguez@example.com" -> "sofia.gonzalez@example.com";
+"sofia.gonzalez@example.com";
+"sofia.gonzalez@example.com" -> "miguel.rodriguez@example.com";
+"luis.perez@example.com";
+"luis.perez@example.com" -> "laura.ramirez@example.com";
+"laura.ramirez@example.com";
+"laura.ramirez@example.com" -> "luis.perez@example.com";
+"carlos.gomez@example.com";
+"carlos.gomez@example.com" -> "maria.lopez@example.com";
+"maria.lopez@example.com";
+"maria.lopez@example.com" -> "carlos.gomez@example.com";
+"maria.lopez@example.com" -> "juan.martinez@example.com";
+"jose.garcia@example.com";
+"jose.garcia@example.com" -> "elena.torres@example.com";
+"elena.torres@example.com";
+"elena.torres@example.com" -> "jose.garcia@example.com";
+"elena.torres@example.com" -> "juan.martinez@example.com";
+}

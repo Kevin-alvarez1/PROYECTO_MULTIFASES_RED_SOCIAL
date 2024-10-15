@@ -286,13 +286,13 @@ void GrafoNoDirigido::generarArchivoDOTEstilos(const std::string& nombreArchivo,
         std::string* recomendaciones = recomendarAmigos(correoActualUsuario_, cantidadRecomendaciones);
 
         // Añadir el nodo del usuario actual
-        archivo << "\"" << correoActualUsuario_ << "\" [label=\"" << correoActualUsuario_ << "\" color=\"blue\"];\n";
+        archivo << "\"" << correoActualUsuario_ << "\" [label=\"" << correoActualUsuario_ << "\" color=\"skyblue\", style=filled];\n";
         nodosEscritos[contadorNodos++] = correoActualUsuario_;
 
         // Añadir los amigos y sus conexiones
         for (int i = 0; i < cantidadAmigos; i++) {
             if (std::find(nodosEscritos, nodosEscritos + contadorNodos, amigos[i]) == nodosEscritos + contadorNodos) {
-                archivo << "\"" << amigos[i] << "\" [label=\"" << amigos[i] << "\" color=\"green\"];\n";
+                archivo << "\"" << amigos[i] << "\" [label=\"" << amigos[i] << "\" color=\"lightgreen\", style=filled];\n";
                 nodosEscritos[contadorNodos++] = amigos[i];
             }
             archivo << "\"" << correoActualUsuario_ << "\" -> \"" << amigos[i] << "\" [dir=none];\n";  // Conexión con amigos
@@ -301,10 +301,9 @@ void GrafoNoDirigido::generarArchivoDOTEstilos(const std::string& nombreArchivo,
         // Añadir las recomendaciones y sus conexiones
         for (int i = 0; i < cantidadRecomendaciones; i++) {
             if (std::find(nodosEscritos, nodosEscritos + contadorNodos, recomendaciones[i]) == nodosEscritos + contadorNodos) {
-                archivo << "\"" << recomendaciones[i] << "\" [label=\"" << recomendaciones[i] << "\" color=\"red\"];\n";
+                archivo << "\"" << recomendaciones[i] << "\" [label=\"" << recomendaciones[i] << "\" color=\"salmon\", style=filled];\n";
                 nodosEscritos[contadorNodos++] = recomendaciones[i];
             }
-            archivo << "\"" << correoActualUsuario_ << "\" -> \"" << recomendaciones[i] << "\" [dir=none];\n";  // Conexión con recomendaciones
         }
 
         // Añadir los nodos restantes del grafo
@@ -335,6 +334,51 @@ void GrafoNoDirigido::generarArchivoDOTEstilos(const std::string& nombreArchivo,
     }
 }
 
+void GrafoNoDirigido::generarArchivoDOTListaAdyacencia(const std::string& nombreArchivo) const {
+    std::ofstream archivo(nombreArchivo);
+
+    if (archivo.is_open()) {
+        // Usar rankdir=LR para alinear los nodos horizontalmente
+        archivo << "digraph G {\n";
+        archivo << "rankdir=LR;\n";  // Alinea los nodos de izquierda a derecha
+
+        // Iterar sobre todos los nodos del grafo
+        for (int i = 0; i < numNodos; ++i) {
+            Nodo* nodoActual = nodos[i];
+
+            // Definir cada nodo para asegurarnos de que estén presentes aunque no tengan conexiones
+            archivo << "\"" << nodoActual->nombre << "\";\n";
+
+            // Iterar sobre los vecinos de cada nodo
+            for (int j = 0; j < nodoActual->numVecinos; ++j) {
+                Nodo* vecino = nodoActual->vecinos[j];
+
+                // Crear una relación entre el nodo actual y su vecino
+                archivo << "\"" << nodoActual->nombre << "\" -> \"" << vecino->nombre << "\";\n";
+            }
+        }
+
+        archivo << "}\n";
+        archivo.close();
+
+        std::cout << "Archivo DOT generado correctamente: " << nombreArchivo << std::endl;
+    } else {
+        std::cerr << "No se pudo abrir el archivo: " << nombreArchivo << std::endl;
+    }
+}
+
+void GrafoNoDirigido::generarPNG_ListaAdyacencia(const std::string& nombreArchivo) const {
+    std::string nombreDOT = nombreArchivo + ".dot";
+    std::string nombrePNG = nombreArchivo + ".png";
+
+    generarArchivoDOTListaAdyacencia(nombreDOT);
+
+    // Ejecutar el comando dot para convertir .dot a .png
+    std::string comando = "dot -Tpng " + nombreDOT + " -o " + nombrePNG;
+    system(comando.c_str());
+
+    std::cout << "Imagen PNG generada correctamente: " << nombrePNG << std::endl;
+}
 
 // Generar un PNG del grafo usando Graphviz
 void GrafoNoDirigido::generarPNG(const std::string& nombreArchivo) const {

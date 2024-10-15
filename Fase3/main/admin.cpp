@@ -461,7 +461,7 @@ void Admin::on_listaAdyacencia_y_grafo_boton_clicked()
     QString imagePath = QString::fromStdString(nombreArchivoPNG + ".png");
 
     // Verificar si existe un layout anterior en el frame y eliminarlo
-    QLayout* existingLayout = ui->ListaAdyacencia_label->layout(); // Usa el layout correspondiente (puede ser scrollArea_3 o tu frame)
+    QLayout* existingLayout = ui->Grafo_amistades_label->layout();
     if (existingLayout) {
         QLayoutItem* item;
         while ((item = existingLayout->takeAt(0))) {
@@ -473,7 +473,7 @@ void Admin::on_listaAdyacencia_y_grafo_boton_clicked()
 
     // Crear un nuevo layout para la imagen
     QVBoxLayout* newLayout = new QVBoxLayout();
-    ui->ListaAdyacencia_label->setLayout(newLayout); // Si es otro frame o widget, cámbialo aquí.
+    ui->Grafo_amistades_label->setLayout(newLayout);
 
     // Crear un QLabel para mostrar la imagen
     QLabel* imageLabel = new QLabel();
@@ -490,10 +490,56 @@ void Admin::on_listaAdyacencia_y_grafo_boton_clicked()
 
     // Crear un QScrollArea para la imagen
     QScrollArea* scrollArea = new QScrollArea();
-    scrollArea->setWidgetResizable(true);  // Hacer que el contenido se ajuste con desplazamiento si es necesario
-    scrollArea->setWidget(imageLabel);     // Establecer QLabel como el contenido de QScrollArea
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setWidget(imageLabel);
 
     // Añadir el QScrollArea al layout
     newLayout->addWidget(scrollArea);
+
+    // ---------------- Lista de adyacencia ----------------
+
+    // Generar el archivo PNG de la lista de adyacencia
+    std::string nombreArchivoPNG_listaAdyacencia = "ListaAdyacencia";
+    grafoNoDirigido.generarPNG_ListaAdyacencia(nombreArchivoPNG_listaAdyacencia);
+
+    // Convertir el nombre del archivo a QString
+    QString imagePath_listaAdyacencia = QString::fromStdString(nombreArchivoPNG_listaAdyacencia + ".png");
+
+    // Verificar si existe un layout anterior en el frame y eliminarlo
+    QLayout* existingLayout_listaAdyacencia = ui->ListaAdyacencia_label->layout();
+    if (existingLayout_listaAdyacencia) {
+        QLayoutItem* item;
+        while ((item = existingLayout_listaAdyacencia->takeAt(0))) {
+            delete item->widget(); // Eliminar el widget asociado
+            delete item;
+        }
+        delete existingLayout_listaAdyacencia;
+    }
+
+    // Crear un nuevo layout para la imagen
+    QVBoxLayout* newLayout_listaAdyacencia = new QVBoxLayout();
+    ui->ListaAdyacencia_label->setLayout(newLayout_listaAdyacencia);
+
+    // Crear un QLabel para mostrar la imagen
+    QLabel* imageLabel_listaAdyacencia = new QLabel();
+    QPixmap pixmap_listaAdyacencia(imagePath_listaAdyacencia);
+
+    if (pixmap_listaAdyacencia.isNull()) {
+        qDebug() << "Error: No se pudo cargar la imagen" << imagePath_listaAdyacencia;
+        return;
+    }
+
+    // Ajustar el QLabel con el pixmap y redimensionar al tamaño de la imagen
+    imageLabel_listaAdyacencia->setPixmap(pixmap_listaAdyacencia);
+    imageLabel_listaAdyacencia->resize(pixmap_listaAdyacencia.size());
+
+    // Crear un QScrollArea para la imagen
+    QScrollArea* scrollArea_listaAdyacencia = new QScrollArea();
+    scrollArea_listaAdyacencia->setWidgetResizable(true);
+    scrollArea_listaAdyacencia->setWidget(imageLabel_listaAdyacencia);
+
+    // Añadir el QScrollArea al layout
+    newLayout_listaAdyacencia->addWidget(scrollArea_listaAdyacencia);
 }
+
 

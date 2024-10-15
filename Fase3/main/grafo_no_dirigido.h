@@ -10,7 +10,6 @@ public:
     Nodo** vecinos;  // Arreglo dinámico de punteros a nodos vecinos
     int numVecinos;  // Cantidad de vecinos actuales
     int capacidadVecinos;  // Capacidad actual del arreglo de vecinos
-
     Nodo(const std::string& nombre);
     ~Nodo();
 
@@ -40,7 +39,7 @@ public:
     std::string* obtenerAmigos(const std::string& nombre, int& cantidadAmigos) const;
     void mostrarGrafo() const;
     void generarPNG(const std::string& nombreArchivo) const;
-
+    void generarArchivoDOTEstilos(const std::string& nombreArchivo, const std::string& correoActualUsuario_) const;
     // Nuevo método para recomendar amigos
     std::string* recomendarAmigos(const std::string& nombre, int& cantidadRecomendaciones) const;
 

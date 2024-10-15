@@ -1206,76 +1206,134 @@ void Usuarios::obtenerCantidadComentariosDePublicaciones(NodoABB* nodo, std::vec
 }
 
 void Usuarios::on_actualizarTablaRecomendados_boton_clicked()
-{   try{
-    // Limpiar la tabla antes de agregar los datos nuevos
-    ui->tablaRecomendados->setRowCount(0);
+{
+    try {
+        // Limpiar la tabla antes de agregar los datos nuevos
+        ui->tablaRecomendados->setRowCount(0);
 
-    // Suponiendo que ya tienes un método para obtener el correo o nombre de usuario actual
-    std::string correoActual = correoActualUsuario_; // Asegúrate de que este valor sea correcto
+        // Suponiendo que ya tienes un método para obtener el correo o nombre de usuario actual
+        std::string correoActual = correoActualUsuario_; // Asegúrate de que este valor sea correcto
 
-    if (correoActual.empty()) {
-        std::cout << "Correo actual está vacío." << std::endl;
-        return;
-    }
-
-    std::cout << "Correo actual: " << correoActual << std::endl;
-
-    // Variable para almacenar la cantidad de recomendaciones
-    int cantidadRecomendaciones = 0;
-
-    // Llamar al método recomendarAmigos del grafo
-    std::string* recomendaciones = grafoNoDirigido.recomendarAmigos(correoActual, cantidadRecomendaciones);
-
-    if (recomendaciones == nullptr || cantidadRecomendaciones == 0) {
-        // No hay recomendaciones, tal vez mostrar un mensaje
-        std::cout << "No se encontraron recomendaciones." << std::endl;
-        return;
-    }
-
-    std::cout << "Cantidad de recomendaciones: " << cantidadRecomendaciones << std::endl;
-
-    // Asegurarse de que la tabla tiene 4 columnas para nombre, apellido, correo, amigos en común
-    if (ui->tablaRecomendados->columnCount() != 4) {
-        ui->tablaRecomendados->setColumnCount(4);  // Asegúrate de que la tabla tenga 4 columnas
-    }
-
-    // Iterar sobre las recomendaciones y agregarlas a la tabla
-    for (int i = 0; i < cantidadRecomendaciones; ++i) {
-        std::cout << "Procesando recomendación: " << recomendaciones[i] << std::endl;
-
-        // Buscar el usuario recomendado en el árbol AVL
-        Usuario* usuarioRecomendado = listaUsuarios->buscarUsuarioPorCorreo(recomendaciones[i]);
-
-        if (usuarioRecomendado == nullptr) {
-            std::cout << "Usuario recomendado no encontrado: " << recomendaciones[i] << std::endl;
-            continue;
+        if (correoActual.empty()) {
+            std::cout << "Correo actual está vacío." << std::endl;
+            return;
         }
 
-        std::cout << "Usuario encontrado: " << usuarioRecomendado->getNombre() << std::endl;
+        std::cout << "Correo actual: " << correoActual << std::endl;
 
-        // Obtener el número de amigos en común
-        int amigosEnComun = grafoNoDirigido.obtenerAmigosEnComun(correoActual, recomendaciones[i]);
-        std::cout << "Amigos en común: " << amigosEnComun << std::endl;
+        // Variable para almacenar la cantidad de recomendaciones
+        int cantidadRecomendaciones = 0;
 
-        // Insertar una nueva fila en la tabla
-        int filaActual = ui->tablaRecomendados->rowCount();
-        ui->tablaRecomendados->insertRow(filaActual);
+        // Llamar al método recomendarAmigos del grafo
+        std::string* recomendaciones = grafoNoDirigido.recomendarAmigos(correoActual, cantidadRecomendaciones);
 
-        // Rellenar las columnas de la tabla
-        ui->tablaRecomendados->setItem(filaActual, 0, new QTableWidgetItem(QString::fromStdString(usuarioRecomendado->getNombre())));
-        ui->tablaRecomendados->setItem(filaActual, 1, new QTableWidgetItem(QString::fromStdString(usuarioRecomendado->getApellido())));
-        ui->tablaRecomendados->setItem(filaActual, 2, new QTableWidgetItem(QString::fromStdString(recomendaciones[i]))); // El correo o nombre de usuario
-        ui->tablaRecomendados->setItem(filaActual, 3, new QTableWidgetItem(QString::number(amigosEnComun)));
+        if (recomendaciones == nullptr || cantidadRecomendaciones == 0) {
+            // No hay recomendaciones, tal vez mostrar un mensaje
+            std::cout << "No se encontraron recomendaciones." << std::endl;
+            return;
+        }
+
+        std::cout << "Cantidad de recomendaciones: " << cantidadRecomendaciones << std::endl;
+
+        // Asegurarse de que la tabla tiene 4 columnas para nombre, apellido, correo, amigos en común
+        if (ui->tablaRecomendados->columnCount() != 4) {
+            ui->tablaRecomendados->setColumnCount(4);  // Asegúrate de que la tabla tenga 4 columnas
+        }
+
+        // Iterar sobre las recomendaciones y agregarlas a la tabla
+        for (int i = 0; i < cantidadRecomendaciones; ++i) {
+            std::cout << "Procesando recomendación: " << recomendaciones[i] << std::endl;
+
+            // Buscar el usuario recomendado en el árbol AVL
+            Usuario* usuarioRecomendado = listaUsuarios->buscarUsuarioPorCorreo(recomendaciones[i]);
+
+            if (usuarioRecomendado == nullptr) {
+                std::cout << "Usuario recomendado no encontrado: " << recomendaciones[i] << std::endl;
+                continue;
+            }
+
+            std::cout << "Usuario encontrado: " << usuarioRecomendado->getNombre() << std::endl;
+
+            // Obtener el número de amigos en común
+            int amigosEnComun = grafoNoDirigido.obtenerAmigosEnComun(correoActual, recomendaciones[i]);
+            std::cout << "Amigos en común: " << amigosEnComun << std::endl;
+
+            // Insertar una nueva fila en la tabla
+            int filaActual = ui->tablaRecomendados->rowCount();
+            ui->tablaRecomendados->insertRow(filaActual);
+
+            // Rellenar las columnas de la tabla
+            ui->tablaRecomendados->setItem(filaActual, 0, new QTableWidgetItem(QString::fromStdString(usuarioRecomendado->getNombre())));
+            ui->tablaRecomendados->setItem(filaActual, 1, new QTableWidgetItem(QString::fromStdString(usuarioRecomendado->getApellido())));
+            ui->tablaRecomendados->setItem(filaActual, 2, new QTableWidgetItem(QString::fromStdString(recomendaciones[i]))); // El correo o nombre de usuario
+            ui->tablaRecomendados->setItem(filaActual, 3, new QTableWidgetItem(QString::number(amigosEnComun)));
+        }
+
+        // Generar archivo DOT y PNG
+        std::string nombreArchivoDot = "grafo_Amistades_Sugerencias.dot";  // Nombre del archivo DOT
+        grafoNoDirigido.generarArchivoDOTEstilos(nombreArchivoDot, correoActual);  // Generar archivo DOT
+
+        // Generar PNG a partir del archivo DOT
+        std::string comando = "dot -Tpng " + nombreArchivoDot + " -o " + nombreArchivoDot + ".png";
+        if (system(comando.c_str()) != 0) {
+            std::cerr << "Error al generar el archivo PNG" << std::endl;
+        }
+
+        // Liberar la memoria de las recomendaciones
+        delete[] recomendaciones;
     }
-
-    // Liberar la memoria de las recomendaciones
-    delete[] recomendaciones;
-    } catch (const std::exception& e) {
+    catch (const std::exception& e) {
         std::cerr << "Error al mostrar publicaciones: " << e.what() << std::endl;
         QMessageBox::critical(this, "Error", "Hubo un problema al mostrar las publicaciones.");
         return;
     }
-
 }
 
+
+
+void Usuarios::on_VerAmistadySugerncias_boton_clicked()
+{
+    // Generar el archivo PNG del grafo
+    std::string nombreArchivoPNG = "grafo_Amistades_Sugerencias.dot";  // Agregar la extensión .dot
+    grafoNoDirigido.generarArchivoDOTEstilos(nombreArchivoPNG, correoActualUsuario_);
+
+    // Convertir el nombre del archivo a QString
+    QString imagePath = QString::fromStdString(nombreArchivoPNG + ".png");
+
+    // Verificar si existe un layout anterior en el label y eliminarlo
+    QLayout* existingLayout = ui->amistadesYsugerencias_label->layout(); // Usa el layout correspondiente
+    if (existingLayout) {
+        QLayoutItem* item;
+        while ((item = existingLayout->takeAt(0))) {
+            delete item->widget(); // Eliminar el widget asociado
+            delete item;
+        }
+        delete existingLayout;
+    }
+
+    // Crear un nuevo layout para la imagen
+    QVBoxLayout* newLayout = new QVBoxLayout();
+    ui->amistadesYsugerencias_label->setLayout(newLayout);
+
+    // Crear un QLabel para mostrar la imagen
+    QLabel* imageLabel = new QLabel();
+    QPixmap pixmap(imagePath);
+
+    if (pixmap.isNull()) {
+        qDebug() << "Error: No se pudo cargar la imagen" << imagePath;
+        return;
+    }
+
+    // Ajustar el QLabel con el pixmap y redimensionar al tamaño de la imagen
+    imageLabel->setPixmap(pixmap);
+    imageLabel->resize(pixmap.size());
+
+    // Crear un QScrollArea para la imagen
+    QScrollArea* scrollArea = new QScrollArea();
+    scrollArea->setWidgetResizable(true);  // Hacer que el contenido se ajuste con desplazamiento si es necesario
+    scrollArea->setWidget(imageLabel);     // Establecer QLabel como el contenido de QScrollArea
+
+    // Añadir el QScrollArea al layout
+    newLayout->addWidget(scrollArea);
+}
 

@@ -268,6 +268,74 @@ void GrafoNoDirigido::generarArchivoDOT(const std::string& nombreArchivo) const 
     }
 }
 
+void GrafoNoDirigido::generarArchivoDOTEstilos(const std::string& nombreArchivo, const std::string& correoActualUsuario_) const {
+    std::ofstream archivo(nombreArchivo);
+    if (archivo.is_open()) {
+        archivo << "digraph G {\n";
+
+        // Arreglo para rastrear los nodos escritos
+        std::string nodosEscritos[100]; // Asumimos un máximo de 100 nodos
+        int contadorNodos = 0;
+
+        // Obtener amigos del usuario actual
+        int cantidadAmigos = 0;
+        std::string* amigos = obtenerAmigos(correoActualUsuario_, cantidadAmigos);
+
+        // Obtener recomendaciones del usuario actual
+        int cantidadRecomendaciones = 0;
+        std::string* recomendaciones = recomendarAmigos(correoActualUsuario_, cantidadRecomendaciones);
+
+        // Añadir el nodo del usuario actual
+        archivo << "\"" << correoActualUsuario_ << "\" [label=\"" << correoActualUsuario_ << "\" color=\"blue\"];\n";
+        nodosEscritos[contadorNodos++] = correoActualUsuario_;
+
+        // Añadir los amigos y sus conexiones
+        for (int i = 0; i < cantidadAmigos; i++) {
+            if (std::find(nodosEscritos, nodosEscritos + contadorNodos, amigos[i]) == nodosEscritos + contadorNodos) {
+                archivo << "\"" << amigos[i] << "\" [label=\"" << amigos[i] << "\" color=\"green\"];\n";
+                nodosEscritos[contadorNodos++] = amigos[i];
+            }
+            archivo << "\"" << correoActualUsuario_ << "\" -> \"" << amigos[i] << "\" [dir=none];\n";  // Conexión con amigos
+        }
+
+        // Añadir las recomendaciones y sus conexiones
+        for (int i = 0; i < cantidadRecomendaciones; i++) {
+            if (std::find(nodosEscritos, nodosEscritos + contadorNodos, recomendaciones[i]) == nodosEscritos + contadorNodos) {
+                archivo << "\"" << recomendaciones[i] << "\" [label=\"" << recomendaciones[i] << "\" color=\"red\"];\n";
+                nodosEscritos[contadorNodos++] = recomendaciones[i];
+            }
+            archivo << "\"" << correoActualUsuario_ << "\" -> \"" << recomendaciones[i] << "\" [dir=none];\n";  // Conexión con recomendaciones
+        }
+
+        // Añadir los nodos restantes del grafo
+        for (int i = 0; i < numNodos; i++) {
+            // Verificar si el nodo ya fue escrito
+            bool yaEscrito = std::find(nodosEscritos, nodosEscritos + contadorNodos, nodos[i]->nombre) != nodosEscritos + contadorNodos;
+
+            // Si no fue escrito, añadirlo
+            if (!yaEscrito) {
+                archivo << "\"" << nodos[i]->nombre << "\"[label=\"" << nodos[i]->nombre << "\"];\n";  // Comillas alrededor
+                nodosEscritos[contadorNodos++] = nodos[i]->nombre; // Añadir a los nodos escritos
+            }
+
+            // Añadir los arcos
+            for (int j = 0; j < nodos[i]->numVecinos; j++) {
+                if (nodos[i]->nombre < nodos[i]->vecinos[j]->nombre) {  // Evitar duplicados
+                    archivo << "\"" << nodos[i]->nombre << "\" -> \"" << nodos[i]->vecinos[j]->nombre << "\"[dir=none];\n";  // Comillas alrededor
+                }
+            }
+        }
+
+        archivo << "}\n";
+        archivo.close();
+
+        // Liberar la memoria de las recomendaciones
+        delete[] amigos;
+        delete[] recomendaciones;
+    }
+}
+
+
 // Generar un PNG del grafo usando Graphviz
 void GrafoNoDirigido::generarPNG(const std::string& nombreArchivo) const {
     std::string dotFile = nombreArchivo + ".dot";

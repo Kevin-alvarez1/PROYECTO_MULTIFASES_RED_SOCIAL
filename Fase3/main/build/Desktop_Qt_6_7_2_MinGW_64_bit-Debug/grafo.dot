@@ -11,6 +11,5 @@ digraph G {
 "et@example.com"[label="et@example.com"];
 "et@example.com" -> "f2@gmail.com"[dir=none];
 "cg@example.com"[label="cg@example.com"];
-"cg@example.com" -> "et@gmail.com"[dir=none];
-"et@gmail.com"[label="et@gmail.com"];
+"cg@example.com" -> "et@example.com"[dir=none];
 }

@@ -42,6 +42,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         crearpublicacion.h crearpublicacion.cpp crearpublicacion.ui
         arbolbcomentario.h arbolbcomentario.cpp
         grafo_no_dirigido.h grafo_no_dirigido.cpp
+        huffman.h huffman.cpp
 
 
 

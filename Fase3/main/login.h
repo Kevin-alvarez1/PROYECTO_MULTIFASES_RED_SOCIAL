@@ -21,11 +21,15 @@ class Login : public QMainWindow
 public:
     explicit Login(ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion, ListaSolicitudes *lista_solicitudes, QWidget *parent = nullptr);
     ~Login();
+    void guardarUsuarios();
+protected:
+    void closeEvent(QCloseEvent *event) override;  // Sobrescribir el método closeEvent
 
 private slots:
     void on_InicioSesion_btn_clicked();
     void on_Registrarse_btn_clicked();
-
+signals:
+    void cerrarSesion();
 private:
     Ui::Login *ui;
     Admin *adminWindow;

@@ -46,6 +46,7 @@ public:
     std::vector<Usuario> obtenerUsuariosEnOrden(const std::string& tipoOrden) const;
     void generateDot(const std::string& filename) const;
 
+
 };
 
 #endif // LISTAUSUARIOS_H

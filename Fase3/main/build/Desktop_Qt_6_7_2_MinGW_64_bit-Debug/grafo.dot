@@ -12,8 +12,4 @@ digraph G {
 "carlos.gomez@example.com"[label="carlos.gomez@example.com"];
 "carlos.gomez@example.com" -> "maria.lopez@example.com"[dir=none];
 "maria.lopez@example.com"[label="maria.lopez@example.com"];
-"jose.garcia@example.com"[label="jose.garcia@example.com"];
-"elena.torres@example.com"[label="elena.torres@example.com"];
-"elena.torres@example.com" -> "jose.garcia@example.com"[dir=none];
-"elena.torres@example.com" -> "juan.martinez@example.com"[dir=none];
 }

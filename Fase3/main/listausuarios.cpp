@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <functional>
-
+ListaUsuarios listaUsurios;
 ListaUsuarios::ListaUsuarios() : raiz(nullptr) {}
 
 ListaUsuarios::~ListaUsuarios() {

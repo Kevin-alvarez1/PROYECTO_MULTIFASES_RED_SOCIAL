@@ -5,6 +5,11 @@ Usuario::Usuario(const std::string &nombre, const std::string &apellido, const s
                  const std::string &correo, const std::string &contrasena)
     : nombre_(nombre), apellido_(apellido), fecha_de_nacimiento_(fecha_de_nacimiento), correo_(correo), contrasena_(contrasena) {}
 
+std::string Usuario::serializar() const {
+    return nombre_ + "," + apellido_ + "," + fecha_de_nacimiento_ + "," + correo_ + "," + contrasena_;
+}
+
+
 // Getters
 std::string Usuario::getNombre() const
 {

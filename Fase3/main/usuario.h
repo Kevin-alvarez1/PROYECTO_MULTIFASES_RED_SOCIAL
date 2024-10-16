@@ -2,6 +2,7 @@
 #define USUARIO_H
 
 #include <string>
+#include <sstream>
 
 class Usuario
 {
@@ -22,6 +23,19 @@ public:
     void setContrasena(const std::string &contrasena);
     void mostrarInformacion() const;
 
+    std::string serializar() const;
+    static Usuario deserializar(const std::string& datos) {
+        std::istringstream stream(datos);
+        std::string nombre, apellido, fecha_nacimiento, correo, contrasena;
+
+        std::getline(stream, nombre, ',');
+        std::getline(stream, apellido, ',');
+        std::getline(stream, fecha_nacimiento, ',');
+        std::getline(stream, correo, ',');
+        std::getline(stream, contrasena, ',');
+
+        return Usuario(nombre, apellido, fecha_nacimiento, correo, contrasena);
+    }
 private:
     std::string nombre_;
     std::string apellido_;

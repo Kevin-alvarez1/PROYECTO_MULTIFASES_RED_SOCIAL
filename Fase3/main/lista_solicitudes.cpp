@@ -6,6 +6,7 @@
 #include <fstream>
 #include <unordered_set>
 
+ListaSolicitudes listaSolicitudes;
 
 // Aquí se debe tener un método para obtener la pila del receptor
 PilaReceptor& obtenerPilaReceptor(const std::string &correoReceptor);  // Debes implementar esta función

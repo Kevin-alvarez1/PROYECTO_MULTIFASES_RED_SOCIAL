@@ -13,6 +13,7 @@
 #include "publicacion.h"
 #include <QVBoxLayout>
 
+
 class CrearPublicacion;
 
 namespace Ui {

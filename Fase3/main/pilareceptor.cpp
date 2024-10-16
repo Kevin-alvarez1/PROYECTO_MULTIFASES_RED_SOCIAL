@@ -4,7 +4,7 @@
 std::unordered_map<std::string, PilaReceptor> pilasReceptores;
 
 // Definición de los métodos de la clase PilaReceptor
-
+PilaReceptor pilaReceptor;
 NodoReceptor::NodoReceptor(const Receptor& receptor_) : receptor(receptor_), siguiente(nullptr) {}
 
 PilaReceptor::PilaReceptor() : cima(nullptr) {}

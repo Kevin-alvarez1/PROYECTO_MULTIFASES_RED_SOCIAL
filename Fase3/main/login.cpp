@@ -7,6 +7,10 @@
 #include "registrarse.h"
 #include "./ui_registrarse.h"
 #include <QMessageBox>
+#include <QCloseEvent>
+#include "huffman.h"
+
+extern Huffman huffman;
 
 Login::Login(ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion, ListaSolicitudes *lista_solicitudes, QWidget *parent)
     : QMainWindow(parent),
@@ -19,6 +23,8 @@ Login::Login(ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepubl
     lista_solicitudes(lista_solicitudes)
 {
     ui->setupUi(this);
+    connect(this, &Login::cerrarSesion, this, &Login::guardarUsuarios);
+
 }
 
 Login::~Login()
@@ -63,4 +69,49 @@ void Login::on_Registrarse_btn_clicked()
 }
 
 
+void Login::closeEvent(QCloseEvent *event) {
+    // Si deseas confirmar el cierre de sesión con el usuario:
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Cerrar sesión", "¿Estás seguro de que quieres cerrar sesión?",
+                                  QMessageBox::Yes | QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+        emit cerrarSesion();  // Emitir la señal de cierre de sesión
+        event->accept();  // Cerrar la ventana
+    } else {
+        event->ignore();  // Ignorar el evento de cierre
+    }
+}
 
+void Login::guardarUsuarios() {
+    std::vector<Usuario> usuarios = listaUsuarios->obtenerUsuariosEnOrden("InOrder");
+    std::cout << "Número de usuarios: " << usuarios.size() << std::endl; // Verificación de cantidad
+
+    if (usuarios.empty()) {
+        QMessageBox::warning(nullptr, "Advertencia", "No hay usuarios para guardar.");
+        return;
+    }
+
+    std::ofstream archivoSalida("Usuarios.edd");
+    if (!archivoSalida.is_open()) {
+        std::cerr << "Error al abrir el archivo Usuarios.edd" << std::endl;
+        QMessageBox::warning(nullptr, "Error", "No se pudo abrir el archivo para guardar los datos.");
+        return;
+    }
+
+    for (const Usuario& usuario : usuarios) {
+        std::string datosUsuario = usuario.serializar();
+        if (datosUsuario.empty()) {
+            std::cerr << "Error: Serialización de usuario vacía." << std::endl;
+        } else {
+            std::cout << "Serializando usuario: " << datosUsuario << std::endl;
+            archivoSalida << datosUsuario << std::endl;
+        }
+    }
+
+    archivoSalida.close(); // Cerrar el archivo
+
+    // Si utilizas compresión, añade aquí el código de compresión
+    if (!huffman.comprimir("Usuarios.edd", "datos_comprimidos.edd")) {
+        QMessageBox::warning(nullptr, "Error", "No se pudo comprimir los datos.");
+    }
+}

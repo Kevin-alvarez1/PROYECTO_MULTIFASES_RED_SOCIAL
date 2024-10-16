@@ -342,19 +342,44 @@ void GrafoNoDirigido::generarArchivoDOTListaAdyacencia(const std::string& nombre
         archivo << "digraph G {\n";
         archivo << "rankdir=LR;\n";  // Alinea los nodos de izquierda a derecha
 
-        // Iterar sobre todos los nodos del grafo
+        // Definir nodos de manera global para asegurarse de que todos aparecen
+        for (int i = 0; i < numNodos; ++i) {
+            Nodo* nodoActual = nodos[i];
+            archivo << "\"" << nodoActual->nombre << "\" [shape=box];\n";  // Cada nodo como una caja (box)
+        }
+
+        // Primera sección: Conexiones de amistad
+        archivo << "\n// Conexiones de amistad\n";
         for (int i = 0; i < numNodos; ++i) {
             Nodo* nodoActual = nodos[i];
 
-            // Definir cada nodo para asegurarnos de que estén presentes aunque no tengan conexiones
-            archivo << "\"" << nodoActual->nombre << "\";\n";
-
-            // Iterar sobre los vecinos de cada nodo
+            // Iterar sobre los vecinos (amistades) de cada nodo
             for (int j = 0; j < nodoActual->numVecinos; ++j) {
                 Nodo* vecino = nodoActual->vecinos[j];
 
-                // Crear una relación entre el nodo actual y su vecino
+                // Crear una relación entre el nodo actual y su vecino (amistad)
                 archivo << "\"" << nodoActual->nombre << "\" -> \"" << vecino->nombre << "\";\n";
+            }
+        }
+
+        // Segunda sección: Recomendaciones
+        archivo << "\n// Recomendaciones\n";
+        for (int i = 0; i < numNodos; ++i) {
+            Nodo* nodoActual = nodos[i];
+
+            // Iterar sobre los vecinos para generar recomendaciones
+            for (int j = 0; j < nodoActual->numVecinos; ++j) {
+                Nodo* amigo = nodoActual->vecinos[j];
+
+                // Generar recomendaciones basadas en los amigos del amigo
+                for (int k = 0; k < amigo->numVecinos; ++k) {
+                    Nodo* recomendacion = amigo->vecinos[k];
+
+                    // Evitar recomendar el mismo nodo (nodo actual no puede recomendarse a sí mismo)
+                    if (recomendacion != nodoActual) {
+                        archivo << "\"" << amigo->nombre << "\" -> \"" << recomendacion->nombre << "\" [style=dotted];\n";
+                    }
+                }
             }
         }
 
@@ -366,6 +391,8 @@ void GrafoNoDirigido::generarArchivoDOTListaAdyacencia(const std::string& nombre
         std::cerr << "No se pudo abrir el archivo: " << nombreArchivo << std::endl;
     }
 }
+
+
 
 void GrafoNoDirigido::generarPNG_ListaAdyacencia(const std::string& nombreArchivo) const {
     std::string nombreDOT = nombreArchivo + ".dot";

@@ -4,11 +4,12 @@
 #include <cstdlib>
 #include <cstring>
 #include <algorithm>
-
+#include <sstream>
 GrafoNoDirigido grafoNoDirigido;
 
 
 const int INICIAL_CAPACIDAD = 5;
+#define MAX_ARISTAS 1000
 
 // Constructor de Nodo
 Nodo::Nodo(const std::string& nombre) : nombre(nombre), numVecinos(0), capacidadVecinos(INICIAL_CAPACIDAD) {
@@ -18,6 +19,50 @@ Nodo::Nodo(const std::string& nombre) : nombre(nombre), numVecinos(0), capacidad
 // Destructor de Nodo
 Nodo::~Nodo() {
     delete[] vecinos;  // Liberar memoria de los vecinos
+}
+
+void GrafoNoDirigido::guardarAmigos() const {
+    std::ofstream archivoSalida("Amigos.edd");
+    if (!archivoSalida.is_open()) {
+        std::cerr << "Error al abrir el archivo Amigos.edd" << std::endl;
+        return;
+    }
+
+    for (int i = 0; i < numNodos; ++i) {
+        Nodo* nodo = nodos[i];
+        for (int j = 0; j < nodo->numVecinos; ++j) {
+            archivoSalida << nodo->nombre << "," << nodo->vecinos[j]->nombre << "," << "ACEPTADA" << std::endl;
+        }
+    }
+
+    archivoSalida.close(); // Cerrar el archivo
+}
+
+void GrafoNoDirigido::cargarAmigos() {
+    std::ifstream archivoEntrada("Amigos.edd");
+    if (!archivoEntrada.is_open()) {
+        std::cerr << "Error al abrir el archivo Amigos.edd" << std::endl;
+        return;
+    }
+
+    std::string linea;
+    while (std::getline(archivoEntrada, linea)) {
+        std::istringstream stream(linea);
+        std::string emisor, receptor, estado;
+
+        std::getline(stream, emisor, ',');    // Lee el emisor
+        std::getline(stream, receptor, ',');   // Lee el receptor
+        std::getline(stream, estado, ',');      // Lee el estado
+
+        // Solo insertar la relación si el estado es "ACEPTADA"
+        if (estado == "ACEPTADA") {
+            insertarNombre(emisor);   // Asegúrate de que el nodo existe
+            insertarNombre(receptor);  // Asegúrate de que el nodo existe
+            insertarRelacion(emisor, receptor); // Agregar la relación
+        }
+    }
+
+    archivoEntrada.close(); // Cerrar el archivo
 }
 
 std::string* GrafoNoDirigido::recomendarAmigos(const std::string& nombre, int& cantidadRecomendaciones) const {
@@ -334,11 +379,13 @@ void GrafoNoDirigido::generarArchivoDOTEstilos(const std::string& nombreArchivo,
     }
 }
 
+
+
+
 void GrafoNoDirigido::generarArchivoDOTListaAdyacencia(const std::string& nombreArchivo) const {
     std::ofstream archivo(nombreArchivo);
 
     if (archivo.is_open()) {
-        // Usar rankdir=LR para alinear los nodos horizontalmente
         archivo << "digraph G {\n";
         archivo << "rankdir=LR;\n";  // Alinea los nodos de izquierda a derecha
 
@@ -347,6 +394,10 @@ void GrafoNoDirigido::generarArchivoDOTListaAdyacencia(const std::string& nombre
             Nodo* nodoActual = nodos[i];
             archivo << "\"" << nodoActual->nombre << "\" [shape=box];\n";  // Cada nodo como una caja (box)
         }
+
+        // Arreglo para rastrear las aristas escritas
+        std::string aristasEscritas[MAX_ARISTAS];
+        int contadorAristas = 0;
 
         // Primera sección: Conexiones de amistad
         archivo << "\n// Conexiones de amistad\n";
@@ -357,10 +408,32 @@ void GrafoNoDirigido::generarArchivoDOTListaAdyacencia(const std::string& nombre
             for (int j = 0; j < nodoActual->numVecinos; ++j) {
                 Nodo* vecino = nodoActual->vecinos[j];
 
-                // Crear una relación entre el nodo actual y su vecino (amistad)
-                archivo << "\"" << nodoActual->nombre << "\" -> \"" << vecino->nombre << "\";\n";
+                // Crear una representación única de la arista
+                std::string nodo1 = nodoActual->nombre;
+                std::string nodo2 = vecino->nombre;
+
+                // Ordenar los nodos para evitar duplicados
+                std::string arista = (nodo1 < nodo2) ? (nodo1 + "-" + nodo2) : (nodo2 + "-" + nodo1);
+
+                // Verificar si la arista ya fue escrita
+                bool yaEscrita = false; // Declarar yaEscrita aquí
+                for (int k = 0; k < contadorAristas; k++) {
+                    if (aristasEscritas[k] == arista) {
+                        yaEscrita = true;
+                        break;
+                    }
+                }
+
+                // Si no fue escrita, añadirla
+                if (!yaEscrita) {
+                    archivo << "\"" << nodo1 << "\" -> \"" << nodo2 << "\";\n";
+                    aristasEscritas[contadorAristas++] = arista;  // Añadir a las aristas escritas
+                }
             }
         }
+
+        // Reiniciar el contador y arreglo para las recomendaciones
+        contadorAristas = 0;
 
         // Segunda sección: Recomendaciones
         archivo << "\n// Recomendaciones\n";
@@ -377,7 +450,28 @@ void GrafoNoDirigido::generarArchivoDOTListaAdyacencia(const std::string& nombre
 
                     // Evitar recomendar el mismo nodo (nodo actual no puede recomendarse a sí mismo)
                     if (recomendacion != nodoActual) {
-                        archivo << "\"" << amigo->nombre << "\" -> \"" << recomendacion->nombre << "\" [style=dotted];\n";
+                        std::string amigoNombre = amigo->nombre;
+                        std::string recomendacionNombre = recomendacion->nombre;
+
+                        // Crear una representación única de la arista de recomendación
+                        std::string aristaRecomendacion = (amigoNombre < recomendacionNombre)
+                                                              ? (amigoNombre + "-" + recomendacionNombre)
+                                                              : (recomendacionNombre + "-" + amigoNombre);
+
+                        // Verificar si la recomendación ya fue escrita
+                        bool yaEscrita = false; // Declarar yaEscrita aquí
+                        for (int k = 0; k < contadorAristas; k++) {
+                            if (aristasEscritas[k] == aristaRecomendacion) {
+                                yaEscrita = true;
+                                break;
+                            }
+                        }
+
+                        // Si no fue escrita, añadir la recomendación
+                        if (!yaEscrita) {
+                            archivo << "\"" << amigo->nombre << "\" -> \"" << recomendacion->nombre << "\" [style=dotted];\n";
+                            aristasEscritas[contadorAristas++] = aristaRecomendacion;  // Añadir a las aristas escritas
+                        }
                     }
                 }
             }
@@ -391,8 +485,6 @@ void GrafoNoDirigido::generarArchivoDOTListaAdyacencia(const std::string& nombre
         std::cerr << "No se pudo abrir el archivo: " << nombreArchivo << std::endl;
     }
 }
-
-
 
 void GrafoNoDirigido::generarPNG_ListaAdyacencia(const std::string& nombreArchivo) const {
     std::string nombreDOT = nombreArchivo + ".dot";

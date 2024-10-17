@@ -8,8 +8,10 @@
 #include <windows.h>
 #include <fstream>
 #include <iostream>
+#include "grafo_no_dirigido.h"
 
 extern ListaUsuarios listaUsuarios;
+extern GrafoNoDirigido grafoNoDirigido;
 
 // Declaración de la función calcularFrecuencias
 void calcularFrecuencias(const std::string& nombreArchivo, int frecuencias[256]) {
@@ -45,6 +47,25 @@ void cargarUsuariosDesdeArchivo(const std::string& nombreArchivo, ListaUsuarios&
     archivoEntrada.close();
 }
 
+void cargarAmigosDesdeArchivo(const std::string& nombreArchivo, GrafoNoDirigido& grafoNoDirigido) {
+    std::ifstream archivoEntrada(nombreArchivo);
+    if (!archivoEntrada.is_open()) {
+        std::cerr << "Error al abrir el archivo " << nombreArchivo << std::endl;
+        return;
+    }
+
+    std::string linea;
+    while (std::getline(archivoEntrada, linea)) {
+        if (!linea.empty()) {
+            Solicitud solicitud = Solicitud::deserializar(linea);  // Asegúrate de que este método esté definido
+            grafoNoDirigido.insertarRelacion(solicitud.getEmisor(), solicitud.getReceptor()); // Agregar relación
+
+        }
+    }
+
+    archivoEntrada.close();
+}
+
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
@@ -71,7 +92,7 @@ int main(int argc, char *argv[]) {
 
     // Cargar usuarios desde el archivo Usuarios.edd
     cargarUsuariosDesdeArchivo("Usuarios.edd", listaUsuarios);
-
+    cargarAmigosDesdeArchivo("Amigos.edd", grafoNoDirigido);
     // Pasar las instancias a Login
     Login w(&listaUsuarios, &listaDoblePublicacion, &listaSolicitudes);
 

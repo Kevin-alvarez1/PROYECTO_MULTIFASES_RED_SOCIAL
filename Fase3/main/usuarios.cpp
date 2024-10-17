@@ -9,6 +9,7 @@
 #include <set>
 #include "arbolabb.h"
 #include <QInputDialog>
+#include <unordered_set>
 extern GrafoNoDirigido grafoNoDirigido;
 extern ArbolABB arbolABB;
 extern ArbolBComentario arbolComentarios_;
@@ -178,17 +179,19 @@ void Usuarios::on_actualizar_tablas_clicked() {
     if (tablaUsuarios) {
         std::vector<Usuario> usuariosFiltrados;
 
+        // Obtener la lista de amigos del usuario actual
+        int cantidadAmigos = 0;
+        std::string* amigos = grafoNoDirigido.obtenerAmigos(correoActual.toStdString(), cantidadAmigos);
+
+        // Crear un conjunto para almacenar los amigos
+        std::unordered_set<std::string> amigosSet(amigos, amigos + cantidadAmigos);
+
         for (const auto& usuario : usuarios) {
             // Evitar mostrar el usuario actual en la tabla
             if (usuario.getCorreo() != correoActual.toStdString()) {
-                // Verificar si ya existe una solicitud en estado PENDIENTE o ACEPTADA
-                bool solicitudExistente = lista_solicitudes->existeSolicitudEnEstado(
-                                              correoActual.toStdString(), usuario.getCorreo(), "PENDIENTE") ||
-                                          lista_solicitudes->existeSolicitudEnEstado(
-                                              correoActual.toStdString(), usuario.getCorreo(), "ACEPTADA");
-
-                // Si no existe una solicitud en estado PENDIENTE o ACEPTADA, agregar el usuario a la lista filtrada
-                if (!solicitudExistente) {
+                // Verificar si el usuario ya es amigo
+                if (amigosSet.find(usuario.getCorreo()) == amigosSet.end()) {
+                    // Si no es amigo, agregarlo a la lista filtrada
                     usuariosFiltrados.push_back(usuario);
                 }
             }
@@ -219,8 +222,9 @@ void Usuarios::on_actualizar_tablas_clicked() {
                 this->on_btnEnviarSolicitud_clicked(usuario.getCorreo());
             });
         }
-    } else {
-        qWarning("La tabla de usuarios no se encontró.");
+
+        // Liberar la memoria si amigos fue alocado dinámicamente
+        delete[] amigos;  // Asumiendo que `obtenerAmigos` devuelve memoria dinámica
     }
 
     // ACTUALIZAR la tabla de solicitudes enviadas en estado "PENDIENTE"
@@ -282,7 +286,6 @@ void Usuarios::on_actualizar_tablas_clicked() {
             // Verifica si la solicitud está en estado "PENDIENTE"
             if (lista_solicitudes->existeSolicitudEnEstado(solicitud.getEmisor(), correoActual.toStdString(), "PENDIENTE")) {
 
-                // Obtener la lista de amigos del usuario actual desde la matriz dispersa
                 int cantidadAmigos;
                 std::string* amigos = grafoNoDirigido.obtenerAmigos(correoActual.toStdString(), cantidadAmigos);
 

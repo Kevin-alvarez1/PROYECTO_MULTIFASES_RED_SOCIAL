@@ -1,5 +1,12 @@
 digraph G {
 rankdir=LR;
+"f2@gmail.com" [shape=box];
+"mr@example.com" [shape=box];
+"sg@example.com" [shape=box];
+"jg@example.com" [shape=box];
+"jm@example.com" [shape=box];
+"et@example.com" [shape=box];
+"cg@example.com" [shape=box];
 "ana.hernandez@example.com" [shape=box];
 "juan.martinez@example.com" [shape=box];
 "miguel.rodriguez@example.com" [shape=box];
@@ -10,20 +17,22 @@ rankdir=LR;
 "maria.lopez@example.com" [shape=box];
 
 // Conexiones de amistad
+"f2@gmail.com" -> "mr@example.com";
+"f2@gmail.com" -> "sg@example.com";
+"f2@gmail.com" -> "jg@example.com";
+"f2@gmail.com" -> "jm@example.com";
+"f2@gmail.com" -> "et@example.com";
+"et@example.com" -> "cg@example.com";
 "ana.hernandez@example.com" -> "juan.martinez@example.com";
-"juan.martinez@example.com" -> "ana.hernandez@example.com";
-"juan.martinez@example.com" -> "maria.lopez@example.com";
 "miguel.rodriguez@example.com" -> "sofia.gonzalez@example.com";
-"sofia.gonzalez@example.com" -> "miguel.rodriguez@example.com";
 "luis.perez@example.com" -> "laura.ramirez@example.com";
-"laura.ramirez@example.com" -> "luis.perez@example.com";
 "carlos.gomez@example.com" -> "maria.lopez@example.com";
-"maria.lopez@example.com" -> "carlos.gomez@example.com";
-"maria.lopez@example.com" -> "juan.martinez@example.com";
 
 // Recomendaciones
-"juan.martinez@example.com" -> "maria.lopez@example.com" [style=dotted];
-"maria.lopez@example.com" -> "carlos.gomez@example.com" [style=dotted];
-"maria.lopez@example.com" -> "juan.martinez@example.com" [style=dotted];
-"juan.martinez@example.com" -> "ana.hernandez@example.com" [style=dotted];
+"et@example.com" -> "cg@example.com" [style=dotted];
+"f2@gmail.com" -> "sg@example.com" [style=dotted];
+"f2@gmail.com" -> "jg@example.com" [style=dotted];
+"f2@gmail.com" -> "jm@example.com" [style=dotted];
+"f2@gmail.com" -> "et@example.com" [style=dotted];
+"f2@gmail.com" -> "mr@example.com" [style=dotted];
 }

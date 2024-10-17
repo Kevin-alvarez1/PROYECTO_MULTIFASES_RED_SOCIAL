@@ -36,7 +36,15 @@ public:
     void buscarYApilarPendientes(const std::string &correo, const ListaSolicitudes &listaSolicitudes);
     bool actualizarEstadoSolicitud(const std::string& emisor, const std::string& receptor, const std::string& nuevoEstado);
     void agregarRelacionesAceptadasAMatriz(GrafoNoDirigido &grafoNoDirigido);
-
+    std::vector<Solicitud> getSolicitudes() const {
+        std::vector<Solicitud> solicitudes; // Vector para almacenar las solicitudes
+        NodoSolicitud* actual = cabeza; // Comenzamos desde la cabeza
+        while (actual != nullptr) { // Recorremos la lista
+            solicitudes.push_back(actual->solicitud); // Agregamos la solicitud al vector
+            actual = actual->siguiente; // Pasamos al siguiente nodo
+        }
+        return solicitudes; // Retornamos todas las solicitudes
+    }
 };
 
 #endif // LISTA_SOLICITUDES_H

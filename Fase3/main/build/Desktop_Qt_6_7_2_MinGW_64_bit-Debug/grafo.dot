@@ -1,8 +1,20 @@
 digraph G {
+"f2@gmail.com"[label="f2@gmail.com"];
+"f2@gmail.com" -> "mr@example.com"[dir=none];
+"f2@gmail.com" -> "sg@example.com"[dir=none];
+"f2@gmail.com" -> "jg@example.com"[dir=none];
+"f2@gmail.com" -> "jm@example.com"[dir=none];
+"mr@example.com"[label="mr@example.com"];
+"sg@example.com"[label="sg@example.com"];
+"jg@example.com"[label="jg@example.com"];
+"jm@example.com"[label="jm@example.com"];
+"et@example.com"[label="et@example.com"];
+"et@example.com" -> "f2@gmail.com"[dir=none];
+"cg@example.com"[label="cg@example.com"];
+"cg@example.com" -> "et@example.com"[dir=none];
 "ana.hernandez@example.com"[label="ana.hernandez@example.com"];
 "ana.hernandez@example.com" -> "juan.martinez@example.com"[dir=none];
 "juan.martinez@example.com"[label="juan.martinez@example.com"];
-"juan.martinez@example.com" -> "maria.lopez@example.com"[dir=none];
 "miguel.rodriguez@example.com"[label="miguel.rodriguez@example.com"];
 "miguel.rodriguez@example.com" -> "sofia.gonzalez@example.com"[dir=none];
 "sofia.gonzalez@example.com"[label="sofia.gonzalez@example.com"];

@@ -9,8 +9,9 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include "huffman.h"
-
+#include "grafo_no_dirigido.h"
 extern Huffman huffman;
+extern GrafoNoDirigido grafoNoDirigido;
 
 Login::Login(ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion, ListaSolicitudes *lista_solicitudes, QWidget *parent)
     : QMainWindow(parent),
@@ -85,6 +86,7 @@ void Login::closeEvent(QCloseEvent *event) {
 void Login::guardarUsuarios() {
     std::vector<Usuario> usuarios = listaUsuarios->obtenerUsuariosEnOrden("InOrder");
     std::cout << "Número de usuarios: " << usuarios.size() << std::endl; // Verificación de cantidad
+    grafoNoDirigido.guardarAmigos();
 
     if (usuarios.empty()) {
         QMessageBox::warning(nullptr, "Advertencia", "No hay usuarios para guardar.");
@@ -110,8 +112,9 @@ void Login::guardarUsuarios() {
 
     archivoSalida.close(); // Cerrar el archivo
 
-    // Si utilizas compresión, añade aquí el código de compresión
     if (!huffman.comprimir("Usuarios.edd", "datos_comprimidos.edd")) {
         QMessageBox::warning(nullptr, "Error", "No se pudo comprimir los datos.");
     }
+
 }
+

@@ -12,16 +12,4 @@ digraph G {
 "et@example.com" -> "f2@gmail.com"[dir=none];
 "cg@example.com"[label="cg@example.com"];
 "cg@example.com" -> "et@example.com"[dir=none];
-"ana.hernandez@example.com"[label="ana.hernandez@example.com"];
-"ana.hernandez@example.com" -> "juan.martinez@example.com"[dir=none];
-"juan.martinez@example.com"[label="juan.martinez@example.com"];
-"miguel.rodriguez@example.com"[label="miguel.rodriguez@example.com"];
-"miguel.rodriguez@example.com" -> "sofia.gonzalez@example.com"[dir=none];
-"sofia.gonzalez@example.com"[label="sofia.gonzalez@example.com"];
-"luis.perez@example.com"[label="luis.perez@example.com"];
-"laura.ramirez@example.com"[label="laura.ramirez@example.com"];
-"laura.ramirez@example.com" -> "luis.perez@example.com"[dir=none];
-"carlos.gomez@example.com"[label="carlos.gomez@example.com"];
-"carlos.gomez@example.com" -> "maria.lopez@example.com"[dir=none];
-"maria.lopez@example.com"[label="maria.lopez@example.com"];
 }

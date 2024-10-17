@@ -7,14 +7,6 @@ rankdir=LR;
 "jm@example.com" [shape=box];
 "et@example.com" [shape=box];
 "cg@example.com" [shape=box];
-"ana.hernandez@example.com" [shape=box];
-"juan.martinez@example.com" [shape=box];
-"miguel.rodriguez@example.com" [shape=box];
-"sofia.gonzalez@example.com" [shape=box];
-"luis.perez@example.com" [shape=box];
-"laura.ramirez@example.com" [shape=box];
-"carlos.gomez@example.com" [shape=box];
-"maria.lopez@example.com" [shape=box];
 
 // Conexiones de amistad
 "f2@gmail.com" -> "mr@example.com";
@@ -23,10 +15,6 @@ rankdir=LR;
 "f2@gmail.com" -> "jm@example.com";
 "f2@gmail.com" -> "et@example.com";
 "et@example.com" -> "cg@example.com";
-"ana.hernandez@example.com" -> "juan.martinez@example.com";
-"miguel.rodriguez@example.com" -> "sofia.gonzalez@example.com";
-"luis.perez@example.com" -> "laura.ramirez@example.com";
-"carlos.gomez@example.com" -> "maria.lopez@example.com";
 
 // Recomendaciones
 "et@example.com" -> "cg@example.com" [style=dotted];

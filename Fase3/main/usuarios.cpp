@@ -234,17 +234,20 @@ void Usuarios::on_actualizar_tablas_clicked() {
 
         std::vector<std::string> solicitudesValidas;
 
-        // Validar si existe una solicitud "ACEPTADA" en dirección inversa
+        // Validar si existe una solicitud "ACEPTADA" en cualquier dirección
         for (const std::string& receptor : solicitudesPendientes) {
+            bool solicitudAceptadaDirecta = lista_solicitudes->existeSolicitudEnEstado(
+                correoActual.toStdString(), receptor, "ACEPTADA");
             bool solicitudAceptadaInversa = lista_solicitudes->existeSolicitudEnEstado(
                 receptor, correoActual.toStdString(), "ACEPTADA");
 
-            // Solo agregar la solicitud a la lista si no hay una solicitud ACEPTADA inversa
-            if (!solicitudAceptadaInversa) {
+            // Solo agregar la solicitud a la lista si no hay una solicitud ACEPTADA en ninguna dirección
+            if (!solicitudAceptadaDirecta && !solicitudAceptadaInversa) {
                 solicitudesValidas.push_back(receptor);
             }
         }
 
+        // Actualizar la tabla con las solicitudes válidas
         tablaSolicitudesEnviadas->setRowCount(solicitudesValidas.size());
         tablaSolicitudesEnviadas->setColumnCount(2);
 
@@ -254,6 +257,7 @@ void Usuarios::on_actualizar_tablas_clicked() {
         for (size_t i = 0; i < solicitudesValidas.size(); ++i) {
             tablaSolicitudesEnviadas->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(solicitudesValidas[i])));
 
+            // Botón para cancelar la solicitud
             QPushButton* btnCancelar = new QPushButton("Cancelar");
             tablaSolicitudesEnviadas->setCellWidget(i, 1, btnCancelar);
 
@@ -264,6 +268,7 @@ void Usuarios::on_actualizar_tablas_clicked() {
     } else {
         qWarning("La tabla de solicitudes enviadas no se encontró.");
     }
+
 
     if (tablaSolicitudesRecibidas) {
         // Primero, vaciar la pila de solicitudes recibidas

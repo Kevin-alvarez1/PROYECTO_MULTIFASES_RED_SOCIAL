@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>5</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -1051,6 +1051,153 @@
      </widget>
     </widget>
    </widget>
+   <widget class="QWidget" name="tab_7">
+    <attribute name="title">
+     <string>Reportes nuevos</string>
+    </attribute>
+    <widget class="QScrollArea" name="scrollArea_9">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>10</y>
+       <width>481</width>
+       <height>451</height>
+      </rect>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_10">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>479</width>
+        <height>449</height>
+       </rect>
+      </property>
+      <widget class="QFrame" name="frame_6">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>481</width>
+         <height>451</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Shape::Box</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Shadow::Raised</enum>
+       </property>
+       <widget class="QLabel" name="amistadesYsugerencias_label">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>471</width>
+          <height>451</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QPushButton" name="VerAmistadySugerncias_boton">
+     <property name="geometry">
+      <rect>
+       <x>540</x>
+       <y>10</y>
+       <width>551</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Ver Amistades y sugerencias</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_6">
+    <attribute name="title">
+     <string>Recomendaciones</string>
+    </attribute>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>1081</width>
+       <height>421</height>
+      </rect>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_9">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1079</width>
+        <height>419</height>
+       </rect>
+      </property>
+      <widget class="QTableWidget" name="tablaRecomendados">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1081</width>
+         <height>421</height>
+        </rect>
+       </property>
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>269</number>
+       </attribute>
+       <column>
+        <property name="text">
+         <string>Nombres</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Apellidos</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Usuario</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Numero de amigos en comun</string>
+        </property>
+       </column>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QCommandLinkButton" name="actualizarTablaRecomendados_boton">
+     <property name="geometry">
+      <rect>
+       <x>1100</x>
+       <y>0</y>
+       <width>31</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset theme="QIcon::ThemeIcon::SystemReboot"/>
+     </property>
+    </widget>
+   </widget>
    <widget class="QWidget" name="tab_5">
     <attribute name="title">
      <string>Perfil</string>
@@ -1290,153 +1437,6 @@
      </property>
      <property name="text">
       <string>PERFIL</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="tab_6">
-    <attribute name="title">
-     <string>Recomendaciones</string>
-    </attribute>
-    <widget class="QScrollArea" name="scrollArea">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>1081</width>
-       <height>191</height>
-      </rect>
-     </property>
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents_9">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>1079</width>
-        <height>189</height>
-       </rect>
-      </property>
-      <widget class="QTableWidget" name="tablaRecomendados">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>1081</width>
-         <height>192</height>
-        </rect>
-       </property>
-       <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>269</number>
-       </attribute>
-       <column>
-        <property name="text">
-         <string>Nombres</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Apellidos</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Usuario</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Numero de amigos en comun</string>
-        </property>
-       </column>
-      </widget>
-     </widget>
-    </widget>
-    <widget class="QCommandLinkButton" name="actualizarTablaRecomendados_boton">
-     <property name="geometry">
-      <rect>
-       <x>1100</x>
-       <y>0</y>
-       <width>31</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset theme="QIcon::ThemeIcon::SystemReboot"/>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="tab_7">
-    <attribute name="title">
-     <string>Reportes nuevos</string>
-    </attribute>
-    <widget class="QScrollArea" name="scrollArea_9">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>10</y>
-       <width>481</width>
-       <height>451</height>
-      </rect>
-     </property>
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents_10">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>479</width>
-        <height>449</height>
-       </rect>
-      </property>
-      <widget class="QFrame" name="frame_6">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>481</width>
-         <height>451</height>
-        </rect>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Shape::Box</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Shadow::Raised</enum>
-       </property>
-       <widget class="QLabel" name="amistadesYsugerencias_label">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>471</width>
-          <height>451</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </widget>
-     </widget>
-    </widget>
-    <widget class="QPushButton" name="VerAmistadySugerncias_boton">
-     <property name="geometry">
-      <rect>
-       <x>540</x>
-       <y>10</y>
-       <width>551</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Ver Amistades y sugerencias</string>
      </property>
     </widget>
    </widget>

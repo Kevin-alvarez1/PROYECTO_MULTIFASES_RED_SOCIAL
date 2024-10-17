@@ -24,6 +24,7 @@ private:
 public:
     ListaSolicitudes();
     ~ListaSolicitudes();
+    bool existeSolicitudEnEstado(const std::string& emisor, const std::string& receptor, const std::string& estado) const;
 
     void agregarSolicitud(const Solicitud &solicitud);
     void eliminarSolicitud(const std::string &emisor, const std::string &receptor);
@@ -45,6 +46,7 @@ public:
         }
         return solicitudes; // Retornamos todas las solicitudes
     }
+    void guardarSolicitudesEnviadas() const;
 };
 
 #endif // LISTA_SOLICITUDES_H

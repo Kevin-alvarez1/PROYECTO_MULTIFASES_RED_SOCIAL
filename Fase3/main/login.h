@@ -22,6 +22,7 @@ public:
     explicit Login(ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion, ListaSolicitudes *lista_solicitudes, QWidget *parent = nullptr);
     ~Login();
     void guardarUsuarios();
+    void calcularFrecuencias(const std::string& nombreArchivo, int frecuencias[256]);
 protected:
     void closeEvent(QCloseEvent *event) override;  // Sobrescribir el método closeEvent
 

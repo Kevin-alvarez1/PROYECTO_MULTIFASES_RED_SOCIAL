@@ -40,7 +40,7 @@ void cargarUsuariosDesdeArchivo(const std::string& nombreArchivo, ListaUsuarios&
     while (std::getline(archivoEntrada, linea)) {
         if (!linea.empty()) {
             Usuario usuario = Usuario::deserializar(linea);
-            listaUsuarios.agregarUsuario(usuario); // Asegúrate de que tengas un método para agregar usuarios
+            listaUsuarios.agregarUsuario(usuario);
         }
     }
 
@@ -57,7 +57,7 @@ void cargarAmigosDesdeArchivo(const std::string& nombreArchivo, GrafoNoDirigido&
     std::string linea;
     while (std::getline(archivoEntrada, linea)) {
         if (!linea.empty()) {
-            Solicitud solicitud = Solicitud::deserializar(linea);  // Asegúrate de que este método esté definido
+            Solicitud solicitud = Solicitud::deserializar(linea);
             grafoNoDirigido.insertarRelacion(solicitud.getEmisor(), solicitud.getReceptor()); // Agregar relación
 
         }
@@ -66,6 +66,24 @@ void cargarAmigosDesdeArchivo(const std::string& nombreArchivo, GrafoNoDirigido&
     archivoEntrada.close();
 }
 
+void cargarSolicitudesEnviadasDesdeArchivo(const std::string& nombreArchivo, ListaSolicitudes& listaSolicitudes) {
+    std::ifstream archivoEntrada(nombreArchivo);
+    if (!archivoEntrada.is_open()) {
+        std::cerr << "Error al abrir el archivo " << nombreArchivo << std::endl;
+        return;
+    }
+
+    std::string linea;
+    while (std::getline(archivoEntrada, linea)) {
+        if (!linea.empty()) {
+            Solicitud solicitud = Solicitud::deserializar(linea);
+            listaSolicitudes.enviarSolicitud(solicitud.getEmisor(),solicitud.getReceptor());
+
+        }
+    }
+
+    archivoEntrada.close();
+}
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
@@ -75,7 +93,7 @@ int main(int argc, char *argv[]) {
     ListaUsuarios listaUsuarios;
     ListaDoblePublicacion listaDoblePublicacion;
     ListaSolicitudes listaSolicitudes;
-    Huffman huffman;  // Instancia de la clase Huffman
+    Huffman huffman;
     NodoHuffman* arbolHuffman = nullptr;
 
     // Descomprimir información al iniciar la aplicación
@@ -93,6 +111,8 @@ int main(int argc, char *argv[]) {
     // Cargar usuarios desde el archivo Usuarios.edd
     cargarUsuariosDesdeArchivo("Usuarios.edd", listaUsuarios);
     cargarAmigosDesdeArchivo("Amigos.edd", grafoNoDirigido);
+    cargarSolicitudesEnviadasDesdeArchivo("Solicitudes_enviadas_recibidas.edd", listaSolicitudes);
+
     // Pasar las instancias a Login
     Login w(&listaUsuarios, &listaDoblePublicacion, &listaSolicitudes);
 

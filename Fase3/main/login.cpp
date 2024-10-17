@@ -83,10 +83,29 @@ void Login::closeEvent(QCloseEvent *event) {
     }
 }
 
+void Login::calcularFrecuencias(const std::string& nombreArchivo, int frecuencias[256]) {
+    std::ifstream archivo(nombreArchivo, std::ios::binary);
+    if (!archivo) {
+        std::cerr << "Error al abrir el archivo." << std::endl;
+        return;
+    }
+
+    char caracter;
+    while (archivo.get(caracter)) {
+        frecuencias[(unsigned char)caracter]++;
+    }
+
+    archivo.close();
+}
+
 void Login::guardarUsuarios() {
+    // Guardar amigos y solicitudes
+    grafoNoDirigido.guardarAmigos();
+    lista_solicitudes->guardarSolicitudesEnviadas();
+
+    // Serializar y guardar usuarios
     std::vector<Usuario> usuarios = listaUsuarios->obtenerUsuariosEnOrden("InOrder");
     std::cout << "Número de usuarios: " << usuarios.size() << std::endl; // Verificación de cantidad
-    grafoNoDirigido.guardarAmigos();
 
     if (usuarios.empty()) {
         QMessageBox::warning(nullptr, "Advertencia", "No hay usuarios para guardar.");
@@ -112,9 +131,49 @@ void Login::guardarUsuarios() {
 
     archivoSalida.close(); // Cerrar el archivo
 
-    if (!huffman.comprimir("Usuarios.edd", "datos_comprimidos.edd")) {
-        QMessageBox::warning(nullptr, "Error", "No se pudo comprimir los datos.");
+    // Definir el arreglo de frecuencias para la compresión
+    int frecuencias[256] = {0}; // Array para almacenar las frecuencias de cada carácter
+
+    // --- Comprimir Usuarios.edd ---
+    calcularFrecuencias("Usuarios.edd", frecuencias); // Calcular las frecuencias del archivo
+    NodoHuffman* arbolHuffman = huffman.construirArbol(frecuencias); // Construir el árbol de Huffman
+    if (!arbolHuffman) {
+        QMessageBox::warning(nullptr, "Error", "No se pudo construir el árbol de Huffman para Usuarios.edd.");
+        return;
+    }
+    if (!huffman.comprimir("Usuarios.edd", "usuarios_comprimidos.edd")) {
+        QMessageBox::warning(nullptr, "Error", "No se pudo comprimir el archivo Usuarios.edd.");
+    } else {
+        std::cout << "Compresión exitosa. Archivo comprimido guardado como usuarios_comprimidos.edd" << std::endl;
     }
 
+    // --- Comprimir Amigos.edd ---
+    std::fill(std::begin(frecuencias), std::end(frecuencias), 0); // Reiniciar las frecuencias
+    calcularFrecuencias("Amigos.edd", frecuencias); // Calcular frecuencias para Amigos.edd
+    arbolHuffman = huffman.construirArbol(frecuencias); // Construir árbol para Amigos.edd
+    if (!arbolHuffman) {
+        QMessageBox::warning(nullptr, "Error", "No se pudo construir el árbol de Huffman para Amigos.edd.");
+        return;
+    }
+    if (!huffman.comprimir("Amigos.edd", "amigos_comprimidos.edd")) {
+        QMessageBox::warning(nullptr, "Error", "No se pudo comprimir el archivo Amigos.edd.");
+    } else {
+        std::cout << "Compresión exitosa. Archivo comprimido guardado como amigos_comprimidos.edd" << std::endl;
+    }
+
+    // --- Comprimir Solicitudes_enviadas_recibidas.edd ---
+    std::fill(std::begin(frecuencias), std::end(frecuencias), 0); // Reiniciar las frecuencias
+    calcularFrecuencias("Solicitudes_enviadas_recibidas.edd", frecuencias); // Calcular frecuencias para el archivo
+    arbolHuffman = huffman.construirArbol(frecuencias); // Construir árbol de Huffman
+    if (!arbolHuffman) {
+        QMessageBox::warning(nullptr, "Error", "No se pudo construir el árbol de Huffman para Solicitudes_enviadas_recibidas.edd.");
+        return;
+    }
+    if (!huffman.comprimir("Solicitudes_enviadas_recibidas.edd", "solicitudes_comprimidas.edd")) {
+        QMessageBox::warning(nullptr, "Error", "No se pudo comprimir el archivo Solicitudes_enviadas_recibidas.edd.");
+    } else {
+        std::cout << "Compresión exitosa. Archivo comprimido guardado como solicitudes_comprimidas.edd" << std::endl;
+    }
 }
+
 

@@ -23,6 +23,67 @@ ListaSolicitudes::~ListaSolicitudes() {
     }
 }
 
+bool ListaSolicitudes::existeSolicitudEnEstado(const std::string& emisor, const std::string& receptor, const std::string& estado) const {
+    NodoSolicitud* actual = cabeza;
+
+    while (actual != nullptr) {
+        if (actual->solicitud.getEmisor() == emisor &&
+            actual->solicitud.getReceptor() == receptor &&
+            actual->solicitud.getEstado() == estado) {
+            return true;
+        }
+
+        // Mover al siguiente nodo
+        actual = actual->siguiente;
+    }
+
+    return false;
+}
+
+
+void ListaSolicitudes::guardarSolicitudesEnviadas() const {
+    // Abrimos el archivo en modo de salida
+    std::ofstream archivoSalida("Solicitudes_enviadas_recibidas.edd");
+
+    // Verificamos si el archivo se abrió correctamente
+    if (!archivoSalida.is_open()) {
+        std::cerr << "Error al abrir el archivo Solicitudes_enviadas_recibidas.edd" << std::endl;
+        return;
+    }
+
+    // Recorrer la lista de solicitudes
+    NodoSolicitud* actual = cabeza;
+
+    while (actual != nullptr) {
+        const std::string& emisor = actual->solicitud.getEmisor();       // Obtener el emisor de la solicitud
+        const std::string& receptor = actual->solicitud.getReceptor();   // Obtener el receptor de la solicitud
+        const std::string& estado = actual->solicitud.getEstado();       // Obtener el estado de la solicitud
+
+        // Solo procesar solicitudes con estado "PENDIENTE"
+        if (estado == "PENDIENTE") {
+            // Verificar si ya existe una solicitud "ACEPTADA" entre estos dos usuarios en ambas direcciones
+            bool existeSolicitudAceptada = existeSolicitudEnEstado(emisor, receptor, "ACEPTADA") ||
+                                           existeSolicitudEnEstado(receptor, emisor, "ACEPTADA");
+
+            // Si no existe ninguna solicitud "ACEPTADA", guardamos la solicitud "PENDIENTE"
+            if (!existeSolicitudAceptada) {
+                // Escribir la solicitud en el archivo en el formato: "emisor,receptor,estado"
+                archivoSalida << emisor << "," << receptor << "," << estado << std::endl;
+            }
+        }
+
+        // Mover al siguiente nodo
+        actual = actual->siguiente;
+    }
+
+    // Cerrar el archivo
+    archivoSalida.close();
+
+    std::cout << "Solicitudes PENDIENTES sin solicitud ACEPTADA previa guardadas exitosamente en Solicitudes_enviadas_recibidas.edd" << std::endl;
+}
+
+
+
 void ListaSolicitudes::agregarRelacionesAceptadasAMatriz(GrafoNoDirigido &grafoNoDirigido)
 {
     NodoSolicitud *actual = cabeza;

@@ -42,6 +42,7 @@ public:
     void generarArchivoDOTEstilos(const std::string& nombreArchivo, const std::string& correoActualUsuario_) const;
     // Nuevo método para recomendar amigos
     std::string* recomendarAmigos(const std::string& nombre, int& cantidadRecomendaciones) const;
+    void eliminarUsuario(const std::string& nombre);
 
     int obtenerAmigosEnComun(const std::string& usuario1, const std::string& usuario2) const;
     void generarArchivoDOTListaAdyacencia(const std::string& nombreArchivo) const;

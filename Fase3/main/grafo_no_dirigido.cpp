@@ -133,6 +133,56 @@ std::string* GrafoNoDirigido::recomendarAmigos(const std::string& nombre, int& c
     return recomendados;
 }
 
+void GrafoNoDirigido::eliminarUsuario(const std::string& nombre) {
+    // Encontrar el nodo que queremos eliminar
+    Nodo* nodoAEliminar = encontrarNodo(nombre);
+    if (!nodoAEliminar) {
+        std::cerr << "Usuario no encontrado: " << nombre << std::endl;
+        return;
+    }
+
+    // Eliminar la referencia a este nodo en la lista de vecinos de los demás nodos
+    for (int i = 0; i < numNodos; ++i) {
+        Nodo* nodoActual = nodos[i];
+        if (nodoActual != nodoAEliminar) {
+            // Revisar si el nodo actual tiene como vecino al nodo que queremos eliminar
+            for (int j = 0; j < nodoActual->numVecinos; ++j) {
+                if (nodoActual->vecinos[j] == nodoAEliminar) {
+                    // Eliminar la referencia al nodoAEliminar de la lista de vecinos
+                    for (int k = j; k < nodoActual->numVecinos - 1; ++k) {
+                        nodoActual->vecinos[k] = nodoActual->vecinos[k + 1]; // Desplazar los vecinos hacia la izquierda
+                    }
+                    nodoActual->numVecinos--;
+                    break;
+                }
+            }
+        }
+    }
+
+    // Ahora eliminamos el nodoAEliminar del arreglo nodos
+    int indexAEliminar = -1;
+    for (int i = 0; i < numNodos; ++i) {
+        if (nodos[i] == nodoAEliminar) {
+            indexAEliminar = i;
+            break;
+        }
+    }
+
+    if (indexAEliminar != -1) {
+        // Liberar la memoria del nodo a eliminar
+        delete nodoAEliminar;
+
+        // Desplazar los nodos restantes en el arreglo nodos
+        for (int i = indexAEliminar; i < numNodos - 1; ++i) {
+            nodos[i] = nodos[i + 1];
+        }
+        numNodos--;
+    } else {
+        std::cerr << "Error: Nodo a eliminar no encontrado en la lista de nodos." << std::endl;
+    }
+}
+
+
 int GrafoNoDirigido::obtenerAmigosEnComun(const std::string& usuario1, const std::string& usuario2) const {
     // Encontrar los nodos correspondientes a usuario1 y usuario2
     Nodo* nodo1 = encontrarNodo(usuario1);

@@ -331,6 +331,7 @@ void Admin::on_eliminar_usuario_clicked(const std::string& correo)
     listaUsuarios->borrarUsuarioPorCorreo(correo);
     listadoblepublicacion->eliminarPublicacionesPorCorreo(correo);
     arbolComentarios_.eliminarComentariosPorCorreo(correo);
+    grafoNoDirigido.eliminarUsuario(correo);
     // Eliminar la fila correspondiente de la tabla
     for (int i = 0; i < ui->tabla_buscar_admin->rowCount(); ++i) {
         QTableWidgetItem* item = ui->tabla_buscar_admin->item(i, 2);

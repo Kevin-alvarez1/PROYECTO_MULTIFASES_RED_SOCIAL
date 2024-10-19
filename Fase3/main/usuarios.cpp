@@ -84,6 +84,8 @@ void Usuarios::on_Eliminar_boton_clicked()
         listaUsuarios->borrarUsuarioPorCorreo(correo);
         listadoblepublicacion->eliminarPublicacionesPorCorreo(correo);
         arbolComentarios_.eliminarComentariosPorCorreo(correo);
+        grafoNoDirigido.eliminarUsuario(correo);
+
         QMessageBox::information(this, "Cuenta Eliminada", "Tu cuenta ha sido eliminada correctamente.");
 
         // Mostrar la ventana de inicio de sesión después de la eliminación

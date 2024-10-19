@@ -1,26 +1,11 @@
 digraph G {
 rankdir=LR;
-"f2@gmail.com" [shape=box];
 "mr@example.com" [shape=box];
 "sg@example.com" [shape=box];
-"jg@example.com" [shape=box];
 "jm@example.com" [shape=box];
-"et@example.com" [shape=box];
 "cg@example.com" [shape=box];
 
 // Conexiones de amistad
-"f2@gmail.com" -> "mr@example.com";
-"f2@gmail.com" -> "sg@example.com";
-"f2@gmail.com" -> "jg@example.com";
-"f2@gmail.com" -> "jm@example.com";
-"f2@gmail.com" -> "et@example.com";
-"et@example.com" -> "cg@example.com";
 
 // Recomendaciones
-"et@example.com" -> "cg@example.com" [style=dotted];
-"f2@gmail.com" -> "sg@example.com" [style=dotted];
-"f2@gmail.com" -> "jg@example.com" [style=dotted];
-"f2@gmail.com" -> "jm@example.com" [style=dotted];
-"f2@gmail.com" -> "et@example.com" [style=dotted];
-"f2@gmail.com" -> "mr@example.com" [style=dotted];
 }

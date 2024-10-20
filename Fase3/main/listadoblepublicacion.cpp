@@ -5,8 +5,13 @@
 #include "arbolabb.h"
 #include "grafo_no_dirigido.h"
 #include "blockchain.h"
+
+ListaDoblePublicacion listaDoblePublicacion;
+
+
 extern ArbolBComentario arbolComentarios_;
 extern Blockchain blockchain;
+
 ListaDoblePublicacion::ListaDoblePublicacion() : cabeza(nullptr), cola(nullptr), siguienteId(1)
 {
     std::cout << "Depuración: Lista de publicaciones creada." << std::endl;
@@ -373,22 +378,21 @@ void ListaDoblePublicacion::mostrarTodasLasPublicaciones() const {
     }
 }
 
-void ListaDoblePublicacion::agregarPublicacion(const Publicacion &publicacion)
-{
+void ListaDoblePublicacion::agregarPublicacion(const Publicacion &publicacion) {
     NodoPublicacion *nuevoNodo = new NodoPublicacion(publicacion);
 
-    if (cabeza == nullptr)
-    {
+    if (cabeza == nullptr) {
         cabeza = nuevoNodo;
         cola = nuevoNodo;
-    }
-    else
-    {
+        std::cout << "Primera publicación añadida: " << publicacion.getContenido() << std::endl;
+    } else {
         cola->siguiente = nuevoNodo;
         nuevoNodo->anterior = cola;
         cola = nuevoNodo;
+        std::cout << "Publicación añadida: " << publicacion.getContenido() << std::endl;
     }
 }
+
 
 
 

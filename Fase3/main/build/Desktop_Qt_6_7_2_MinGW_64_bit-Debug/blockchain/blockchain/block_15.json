@@ -1,7 +1,7 @@
 {
   "index": 15,
-  "timestamp": "19-10-2024::18:55:35",
-  "nonce": 29849,
+  "timestamp": "20-10-2024::00:15:15",
+  "nonce": 32471,
   "data": {
     "Comentarios": [],
     "Publicacion:": {
@@ -12,6 +12,6 @@
         "id": 16
     }
 },
-  "previousHash": "2a4f7dc5128079c72b7563702dbfee0fae106e2d99eb5f43c66180a5835059bd",
-  "hash": "000071fd802aa88c6019e84a8947d05bf901942e4950e50466a283f194cac92e"
+  "previousHash": "79bd4a08362b0332031470b870d1e4857057ecba1bbf50be93b63bc6e4c9d6f9",
+  "hash": "0000c60ae25a8f1353828e4d62d2bcb30d28a232be3326139bc8c39690fac978"
 }

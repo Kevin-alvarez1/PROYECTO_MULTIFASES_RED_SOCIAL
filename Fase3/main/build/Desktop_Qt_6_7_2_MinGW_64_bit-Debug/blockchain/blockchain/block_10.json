@@ -1,24 +1,17 @@
 {
   "index": 10,
-  "timestamp": "20-10-2024::00:15:13",
-  "nonce": 17282,
+  "timestamp": "20-10-2024::13:36:07",
+  "nonce": 2489,
   "data": {
-    "Comentarios": [
-        {
-            "contenido": "Un buen libro y té, la combinación perfecta para relajarse.",
-            "correo": "f2@gmail.com",
-            "fecha": "21/08/2024",
-            "hora": "20:50"
-        }
-    ],
+    "Comentarios": [],
     "Publicacion:": {
-        "contenido": "A veces solo necesitas una taza de té y un buen libro.",
-        "correo": "jm@example.com",
+        "contenido": "Primer día usando esta plataforma, ¡emocionado por lo que viene!",
+        "correo": "f2@gmail.com",
         "fecha": "21/08/2024",
-        "hora": "20:30",
-        "id": 11
+        "hora": "10:05",
+        "id": 19
     }
 },
-  "previousHash": "79bd4a08362b0332031470b870d1e4857057ecba1bbf50be93b63bc6e4c9d6f9",
-  "hash": "0000d843d59b2829415aa767a3f613c7b270a68223930445bcba4d1fd46a6808"
+  "previousHash": "cb6b06aac2b209852c59121ac8558bde480766ffe271f233c252c66de4020e48",
+  "hash": "000001c34de2695bfaf3dfa65cc1b4a5c9d06a35d317466e938f6076766593fa"
 }

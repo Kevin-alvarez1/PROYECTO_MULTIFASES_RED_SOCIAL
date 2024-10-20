@@ -1,17 +1,17 @@
 {
   "index": 13,
-  "timestamp": "20-10-2024::00:15:14",
-  "nonce": 27914,
+  "timestamp": "20-10-2024::13:36:08",
+  "nonce": 42031,
   "data": {
     "Comentarios": [],
     "Publicacion:": {
-        "contenido": "La naturaleza siempre tiene una forma de sorprendernos, es increíble.",
-        "correo": "lr@example.com",
-        "fecha": "20/08/2024",
-        "hora": "18:30",
-        "id": 14
+        "contenido": "Los atardeceres en la ciudad son simplemente mágicos, me encanta.",
+        "correo": "ah@example.com",
+        "fecha": "13/08/2024",
+        "hora": "18:12",
+        "id": 4
     }
 },
-  "previousHash": "79bd4a08362b0332031470b870d1e4857057ecba1bbf50be93b63bc6e4c9d6f9",
-  "hash": "00004f23f2b927e4ae55bc3414d9166e733fd4a4676ff75a26dd91eec1ce3d14"
+  "previousHash": "cb6b06aac2b209852c59121ac8558bde480766ffe271f233c252c66de4020e48",
+  "hash": "00000a15aa9ee64cbcdcc55d1888f1635f56c5f4084fb600d226cf435359315b"
 }

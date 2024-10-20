@@ -1,17 +1,17 @@
 {
   "index": 11,
-  "timestamp": "20-10-2024::00:15:13",
-  "nonce": 21060,
+  "timestamp": "20-10-2024::13:36:07",
+  "nonce": 28784,
   "data": {
     "Comentarios": [],
     "Publicacion:": {
-        "contenido": "Recordando viejos tiempos con amigos, esas memorias nunca se olvidan.",
-        "correo": "ah@example.com",
-        "fecha": "12/08/2024",
-        "hora": "21:05",
-        "id": 12
+        "contenido": "Explorando nuevas funcionalidades, la tecnología nunca deja de sorprenderme.",
+        "correo": "f2@gmail.com",
+        "fecha": "22/08/2024",
+        "hora": "14:15",
+        "id": 20
     }
 },
-  "previousHash": "79bd4a08362b0332031470b870d1e4857057ecba1bbf50be93b63bc6e4c9d6f9",
-  "hash": "000002edf3218a4dd2b975574dd7a6f3daa7e6454010fa14ebeb6592043cb373"
+  "previousHash": "cb6b06aac2b209852c59121ac8558bde480766ffe271f233c252c66de4020e48",
+  "hash": "00004c56d03f4b8cea4022af192b33161e1fead252159de22327fd11550ffd08"
 }

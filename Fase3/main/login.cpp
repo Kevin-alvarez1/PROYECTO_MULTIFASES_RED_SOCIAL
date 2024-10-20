@@ -174,6 +174,15 @@ void Login::guardarUsuarios() {
     } else {
         std::cout << "Compresión exitosa. Archivo comprimido guardado como solicitudes_comprimidas.edd" << std::endl;
     }
+
+    // --- Guardar blockchain de publicaciones y comentarios ---
+
+    std::string carpeta = "blockchain"; // Nombre de la carpeta
+    std::string directorioBloques = carpeta + "/blockchain"; // Crear un subdirectorio para los bloques
+
+    listadoblepublicacion->guardarPublicacionesEnBloques(directorioBloques);
+
+
 }
 
 

@@ -1,17 +1,17 @@
 {
   "index": 9,
-  "timestamp": "20-10-2024::00:15:13",
-  "nonce": 20975,
+  "timestamp": "20-10-2024::13:36:06",
+  "nonce": 188402,
   "data": {
     "Comentarios": [],
     "Publicacion:": {
-        "contenido": "El arte es una expresión del alma, cada cuadro cuenta una historia.",
-        "correo": "ml@example.com",
-        "fecha": "16/08/2024",
-        "hora": "15:22",
-        "id": 10
+        "contenido": "Las sonrisas sinceras son el mejor regalo que puedes dar.",
+        "correo": "sg@example.com",
+        "fecha": "18/08/2024",
+        "hora": "09:30",
+        "id": 18
     }
 },
-  "previousHash": "79bd4a08362b0332031470b870d1e4857057ecba1bbf50be93b63bc6e4c9d6f9",
-  "hash": "00001c2f154f3757c9cfa033e7f80e41c477723fb96620097738bd4c8656aa72"
+  "previousHash": "cb6b06aac2b209852c59121ac8558bde480766ffe271f233c252c66de4020e48",
+  "hash": "00001ca019d8de2f9c2b9f214e859df077c77ed8d1ef422d6dc1d7b1421e5dd7"
 }

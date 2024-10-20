@@ -1,0 +1,24 @@
+{
+  "index": 20,
+  "timestamp": "20-10-2024::13:36:09",
+  "nonce": 94036,
+  "data": {
+    "Comentarios": [
+        {
+            "contenido": "yo muy bien",
+            "correo": "f2@gmail.com",
+            "fecha": "12/12/1222",
+            "hora": "12:12"
+        }
+    ],
+    "Publicacion:": {
+        "contenido": "ola como esta todo el mundo",
+        "correo": "f2@gmail.com",
+        "fecha": "01/01/2000",
+        "hora": "12:00 A. M.",
+        "id": 21
+    }
+},
+  "previousHash": "cb6b06aac2b209852c59121ac8558bde480766ffe271f233c252c66de4020e48",
+  "hash": "0000e3f15679c0a22a217884029916351d5505173351b9e6ca0b1734bb593874"
+}

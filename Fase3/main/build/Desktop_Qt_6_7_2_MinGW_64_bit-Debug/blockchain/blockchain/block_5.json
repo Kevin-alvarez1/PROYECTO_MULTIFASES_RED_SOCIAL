@@ -1,24 +1,17 @@
 {
   "index": 5,
-  "timestamp": "20-10-2024::00:15:13",
-  "nonce": 36634,
+  "timestamp": "20-10-2024::13:36:05",
+  "nonce": 16476,
   "data": {
-    "Comentarios": [
-        {
-            "contenido": "Leer siempre nos transporta a otros mundos, qué bueno que lo disfrutas.",
-            "correo": "f2@gmail.com",
-            "fecha": "20/08/2024",
-            "hora": "17:00"
-        }
-    ],
+    "Comentarios": [],
     "Publicacion:": {
-        "contenido": "La lectura de un buen libro puede cambiar tu perspectiva del mundo.",
-        "correo": "jg@example.com",
+        "contenido": "La naturaleza siempre tiene una forma de sorprendernos, es increíble.",
+        "correo": "lr@example.com",
         "fecha": "20/08/2024",
-        "hora": "16:45",
-        "id": 6
+        "hora": "18:30",
+        "id": 14
     }
 },
-  "previousHash": "79bd4a08362b0332031470b870d1e4857057ecba1bbf50be93b63bc6e4c9d6f9",
-  "hash": "000053d53f7c7956924a4aa3814f09fff39d731b389770aacb0cc0ce8210eec4"
+  "previousHash": "cb6b06aac2b209852c59121ac8558bde480766ffe271f233c252c66de4020e48",
+  "hash": "00002c866fa5ffc4216417342ff1813e6ac460f37ddb7e7e9b7ba92cfca3b7ea"
 }

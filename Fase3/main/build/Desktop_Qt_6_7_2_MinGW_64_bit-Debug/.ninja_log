@@ -60,3 +60,23 @@
 260	6508	7511085631301000	CMakeFiles/main.dir/usuarios.cpp.obj	7ff267ae26660d4a
 229	6996	7511085630990983	CMakeFiles/main.dir/main.cpp.obj	a77945c07da6da50
 6996	12979	7511085698657131	main.exe	5960dc98264840eb
+26	256	7511559455359736	main_autogen/timestamp	8cf6d693abba76e3
+26	256	7511559455359736	main_autogen/mocs_compilation.cpp	8cf6d693abba76e3
+26	256	7511559455359736	C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/timestamp	8cf6d693abba76e3
+26	256	7511559455359736	C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/mocs_compilation.cpp	8cf6d693abba76e3
+321	4763	7511559458299736	CMakeFiles/main.dir/crearpublicacion.cpp.obj	2657197f0d0f7ab
+307	4767	7511559458169736	CMakeFiles/main.dir/registrarse.cpp.obj	98f8982139fb0b2a
+257	4856	7511559457670135	CMakeFiles/main.dir/login.cpp.obj	7ea1a5f0e9a336ab
+265	5018	7511559457749739	CMakeFiles/main.dir/admin.cpp.obj	7ed3d2d1bb90e0e8
+273	6355	7511559457830100	CMakeFiles/main.dir/usuarios.cpp.obj	7ff267ae26660d4a
+6356	12863	7511559518649727	main.exe	5960dc98264840eb
+29	269	7511561037010566	main_autogen/timestamp	8cf6d693abba76e3
+29	269	7511561037010566	main_autogen/mocs_compilation.cpp	8cf6d693abba76e3
+29	269	7511561037010566	C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/timestamp	8cf6d693abba76e3
+29	269	7511561037010566	C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/main_autogen/mocs_compilation.cpp	8cf6d693abba76e3
+293	4722	7511561039640558	CMakeFiles/main.dir/registrarse.cpp.obj	98f8982139fb0b2a
+307	4794	7511561039790547	CMakeFiles/main.dir/crearpublicacion.cpp.obj	2657197f0d0f7ab
+270	4947	7511561039420537	CMakeFiles/main.dir/login.cpp.obj	7ea1a5f0e9a336ab
+276	5100	7511561039480547	CMakeFiles/main.dir/admin.cpp.obj	7ed3d2d1bb90e0e8
+285	6529	7511561039560547	CMakeFiles/main.dir/usuarios.cpp.obj	7ff267ae26660d4a
+6529	12472	7511561102010922	main.exe	5960dc98264840eb

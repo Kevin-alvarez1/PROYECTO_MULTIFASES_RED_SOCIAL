@@ -5,6 +5,8 @@
 #include <QFileDialog>
 #include <QPixmap>
 #include <QMessageBox>
+#include "listaDoblePublicacion.h"
+
 
 CrearPublicacion::CrearPublicacion(std::string correoUsuario, ListaDoblePublicacion *listaDoblePublicacion, QWidget *parent)
     : QDialog(parent),
@@ -44,6 +46,7 @@ void CrearPublicacion::on_crearPublicacion_boton_clicked()
 
     // Agregar la publicación a la lista de publicaciones
     listaDoblePublicacion->agregarPublicacion(nuevaPublicacion);
+
 
     // Informar al usuario
     QMessageBox::information(this, "Éxito", "Publicación creada exitosamente.");

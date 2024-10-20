@@ -7,6 +7,10 @@
 #include <QInputDialog>
 #include <QRegularExpression>
 #include "arbolbcomentario.h"
+#include "blockchain.h"
+
+
+extern Blockchain blockchain;
 extern ArbolBComentario arbolComentarios_;
 
 Admin::Admin(ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion,  ListaSolicitudes *lista_solicitudes, QWidget *parent)
@@ -454,6 +458,7 @@ void Admin::actualizarPanelConImagen_publis(const QString& imagePathP) {
 
 void Admin::on_listaAdyacencia_y_grafo_boton_clicked()
 {
+
     // Generar el archivo PNG del grafo
     std::string nombreArchivoPNG = "grafo";
     grafoNoDirigido.generarPNG(nombreArchivoPNG);
@@ -543,4 +548,50 @@ void Admin::on_listaAdyacencia_y_grafo_boton_clicked()
     newLayout_listaAdyacencia->addWidget(scrollArea_listaAdyacencia);
 }
 
+void Admin::on_blockChain_y_arbolMerkle_clicked() {
+    // Generar el archivo PNG de la blockchain
+    std::string directory = "blockchain/blockchain/"; // Cambia esto a la ruta correcta
+    std::string nombreArchivoPNG = "blockchain_grafo";
 
+    blockchain.generarGraficoBlockchain(directory, nombreArchivoPNG);
+
+    // Convertir el nombre del archivo a QString
+    QString imagePath_Blockchain = QString::fromStdString(nombreArchivoPNG + ".png");
+
+    // Verificar si existe un layout anterior en el frame y eliminarlo
+    QLayout* existingLayout_Blockchain = ui->Blockchain_label->layout();
+    if (existingLayout_Blockchain) {
+        QLayoutItem* item;
+        while ((item = existingLayout_Blockchain->takeAt(0))) {
+            delete item->widget(); // Eliminar el widget asociado
+            delete item;
+        }
+        delete existingLayout_Blockchain;
+    }
+
+    // Crear un nuevo layout para la imagen de la blockchain
+    QVBoxLayout* newLayout_Blockchain = new QVBoxLayout();
+    ui->Blockchain_label->setLayout(newLayout_Blockchain);
+
+    // Crear un QLabel para mostrar la imagen de la blockchain
+    QLabel* imageLabel_Blockchain = new QLabel();
+    QPixmap pixmap_Blockchain(imagePath_Blockchain);
+
+    if (pixmap_Blockchain.isNull()) {
+        qDebug() << "Error: No se pudo cargar la imagen" << imagePath_Blockchain;
+        return;
+    }
+
+    // Ajustar el QLabel con el pixmap y redimensionar al tamaño de la imagen
+    imageLabel_Blockchain->setPixmap(pixmap_Blockchain);
+    imageLabel_Blockchain->resize(pixmap_Blockchain.size());
+
+    // Crear un QScrollArea para la imagen de la blockchain
+    QScrollArea* scrollArea_Blockchain = new QScrollArea();
+    scrollArea_Blockchain->setWidgetResizable(true);
+    scrollArea_Blockchain->setWidget(imageLabel_Blockchain);
+
+    // Añadir el QScrollArea al layout de la blockchain
+    newLayout_Blockchain->addWidget(scrollArea_Blockchain);
+
+}

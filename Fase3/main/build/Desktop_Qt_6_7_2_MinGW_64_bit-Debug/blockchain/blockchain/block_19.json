@@ -1,17 +1,17 @@
 {
   "index": 19,
-  "timestamp": "20-10-2024::13:36:09",
-  "nonce": 19580,
+  "timestamp": "20-10-2024::14:21:50",
+  "nonce": 21754,
   "data": {
     "Comentarios": [],
     "Publicacion:": {
-        "contenido": "El arte es una expresión del alma, cada cuadro cuenta una historia.",
-        "correo": "ml@example.com",
-        "fecha": "16/08/2024",
-        "hora": "15:22",
-        "id": 10
+        "contenido": "Explorando nuevas funcionalidades, la tecnología nunca deja de sorprenderme.",
+        "correo": "f2@gmail.com",
+        "fecha": "22/08/2024",
+        "hora": "14:15",
+        "id": 20
     }
 },
-  "previousHash": "cb6b06aac2b209852c59121ac8558bde480766ffe271f233c252c66de4020e48",
-  "hash": "0000692425cf342a31930f7bd3bf1e866f0d55998da953cfc97c91d382d86506"
+  "previousHash": "5298812ff0bb8bc208dfad1df39fef95d82517b176dfbbb12c701acc67fb5677",
+  "hash": "000063e5ed089de421f055934e7ab0abc52911c042d44c13a262cac18c0f4336"
 }

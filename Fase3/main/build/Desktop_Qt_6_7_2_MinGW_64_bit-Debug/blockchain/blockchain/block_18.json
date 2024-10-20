@@ -1,17 +1,17 @@
 {
   "index": 18,
-  "timestamp": "20-10-2024::13:36:09",
-  "nonce": 110604,
+  "timestamp": "20-10-2024::14:21:49",
+  "nonce": 108955,
   "data": {
     "Comentarios": [],
     "Publicacion:": {
-        "contenido": "El deporte me mantiene enfocado y lleno de energía, nunca lo dejaré.",
-        "correo": "cg@example.com",
-        "fecha": "17/08/2024",
-        "hora": "19:00",
-        "id": 9
+        "contenido": "Primer día usando esta plataforma, ¡emocionado por lo que viene!",
+        "correo": "f2@gmail.com",
+        "fecha": "21/08/2024",
+        "hora": "10:05",
+        "id": 19
     }
 },
-  "previousHash": "cb6b06aac2b209852c59121ac8558bde480766ffe271f233c252c66de4020e48",
-  "hash": "00007470776f477e3d26ed5d86076fe4b49653998934007421b0d1f99933bb00"
+  "previousHash": "5298812ff0bb8bc208dfad1df39fef95d82517b176dfbbb12c701acc67fb5677",
+  "hash": "00002c9018d6cf04ace07b867447776449d932edb097e91f27c431d94f16b45f"
 }

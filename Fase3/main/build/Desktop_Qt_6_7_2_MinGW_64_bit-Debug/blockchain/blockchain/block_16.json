@@ -1,24 +1,17 @@
 {
   "index": 16,
-  "timestamp": "20-10-2024::13:36:09",
-  "nonce": 17704,
+  "timestamp": "20-10-2024::14:21:48",
+  "nonce": 33946,
   "data": {
-    "Comentarios": [
-        {
-            "contenido": "¡Mucha suerte con tu nueva aventura, seguro será increíble!",
-            "correo": "f2@gmail.com",
-            "fecha": "19/08/2024",
-            "hora": "09:10"
-        }
-    ],
+    "Comentarios": [],
     "Publicacion:": {
-        "contenido": "Una nueva aventura comienza, emocionado por lo que viene.",
+        "contenido": "El camino hacia el éxito está lleno de retos, pero vale la pena.",
         "correo": "mr@example.com",
-        "fecha": "19/08/2024",
-        "hora": "08:50",
-        "id": 7
+        "fecha": "15/08/2024",
+        "hora": "14:55",
+        "id": 17
     }
 },
-  "previousHash": "cb6b06aac2b209852c59121ac8558bde480766ffe271f233c252c66de4020e48",
-  "hash": "0000aa5cd51799d7ff4f8eb085cdb7e407d4c9f24edccb944999183982d319c1"
+  "previousHash": "5298812ff0bb8bc208dfad1df39fef95d82517b176dfbbb12c701acc67fb5677",
+  "hash": "00007a0696402a37c53ea80cdd734ee6b3ba4d9fe94a520ad6baba38ba1724e2"
 }

@@ -2,6 +2,8 @@
 #define BLOCKCHAIN_H
 
 #include <string>
+#include <fstream>
+#include <cstdlib>
 
 class Block {
 public:
@@ -43,12 +45,15 @@ public:
 
     // Obtener el último bloque de la cadena
     Block getLastBlock() const;
+    void addBlock(const Block& block);
 
     // Agregar un nuevo bloque (publicación/comentario)
     void addBlock(const std::string& data);
-
+    void generarGraficoBlockchain(const std::string& directory, const std::string& filename) ;
     // Mostrar la cadena completa
     void printBlockchain() const;
+    void reconstruirDesdeJSON(const std::string& directory);
+    void addBlockFromJSON(const Block& block);
 
 private:
     // Función auxiliar para liberar la memoria de los nodos

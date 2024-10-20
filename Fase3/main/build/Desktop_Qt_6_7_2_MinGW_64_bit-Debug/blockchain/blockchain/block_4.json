@@ -1,0 +1,17 @@
+{
+  "index": 4,
+  "timestamp": "19-10-2024::18:55:31",
+  "nonce": 141687,
+  "data": {
+    "Comentarios": [],
+    "Publicacion:": {
+        "contenido": "Día perfecto para una caminata por el parque, disfrutando de la naturaleza.",
+        "correo": "lp@example.com",
+        "fecha": "15/08/2024",
+        "hora": "10:57",
+        "id": 5
+    }
+},
+  "previousHash": "2a4f7dc5128079c72b7563702dbfee0fae106e2d99eb5f43c66180a5835059bd",
+  "hash": "0000f57218f5e57a0f26f4a0563bb85fb48ca7d2adc595fb8929c25beb006f3c"
+}

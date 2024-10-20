@@ -1,0 +1,17 @@
+{
+  "index": 0,
+  "timestamp": "19-10-2024::18:55:30",
+  "nonce": 123713,
+  "data": {
+    "Comentarios": [],
+    "Publicacion:": {
+        "contenido": "Disfrutando de un día soleado en la playa, la vida es mejor con arena y mar.",
+        "correo": "cg@example.com",
+        "fecha": "12/08/2024",
+        "hora": "14:23",
+        "id": 1
+    }
+},
+  "previousHash": "2a4f7dc5128079c72b7563702dbfee0fae106e2d99eb5f43c66180a5835059bd",
+  "hash": "0000634f17195b7c7486c0cf829b784f1a5cf366e8ebc15ded01822df010e8cb"
+}

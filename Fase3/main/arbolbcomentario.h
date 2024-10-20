@@ -8,6 +8,8 @@
 #include <sstream>
 #include "comentario.h"
 #include <map>
+#include "json.hpp"
+
 #define ORDEN 5
 
 class NodoArbolBComentario {
@@ -39,11 +41,13 @@ public:
     NodoArbolBComentario* buscar(const std::string& fecha, const std::string& hora)const;
     void graficarArbolB(const std::string& nombreArchivo, int idPublicacion);
     void graficarNodo(NodoArbolBComentario* nodo, int& nodeCount, std::map<NodoArbolBComentario*, int>& nodeMap, std::ofstream& archivo, int idPublicacion);
+    std::vector<Comentario> getAllComentarios() const;
+
 
 private:
     NodoArbolBComentario* raiz;
     void obtenerComentariosRecursivos(NodoArbolBComentario* nodo, int idPublicacion, std::vector<Comentario>& comentarios) const;
-
+    void obtenerComentariosRecursivos(NodoArbolBComentario* nodo, std::vector<Comentario>& comentarios) const ;
 };
 
 #endif // ARBOL_B_COMENTARIO_H

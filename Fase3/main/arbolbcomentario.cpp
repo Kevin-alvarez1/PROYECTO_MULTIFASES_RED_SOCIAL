@@ -95,6 +95,28 @@ void ArbolBComentario::graficarArbolB(const std::string& nombreArchivo, int idPu
     archivo.close();
 }
 
+std::vector<Comentario> ArbolBComentario::getAllComentarios() const {
+    std::vector<Comentario> comentarios;
+    obtenerComentariosRecursivos(raiz, comentarios);  // Llamada al método recursivo
+    return comentarios;
+}
+
+void ArbolBComentario::obtenerComentariosRecursivos(NodoArbolBComentario* nodo, std::vector<Comentario>& comentarios) const {
+    if (nodo == nullptr) {
+        return;  // Caso base: nodo nulo
+    }
+
+    // Agregar los comentarios del nodo actual
+    comentarios.insert(comentarios.end(), nodo->comentarios.begin(), nodo->comentarios.end());
+
+    // Recorrer los hijos si el nodo no es hoja
+    if (!nodo->esHoja) {
+        for (NodoArbolBComentario* hijo : nodo->hijos) {
+            obtenerComentariosRecursivos(hijo, comentarios);  // Llamada recursiva para cada hijo
+        }
+    }
+}
+
 void ArbolBComentario::graficarNodo(NodoArbolBComentario* nodo, int& nodeCount, std::map<NodoArbolBComentario*, int>& nodeMap, std::ofstream& archivo, int idPublicacion) {
     if (nodo == nullptr) return;
 

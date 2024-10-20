@@ -4,6 +4,7 @@
 #include <string>
 #include "Comentario.h"
 #include "arbolbcomentario.h"
+#include "json.hpp"
 extern ArbolBComentario arbolComentarios_;
 
 class Publicacion {
@@ -29,6 +30,18 @@ public:
     void agregarComentario(const Comentario& comentario);
     void mostrarComentarios() const; // Método para mostrar comentarios
     void limpiarComentarios();
+
+    std::string toJSON() const {
+        nlohmann::json jsonData;
+        jsonData["\n id"] = this->id_;
+        jsonData["\n correo"] = this->correo_;
+        jsonData["\n contenido"] = this->contenido_;
+        jsonData["\n fecha"] = this->fecha_;
+        jsonData["\n hora"] = this->hora_;
+
+        return jsonData.dump();
+    }
+
 
 private:
     int id_;

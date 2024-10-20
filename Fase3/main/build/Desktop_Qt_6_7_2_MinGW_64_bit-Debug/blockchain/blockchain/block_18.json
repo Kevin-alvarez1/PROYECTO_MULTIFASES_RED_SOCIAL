@@ -1,0 +1,17 @@
+{
+  "index": 18,
+  "timestamp": "19-10-2024::18:55:35",
+  "nonce": 312,
+  "data": {
+    "Comentarios": [],
+    "Publicacion:": {
+        "contenido": "Primer día usando esta plataforma, ¡emocionado por lo que viene!",
+        "correo": "f2@gmail.com",
+        "fecha": "21/08/2024",
+        "hora": "10:05",
+        "id": 19
+    }
+},
+  "previousHash": "2a4f7dc5128079c72b7563702dbfee0fae106e2d99eb5f43c66180a5835059bd",
+  "hash": "000006d00b5074409bd63ead3cf0924ac2fe724a2c3d892fae75419b3a3387fd"
+}

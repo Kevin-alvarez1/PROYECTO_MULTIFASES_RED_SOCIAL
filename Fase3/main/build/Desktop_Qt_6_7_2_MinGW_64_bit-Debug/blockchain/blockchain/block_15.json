@@ -1,0 +1,17 @@
+{
+  "index": 15,
+  "timestamp": "19-10-2024::18:55:35",
+  "nonce": 29849,
+  "data": {
+    "Comentarios": [],
+    "Publicacion:": {
+        "contenido": "Los pequeños detalles hacen la diferencia, siempre presta atención.",
+        "correo": "et@example.com",
+        "fecha": "13/08/2024",
+        "hora": "22:45",
+        "id": 16
+    }
+},
+  "previousHash": "2a4f7dc5128079c72b7563702dbfee0fae106e2d99eb5f43c66180a5835059bd",
+  "hash": "000071fd802aa88c6019e84a8947d05bf901942e4950e50466a283f194cac92e"
+}

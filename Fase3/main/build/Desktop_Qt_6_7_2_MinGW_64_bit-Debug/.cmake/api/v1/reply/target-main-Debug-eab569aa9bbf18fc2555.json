@@ -75,13 +75,13 @@
 			{
 				"command" : 4,
 				"file" : 1,
-				"line" : 93,
+				"line" : 95,
 				"parent" : 0
 			},
 			{
 				"command" : 5,
 				"file" : 1,
-				"line" : 76,
+				"line" : 78,
 				"parent" : 0
 			},
 			{
@@ -381,7 +381,9 @@
 				35,
 				37,
 				40,
-				42
+				42,
+				44,
+				46
 			]
 		}
 	],
@@ -521,7 +523,9 @@
 				35,
 				37,
 				40,
-				42
+				42,
+				44,
+				46
 			]
 		},
 		{
@@ -547,10 +551,12 @@
 				39,
 				41,
 				43,
-				44,
 				45,
-				46,
-				47
+				47,
+				48,
+				49,
+				50,
+				51
 			]
 		},
 		{
@@ -562,14 +568,14 @@
 				14,
 				17,
 				38,
-				48
+				52
 			]
 		},
 		{
 			"name" : "CMake Rules",
 			"sourceIndexes" : 
 			[
-				49
+				53
 			]
 		}
 	],
@@ -809,6 +815,28 @@
 			"backtrace" : 4,
 			"compileGroupIndex" : 0,
 			"path" : "grafo_no_dirigido.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 4,
+			"path" : "huffman.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 4,
+			"compileGroupIndex" : 0,
+			"path" : "huffman.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 4,
+			"path" : "blockchain.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 4,
+			"compileGroupIndex" : 0,
+			"path" : "blockchain.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{

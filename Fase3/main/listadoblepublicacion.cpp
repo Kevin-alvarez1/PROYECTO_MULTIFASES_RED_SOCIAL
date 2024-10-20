@@ -4,8 +4,9 @@
 #include "json.hpp"
 #include "arbolabb.h"
 #include "grafo_no_dirigido.h"
-
-
+#include "blockchain.h"
+extern ArbolBComentario arbolComentarios_;
+extern Blockchain blockchain;
 ListaDoblePublicacion::ListaDoblePublicacion() : cabeza(nullptr), cola(nullptr), siguienteId(1)
 {
     std::cout << "Depuración: Lista de publicaciones creada." << std::endl;
@@ -22,6 +23,68 @@ ListaDoblePublicacion::~ListaDoblePublicacion()
         delete temp;
     }
 }
+
+void ListaDoblePublicacion::guardarPublicacionesEnBloques(const std::string& directory) {
+    // Asegúrate de que el directorio exista
+    std::filesystem::create_directories(directory); // Crea el directorio si no existe
+
+    std::ofstream file;
+
+    // Crear un bloque por cada publicación
+    NodoPublicacion* actual = cabeza;
+    int chainSize = 0;  // Asegúrate de que este conteo comience desde 0
+    while (actual != nullptr) {
+        // Obtener los comentarios de la publicación
+        std::vector<Comentario> comentarios = arbolComentarios_.getComentariosDePublicacion(actual->publicacion.getId());
+
+        // Crear un objeto JSON para la publicación
+        nlohmann::json publicacionJson;
+
+        // Anidar la publicación en un objeto "Publicacion:"
+        publicacionJson["Publicacion:"] = {
+            {"contenido", actual->publicacion.getContenido()},
+            {"correo", actual->publicacion.getCorreo()},
+            {"fecha", actual->publicacion.getFecha()},
+            {"hora", actual->publicacion.getHora()},
+            {"id", actual->publicacion.getId()}
+        };
+
+        // Crear un array JSON para los comentarios
+        nlohmann::json comentariosJson = nlohmann::json::array(); // Inicializa como un array
+        for (const auto& comentario : comentarios) {
+            nlohmann::json comentarioJson;
+            comentarioJson["correo"] = comentario.getCorreo();
+            comentarioJson["contenido"] = comentario.getComentario();
+            comentarioJson["fecha"] = comentario.getFecha();
+            comentarioJson["hora"] = comentario.getHora();
+            comentariosJson.push_back(comentarioJson);
+        }
+
+        // Añadir los comentarios al objeto de la publicación
+        publicacionJson["Comentarios"] = comentariosJson;
+
+        // Convertir el JSON de la publicación (con comentarios) a string
+        std::string publicacionConComentariosJSON = publicacionJson.dump(4); // Usa indentación de 4 espacios
+
+        // Crear el bloque
+        Block newBlock(chainSize++, publicacionConComentariosJSON, blockchain.getLastBlock().hash);
+        newBlock.mineBlock(blockchain.difficulty);
+
+        // Guardar el bloque en un archivo JSON
+        std::string filename = directory + "/block_" + std::to_string(newBlock.index) + ".json";
+        file.open(filename);
+        if (file.is_open()) {
+            file << newBlock.toJSON(); // Asegúrate de que este método incluya todo lo que necesites
+            file.close();
+        } else {
+            std::cerr << "Error: No se pudo abrir el archivo " << filename << " para escribir." << std::endl;
+        }
+
+        // Avanzar al siguiente nodo
+        actual = actual->siguiente;
+    }
+}
+
 
 void ListaDoblePublicacion::cargarPublicacionesDesdeJson(const std::string &filename) {
     try {
@@ -62,9 +125,12 @@ void ListaDoblePublicacion::cargarPublicacionesDesdeJson(const std::string &file
                     std::cout << "Obteniendo comentarios para la publicación ID: " << nuevaPublicacion.getId() << "comentario añadido con el id: " << nuevoComentario.getIdPublicacion() << std::endl;
                 }
             }
+            std::string carpeta = "blockchain"; // Nombre de la carpeta
+            std::string directorioBloques = carpeta + "/blockchain"; // Crear un subdirectorio para los bloques
 
             // Agregar la nueva publicación a la lista
             agregarPublicacion(nuevaPublicacion);
+            guardarPublicacionesEnBloques(directorioBloques);
         }
 
         file.close();

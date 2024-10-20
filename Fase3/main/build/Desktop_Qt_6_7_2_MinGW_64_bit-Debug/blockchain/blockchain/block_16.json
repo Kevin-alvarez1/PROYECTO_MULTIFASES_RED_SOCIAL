@@ -1,0 +1,17 @@
+{
+  "index": 16,
+  "timestamp": "19-10-2024::18:55:35",
+  "nonce": 47397,
+  "data": {
+    "Comentarios": [],
+    "Publicacion:": {
+        "contenido": "El camino hacia el éxito está lleno de retos, pero vale la pena.",
+        "correo": "mr@example.com",
+        "fecha": "15/08/2024",
+        "hora": "14:55",
+        "id": 17
+    }
+},
+  "previousHash": "2a4f7dc5128079c72b7563702dbfee0fae106e2d99eb5f43c66180a5835059bd",
+  "hash": "0000eb524d5d8143007338a301a78c2778083fc444b3a312d9907961dfcc2887"
+}

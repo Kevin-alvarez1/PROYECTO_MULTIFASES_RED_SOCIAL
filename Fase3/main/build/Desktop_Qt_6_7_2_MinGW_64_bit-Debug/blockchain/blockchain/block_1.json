@@ -1,0 +1,17 @@
+{
+  "index": 1,
+  "timestamp": "19-10-2024::18:55:30",
+  "nonce": 62562,
+  "data": {
+    "Comentarios": [],
+    "Publicacion:": {
+        "contenido": "Hoy aprendí algo nuevo, siempre es bueno salir de la zona de confort.",
+        "correo": "ml@example.com",
+        "fecha": "11/08/2024",
+        "hora": "09:45",
+        "id": 2
+    }
+},
+  "previousHash": "2a4f7dc5128079c72b7563702dbfee0fae106e2d99eb5f43c66180a5835059bd",
+  "hash": "0000645aab96d27b4d1623c3b8894d30d0ebff9de73284c98899fef01eaca8b7"
+}

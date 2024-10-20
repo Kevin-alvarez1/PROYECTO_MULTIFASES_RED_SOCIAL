@@ -2,6 +2,7 @@
 #define COMENTARIO_H
 
 #include <string>
+#include "json.hpp"
 
 class Comentario {
 public:
@@ -20,6 +21,14 @@ public:
         return contenido_.empty();
     }
 
+    std::string toJSON() const {
+        nlohmann::json jsonData;
+        jsonData["correo"] = this->correo_;
+        jsonData["contenido"] = this->contenido_;
+        jsonData["fecha"] = this->fecha_;
+        jsonData["hora"] = this->hora_;
+        return jsonData.dump();
+    }
 private:
     std::string contenido_;
     std::string correo_;

@@ -1,0 +1,17 @@
+{
+  "index": 14,
+  "timestamp": "19-10-2024::18:55:34",
+  "nonce": 119145,
+  "data": {
+    "Comentarios": [],
+    "Publicacion:": {
+        "contenido": "La familia es lo más importante, siempre agradecido por ellos.",
+        "correo": "jg@example.com",
+        "fecha": "11/08/2024",
+        "hora": "12:10",
+        "id": 15
+    }
+},
+  "previousHash": "2a4f7dc5128079c72b7563702dbfee0fae106e2d99eb5f43c66180a5835059bd",
+  "hash": "0000494ff01dcb0fdd06d215eaa2b18b06640688f6f1737ed669570647187bdf"
+}

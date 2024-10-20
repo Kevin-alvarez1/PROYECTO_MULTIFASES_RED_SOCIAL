@@ -1,0 +1,17 @@
+{
+  "index": 11,
+  "timestamp": "19-10-2024::18:55:34",
+  "nonce": 82040,
+  "data": {
+    "Comentarios": [],
+    "Publicacion:": {
+        "contenido": "Recordando viejos tiempos con amigos, esas memorias nunca se olvidan.",
+        "correo": "ah@example.com",
+        "fecha": "12/08/2024",
+        "hora": "21:05",
+        "id": 12
+    }
+},
+  "previousHash": "2a4f7dc5128079c72b7563702dbfee0fae106e2d99eb5f43c66180a5835059bd",
+  "hash": "00003235c0595607a1e841983addd2a0d21e355c9868e6884b7f946104eae7e6"
+}

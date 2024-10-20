@@ -1,0 +1,17 @@
+{
+  "index": 9,
+  "timestamp": "19-10-2024::18:55:33",
+  "nonce": 163648,
+  "data": {
+    "Comentarios": [],
+    "Publicacion:": {
+        "contenido": "El arte es una expresión del alma, cada cuadro cuenta una historia.",
+        "correo": "ml@example.com",
+        "fecha": "16/08/2024",
+        "hora": "15:22",
+        "id": 10
+    }
+},
+  "previousHash": "2a4f7dc5128079c72b7563702dbfee0fae106e2d99eb5f43c66180a5835059bd",
+  "hash": "00005a90c1ce39a328b60800283be34c39255bd24fe2ccec0556d6c3ded337e6"
+}

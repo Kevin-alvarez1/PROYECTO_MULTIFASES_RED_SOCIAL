@@ -1,0 +1,17 @@
+{
+  "index": 3,
+  "timestamp": "19-10-2024::18:55:31",
+  "nonce": 64851,
+  "data": {
+    "Comentarios": [],
+    "Publicacion:": {
+        "contenido": "Los atardeceres en la ciudad son simplemente mágicos, me encanta.",
+        "correo": "ah@example.com",
+        "fecha": "13/08/2024",
+        "hora": "18:12",
+        "id": 4
+    }
+},
+  "previousHash": "2a4f7dc5128079c72b7563702dbfee0fae106e2d99eb5f43c66180a5835059bd",
+  "hash": "00005380824576bd7feb119509af62461215efca173ebd3d826bbec90ae6d3d6"
+}

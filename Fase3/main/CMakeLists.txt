@@ -43,6 +43,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         arbolbcomentario.h arbolbcomentario.cpp
         grafo_no_dirigido.h grafo_no_dirigido.cpp
         huffman.h huffman.cpp
+        blockchain.h blockchain.cpp
 
 
 

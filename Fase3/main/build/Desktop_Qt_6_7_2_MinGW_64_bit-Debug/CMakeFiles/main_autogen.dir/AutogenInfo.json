@@ -275,6 +275,12 @@
 			null
 		],
 		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/blockchain.h",
+			"MU",
+			"EWIEGA46WW/moc_blockchain.cpp",
+			null
+		],
+		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/comentario.h",
 			"MU",
 			"EWIEGA46WW/moc_comentario.cpp",
@@ -459,6 +465,11 @@
 		],
 		[
 			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/arbolbcomentario.cpp",
+			"MU",
+			null
+		],
+		[
+			"C:/Users/Player/Desktop/Carpeta de EDD/-EDD-Proyecto1_202203038/Fase3/main/blockchain.cpp",
 			"MU",
 			null
 		],

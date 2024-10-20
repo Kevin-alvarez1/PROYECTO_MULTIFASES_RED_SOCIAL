@@ -1,0 +1,17 @@
+{
+  "index": 12,
+  "timestamp": "19-10-2024::18:55:34",
+  "nonce": 36266,
+  "data": {
+    "Comentarios": [],
+    "Publicacion:": {
+        "contenido": "El ejercicio diario es clave para una vida saludable, nunca lo dudes.",
+        "correo": "lp@example.com",
+        "fecha": "14/08/2024",
+        "hora": "06:15",
+        "id": 13
+    }
+},
+  "previousHash": "2a4f7dc5128079c72b7563702dbfee0fae106e2d99eb5f43c66180a5835059bd",
+  "hash": "000052da0def9c7a88abec2ba2cc09ad07d93332eeafd626542e4c89f45dc4ae"
+}

@@ -4,7 +4,7 @@
 #include "usuarios.h"
 #include "./ui_usuarios.h"
 #include "login.h"
-
+#include <QCryptographicHash>
 
 Registrarse::Registrarse(ListaUsuarios *listaUsuarios, ListaDoblePublicacion *listadoblepublicacion, ListaSolicitudes *lista_solicitudes, QWidget *parent) :
     QDialog(parent),
@@ -51,8 +51,12 @@ void Registrarse::on_Registrar_boton_clicked() {
         return;
     }
 
-    // Crear un nuevo usuario
-    Usuario nuevoUsuario(nombre, apellido, fecha_de_nacimiento, correo, contrasena);
+    // Encriptar la contraseña
+    QByteArray hash = QCryptographicHash::hash(QByteArray::fromStdString(contrasena), QCryptographicHash::Sha256);
+    std::string contrasenaEncriptada = hash.toHex().constData();
+
+    // Crear un nuevo usuario con la contraseña encriptada
+    Usuario nuevoUsuario(nombre, apellido, fecha_de_nacimiento, correo, contrasenaEncriptada);
 
     // Agregar el nuevo usuario a la lista de usuarios
     listaUsuarios->agregarUsuario(nuevoUsuario);
@@ -74,7 +78,6 @@ void Registrarse::on_Registrar_boton_clicked() {
     ui->contrasena_registro_txt_area->clear();
     ui->confirmacion_contrasena_txt_area->clear();
 }
-
 
 void Registrarse::on_cancelar_boton_clicked()
 {

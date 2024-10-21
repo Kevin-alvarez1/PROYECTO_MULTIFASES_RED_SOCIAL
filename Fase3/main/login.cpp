@@ -10,6 +10,8 @@
 #include <QCloseEvent>
 #include "huffman.h"
 #include "grafo_no_dirigido.h"
+#include <QCryptographicHash>
+
 extern Huffman huffman;
 extern GrafoNoDirigido grafoNoDirigido;
 
@@ -33,13 +35,13 @@ Login::~Login()
     delete ui;
 }
 
-void Login::on_InicioSesion_btn_clicked()
-{
+void Login::on_InicioSesion_btn_clicked() {
     std::string correo = ui->usuario_inicio_sesion_txt_area->text().toStdString();
     std::string contrasena = ui->contrasena_txt_area->text().toStdString();
     std::string admin_usuario_std = "admin@gmail.com";
     std::string admin_contraseña_std = "EDD2S2024";
 
+    // Verificar si es el usuario administrador sin encriptar la contraseña
     if (correo == admin_usuario_std && contrasena == admin_contraseña_std) {
         if (!adminWindow) {
             adminWindow = new Admin(listaUsuarios, listadoblepublicacion, lista_solicitudes, this);
@@ -47,7 +49,15 @@ void Login::on_InicioSesion_btn_clicked()
         adminWindow->show();
         this->hide();
     } else {
-        if (listaUsuarios->buscarUsuarioPorCorreoyContrasena(correo, contrasena)) {
+        // Encriptar la contraseña ingresada por el usuario con SHA-256
+        QByteArray hash = QCryptographicHash::hash(QByteArray::fromStdString(contrasena), QCryptographicHash::Sha256);
+        std::string contrasenaEncriptada = hash.toHex().constData();
+
+        // Verificar la encriptación
+        std::cout << "Contraseña encriptada ingresada: " << contrasenaEncriptada << std::endl;
+
+        // Verificar si es un usuario normal (contraseña encriptada)
+        if (listaUsuarios->buscarUsuarioPorCorreoyContrasena(correo, contrasenaEncriptada)) {
             if (!usuarioWindow) {
                 usuarioWindow = new Usuarios(correo, listaUsuarios, listadoblepublicacion, lista_solicitudes, this);
             }
@@ -58,6 +68,7 @@ void Login::on_InicioSesion_btn_clicked()
         }
     }
 }
+
 
 void Login::on_Registrarse_btn_clicked()
 {

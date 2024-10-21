@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <functional>
+#include <QCryptographicHash>
+
 ListaUsuarios listaUsurios;
 ListaUsuarios::ListaUsuarios() : raiz(nullptr) {}
 
@@ -164,7 +166,6 @@ void ListaUsuarios::borrarUsuarioPorCorreo(const std::string& correo) {
 
 void ListaUsuarios::cargarUsuariosDesdeJson(const std::string& nombreArchivo) {
     std::ifstream archivo(nombreArchivo);
-
     if (!archivo.is_open()) {
         std::cerr << "Error al abrir el archivo JSON." << std::endl;
         return;
@@ -181,7 +182,12 @@ void ListaUsuarios::cargarUsuariosDesdeJson(const std::string& nombreArchivo) {
             std::string correo = item.at("correo").get<std::string>();
             std::string contrasena = item.at("contraseña").get<std::string>();
 
-            Usuario usuario(nombre, apellido, fecha_de_nacimiento, correo, contrasena);
+            // Encriptar la contraseña
+            QByteArray hash = QCryptographicHash::hash(QByteArray::fromStdString(contrasena), QCryptographicHash::Sha256);
+            std::string contrasenaEncriptada = hash.toHex().constData();
+
+            // Crear usuario con la contraseña encriptada
+            Usuario usuario(nombre, apellido, fecha_de_nacimiento, correo, contrasenaEncriptada);
             agregarUsuario(usuario);
         }
     } catch (const nlohmann::json::exception& e) {
@@ -190,6 +196,8 @@ void ListaUsuarios::cargarUsuariosDesdeJson(const std::string& nombreArchivo) {
 
     archivo.close();
 }
+
+
 
 
 void ListaUsuarios::agregarUsuario(const Usuario& usuario) {
@@ -212,8 +220,16 @@ Usuario* ListaUsuarios::buscarUsuarioPorCorreo(const std::string& correo) {
 
 bool ListaUsuarios::buscarUsuarioPorCorreoyContrasena(const std::string& correo, const std::string& contrasena) const {
     NodoAVL* nodo = buscar(raiz, correo);
-    return nodo && nodo->usuario.getContrasena() == contrasena;
+    if (nodo) {
+        std::cout << "Correo encontrado: " << correo << std::endl;
+        std::cout << "Contraseña almacenada: " << nodo->usuario.getContrasena() << std::endl; // Verifica que sea el hash
+        std::cout << "Contraseña ingresada: " << contrasena << std::endl; // Este es el hash
+        return nodo->usuario.getContrasena() == contrasena; // Comparación entre hashes
+    }
+    std::cout << "Usuario no encontrado: " << correo << std::endl;
+    return false;
 }
+
 
 // PreOrder
 void ListaUsuarios::preOrder(NodoAVL* nodo, std::vector<Usuario>& usuarios) const {

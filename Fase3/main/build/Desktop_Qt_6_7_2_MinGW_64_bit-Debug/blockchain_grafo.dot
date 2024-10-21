@@ -1,6 +1,6 @@
 digraph Blockchain {
     node [shape=record, style=filled, fillcolor=lightgrey];
-    block0 [label="{Index: 0|Hash: a8f48757...|PrevHash: 0000...|Nonce: 0|Data: Bloque génesis}"];
+    block0 [label="{Index: 0|Hash: 8805d329...|PrevHash: 0000...|Nonce: 0|Data: Bloque génesis}"];
     block0 [label="{Index: 0|Hash: 0000dcb6...|PrevHash: 5298812f...|Nonce: 5483|Data: Disfrutando de un día soleado en la playa, la vida es mejor con arena y mar.}"];
     block1 [label="{Index: 1|Hash: 0000c0db...|PrevHash: 5298812f...|Nonce: 241134|Data: Hoy aprendí algo nuevo, siempre es bueno salir de la zona de confort.}"];
     block1 -> block0;

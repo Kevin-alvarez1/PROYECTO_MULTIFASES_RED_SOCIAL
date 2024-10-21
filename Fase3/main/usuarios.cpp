@@ -10,6 +10,7 @@
 #include "arbolabb.h"
 #include <QInputDialog>
 #include <unordered_set>
+#include <QCryptographicHash>
 extern GrafoNoDirigido grafoNoDirigido;
 extern ArbolABB arbolABB;
 extern ArbolBComentario arbolComentarios_;
@@ -124,11 +125,15 @@ void Usuarios::on_Modificar_boton_clicked()
     // Buscar al usuario en la lista
     Usuario* usuario = listaUsuarios->buscarUsuarioPorCorreo(correoActualUsuario_);
     if (usuario) {
+        // Encriptar la nueva contraseña
+        QByteArray hash = QCryptographicHash::hash(QByteArray::fromStdString(nuevaContrasena), QCryptographicHash::Sha256);
+        std::string nuevaContrasenaEncriptada = hash.toHex().constData();
+
         // Actualizar los datos del usuario
         usuario->setNombre(nuevoNombre);
         usuario->setApellido(nuevoApellido);
         usuario->setFechaDeNacimiento(nuevaFechaNacimiento);
-        usuario->setContrasena(nuevaContrasena);
+        usuario->setContrasena(nuevaContrasenaEncriptada); // Actualizar contraseña encriptada
         usuario->setCorreo(nuevoCorreo); // Actualizar correo
 
         // Actualizar el correo actual del usuario en la sesión
@@ -140,6 +145,7 @@ void Usuarios::on_Modificar_boton_clicked()
         QMessageBox::warning(this, "Error", "No se pudo encontrar al usuario.");
     }
 }
+
 
 void Usuarios::on_btnCancelar_clicked(const std::string& correoReceptor) {
 

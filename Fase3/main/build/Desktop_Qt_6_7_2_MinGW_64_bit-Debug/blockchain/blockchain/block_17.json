@@ -1,0 +1,17 @@
+{
+  "index": 17,
+  "timestamp": "21-10-2024::20:17:44",
+  "nonce": 44912,
+  "data": {
+    "Comentarios": [],
+    "Publicacion:": {
+        "contenido": "Las sonrisas sinceras son el mejor regalo que puedes dar.",
+        "correo": "sg@example.com",
+        "fecha": "18/08/2024",
+        "hora": "09:30",
+        "id": 18
+    }
+},
+  "previousHash": "a3bd9615bc7adff95c068b9bf65989423d9f196e9fff0f00d35b04a456b0fc4c",
+  "hash": "0000f0488827bfb273415b9cf076f50780f939aa44be03ee5c52fe4afdaddebe"
+}

@@ -1,0 +1,17 @@
+{
+  "index": 13,
+  "timestamp": "21-10-2024::20:17:44",
+  "nonce": 190,
+  "data": {
+    "Comentarios": [],
+    "Publicacion:": {
+        "contenido": "La naturaleza siempre tiene una forma de sorprendernos, es increíble.",
+        "correo": "lr@example.com",
+        "fecha": "20/08/2024",
+        "hora": "18:30",
+        "id": 14
+    }
+},
+  "previousHash": "a3bd9615bc7adff95c068b9bf65989423d9f196e9fff0f00d35b04a456b0fc4c",
+  "hash": "00005643a3895a2f2942703afb82169aa75529787fe406da7c1dc549b51e1b02"
+}

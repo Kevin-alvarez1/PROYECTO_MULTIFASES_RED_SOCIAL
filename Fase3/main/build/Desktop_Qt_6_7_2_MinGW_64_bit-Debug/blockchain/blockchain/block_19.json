@@ -1,0 +1,17 @@
+{
+  "index": 19,
+  "timestamp": "21-10-2024::20:17:45",
+  "nonce": 69896,
+  "data": {
+    "Comentarios": [],
+    "Publicacion:": {
+        "contenido": "Explorando nuevas funcionalidades, la tecnología nunca deja de sorprenderme.",
+        "correo": "f2@gmail.com",
+        "fecha": "22/08/2024",
+        "hora": "14:15",
+        "id": 20
+    }
+},
+  "previousHash": "a3bd9615bc7adff95c068b9bf65989423d9f196e9fff0f00d35b04a456b0fc4c",
+  "hash": "0000b30e947ec31253298c47a3f648c063c27cb070ea58102ee4ed64b398bc80"
+}
